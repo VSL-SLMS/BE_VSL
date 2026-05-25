@@ -1,0 +1,8677 @@
+{
+  "pdf_file": "d:\\VSL\\vsl.pdf",
+  "total_pages": 236,
+  "dpi": 200,
+  "pages": [
+    {
+      "page_num": 1,
+      "type": "cover",
+      "chapter": null,
+      "chapter_title": "Bìa",
+      "full_page_image": "page_0001.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 2,
+      "type": "cover",
+      "chapter": null,
+      "chapter_title": "Bìa",
+      "full_page_image": "page_0002.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 3,
+      "type": "toc",
+      "chapter": null,
+      "chapter_title": "Mục lục",
+      "full_page_image": "page_0003.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 4,
+      "type": "toc",
+      "chapter": null,
+      "chapter_title": "Mục lục",
+      "full_page_image": "page_0004.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 5,
+      "type": "preface",
+      "chapter": null,
+      "chapter_title": "Lời nói đầu",
+      "full_page_image": "page_0005.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 6,
+      "type": "preface",
+      "chapter": null,
+      "chapter_title": "Lời nói đầu",
+      "full_page_image": "page_0006.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 7,
+      "type": "theory",
+      "chapter": "1.1",
+      "chapter_title": "Sơ lược lịch sử phát triển của NNKH",
+      "full_page_image": "page_0007.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 8,
+      "type": "theory",
+      "chapter": "1.1",
+      "chapter_title": "Sơ lược lịch sử phát triển của NNKH",
+      "full_page_image": "page_0008.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 9,
+      "type": "theory",
+      "chapter": "1.1",
+      "chapter_title": "Sơ lược lịch sử phát triển của NNKH",
+      "full_page_image": "page_0009.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 10,
+      "type": "theory",
+      "chapter": "1.1",
+      "chapter_title": "Sơ lược lịch sử phát triển của NNKH",
+      "full_page_image": "page_0010.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 11,
+      "type": "theory",
+      "chapter": "1.1",
+      "chapter_title": "Sơ lược lịch sử phát triển của NNKH",
+      "full_page_image": "page_0011.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 12,
+      "type": "theory",
+      "chapter": "1.1",
+      "chapter_title": "Sơ lược lịch sử phát triển của NNKH",
+      "full_page_image": "page_0012.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 13,
+      "type": "theory",
+      "chapter": "1.1",
+      "chapter_title": "Sơ lược lịch sử phát triển của NNKH",
+      "full_page_image": "page_0013.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 14,
+      "type": "theory",
+      "chapter": "1.1",
+      "chapter_title": "Sơ lược lịch sử phát triển của NNKH",
+      "full_page_image": "page_0014.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 15,
+      "type": "review",
+      "chapter": "1.1",
+      "chapter_title": "Câu hỏi ôn tập & Bài tập thực hành",
+      "full_page_image": "page_0015.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 16,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0016.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 17,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0017.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 18,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0018.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 19,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0019.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 20,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0020.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 21,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0021.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 22,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0022.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 23,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0023.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 24,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0024.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 25,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0025.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 26,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0026.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 27,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0027.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 28,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0028.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 29,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0029.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 30,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0030.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 31,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0031.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 32,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0032.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 33,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0033.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 34,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0034.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 35,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0035.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 36,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0036.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 37,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0037.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 38,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0038.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 39,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0039.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 40,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0040.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 41,
+      "type": "theory",
+      "chapter": "1.2",
+      "chapter_title": "Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0041.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 42,
+      "type": "review",
+      "chapter": "1.2",
+      "chapter_title": "Bài tập thực hành",
+      "full_page_image": "page_0042.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 43,
+      "type": "theory",
+      "chapter": "1.3",
+      "chapter_title": "Một số phương thức giao tiếp có sử dụng kí hiệu",
+      "full_page_image": "page_0043.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 44,
+      "type": "theory",
+      "chapter": "1.3",
+      "chapter_title": "Một số phương thức giao tiếp có sử dụng kí hiệu",
+      "full_page_image": "page_0044.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 45,
+      "type": "theory",
+      "chapter": "1.3",
+      "chapter_title": "Một số phương thức giao tiếp có sử dụng kí hiệu",
+      "full_page_image": "page_0045.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 46,
+      "type": "theory",
+      "chapter": "1.3",
+      "chapter_title": "Một số phương thức giao tiếp có sử dụng kí hiệu",
+      "full_page_image": "page_0046.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 47,
+      "type": "theory",
+      "chapter": "1.3",
+      "chapter_title": "Một số phương thức giao tiếp có sử dụng kí hiệu",
+      "full_page_image": "page_0047.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 48,
+      "type": "theory",
+      "chapter": "1.3",
+      "chapter_title": "Một số phương thức giao tiếp có sử dụng kí hiệu",
+      "full_page_image": "page_0048.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 49,
+      "type": "theory",
+      "chapter": "1.3",
+      "chapter_title": "Một số phương thức giao tiếp có sử dụng kí hiệu",
+      "full_page_image": "page_0049.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 50,
+      "type": "theory",
+      "chapter": "1.3",
+      "chapter_title": "Một số phương thức giao tiếp có sử dụng kí hiệu",
+      "full_page_image": "page_0050.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 51,
+      "type": "review",
+      "chapter": "1.3",
+      "chapter_title": "Câu hỏi ôn tập & Bài tập thực hành",
+      "full_page_image": "page_0051.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 52,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0052.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 53,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0053.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 54,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0054.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 55,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0055.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 56,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0056.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 57,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0057.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 58,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0058.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 59,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0059.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 60,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0060.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 61,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0061.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 62,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0062.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 63,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0063.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 64,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0064.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 65,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0065.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 66,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0066.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 67,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0067.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 68,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0068.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 69,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0069.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 70,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0070.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 71,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0071.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 72,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0072.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 73,
+      "type": "theory",
+      "chapter": "1.4",
+      "chapter_title": "Dạy và học Ngôn ngữ Kí hiệu",
+      "full_page_image": "page_0073.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 74,
+      "type": "review",
+      "chapter": "1.4",
+      "chapter_title": "Câu hỏi ôn tập & Bài tập thực hành",
+      "full_page_image": "page_0074.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 75,
+      "type": "alphabet_table",
+      "chapter": "2.1",
+      "chapter_title": "Chữ cái ngón tay",
+      "full_page_image": "page_0075.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 76,
+      "type": "alphabet_table",
+      "chapter": "2.1",
+      "chapter_title": "Chữ cái ngón tay",
+      "full_page_image": "page_0076.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 77,
+      "type": "number_table",
+      "chapter": "2.1",
+      "chapter_title": "Số tự nhiên",
+      "full_page_image": "page_0077.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 78,
+      "type": "number_table",
+      "chapter": "2.1",
+      "chapter_title": "Số tự nhiên",
+      "full_page_image": "page_0078.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 79,
+      "type": "number_table",
+      "chapter": "2.1",
+      "chapter_title": "Số tự nhiên",
+      "full_page_image": "page_0079.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 80,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0080.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0080_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0080_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0080_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0080_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 81,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0081.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0081_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0081_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0081_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0081_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 82,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0082.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0082_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0082_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0082_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0082_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 83,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0083.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0083_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0083_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0083_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0083_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 84,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0084.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0084_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0084_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0084_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0084_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 85,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0085.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0085_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0085_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0085_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0085_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 86,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0086.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0086_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0086_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0086_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0086_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 87,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0087.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0087_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0087_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0087_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0087_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 88,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0088.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0088_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0088_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0088_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0088_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 89,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0089.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0089_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0089_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0089_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0089_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 90,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0090.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0090_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0090_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0090_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0090_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 91,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0091.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0091_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0091_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0091_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0091_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 92,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0092.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0092_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0092_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0092_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0092_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 93,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0093.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0093_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0093_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0093_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0093_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 94,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0094.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0094_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0094_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0094_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0094_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 95,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0095.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0095_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0095_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0095_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0095_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 96,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0096.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0096_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0096_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0096_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0096_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 97,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0097.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0097_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0097_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0097_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0097_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 98,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0098.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0098_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0098_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0098_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0098_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 99,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0099.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0099_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0099_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0099_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0099_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 100,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0100.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0100_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0100_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0100_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0100_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 101,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0101.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0101_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0101_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0101_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0101_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 102,
+      "type": "sign_grid",
+      "chapter": "2.2",
+      "chapter_title": "Bản thân",
+      "full_page_image": "page_0102.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0102_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0102_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0102_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0102_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 103,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0103.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0103_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0103_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0103_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0103_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 104,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0104.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0104_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0104_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0104_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0104_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 105,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0105.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0105_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0105_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0105_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0105_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 106,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0106.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0106_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0106_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0106_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0106_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 107,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0107.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0107_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0107_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0107_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0107_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 108,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0108.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0108_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0108_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0108_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0108_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 109,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0109.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0109_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0109_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0109_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0109_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 110,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0110.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0110_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0110_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0110_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0110_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 111,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0111.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0111_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0111_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0111_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0111_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 112,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0112.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0112_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0112_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0112_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0112_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 113,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0113.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0113_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0113_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0113_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0113_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 114,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0114.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0114_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0114_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0114_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0114_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 115,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0115.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0115_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0115_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0115_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0115_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 116,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0116.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0116_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0116_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0116_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0116_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 117,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0117.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0117_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0117_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0117_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0117_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 118,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0118.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0118_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0118_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0118_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0118_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 119,
+      "type": "sign_grid",
+      "chapter": "2.3",
+      "chapter_title": "Gia đình",
+      "full_page_image": "page_0119.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0119_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0119_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0119_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0119_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 120,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0120.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0120_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0120_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0120_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0120_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 121,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0121.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0121_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0121_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0121_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0121_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 122,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0122.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0122_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0122_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0122_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0122_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 123,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0123.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0123_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0123_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0123_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0123_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 124,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0124.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0124_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0124_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0124_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0124_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 125,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0125.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0125_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0125_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0125_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0125_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 126,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0126.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0126_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0126_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0126_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0126_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 127,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0127.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0127_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0127_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0127_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0127_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 128,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0128.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0128_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0128_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0128_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0128_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 129,
+      "type": "sign_grid",
+      "chapter": "2.4",
+      "chapter_title": "Nghề nghiệp",
+      "full_page_image": "page_0129.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0129_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0129_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0129_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0129_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 130,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0130.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0130_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0130_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0130_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0130_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 131,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0131.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0131_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0131_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0131_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0131_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 132,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0132.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0132_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0132_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0132_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0132_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 133,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0133.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0133_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0133_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0133_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0133_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 134,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0134.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0134_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0134_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0134_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0134_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 135,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0135.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0135_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0135_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0135_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0135_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 136,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0136.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0136_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0136_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0136_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0136_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 137,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0137.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0137_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0137_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0137_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0137_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 138,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0138.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0138_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0138_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0138_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0138_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 139,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0139.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0139_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0139_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0139_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0139_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 140,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0140.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0140_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0140_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0140_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0140_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 141,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0141.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0141_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0141_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0141_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0141_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 142,
+      "type": "sign_grid",
+      "chapter": "2.5",
+      "chapter_title": "Hiện tượng tự nhiên",
+      "full_page_image": "page_0142.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0142_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0142_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0142_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0142_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 143,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0143.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0143_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0143_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0143_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0143_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 144,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0144.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0144_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0144_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0144_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0144_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 145,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0145.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0145_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0145_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0145_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0145_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 146,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0146.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0146_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0146_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0146_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0146_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 147,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0147.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0147_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0147_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0147_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0147_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 148,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0148.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0148_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0148_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0148_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0148_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 149,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0149.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0149_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0149_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0149_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0149_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 150,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0150.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0150_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0150_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0150_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0150_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 151,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0151.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0151_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0151_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0151_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0151_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 152,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0152.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0152_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0152_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0152_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0152_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 153,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0153.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0153_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0153_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0153_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0153_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 154,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0154.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0154_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0154_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0154_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0154_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 155,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0155.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0155_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0155_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0155_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0155_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 156,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0156.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0156_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0156_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0156_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0156_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 157,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0157.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0157_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0157_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0157_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0157_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 158,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0158.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0158_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0158_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0158_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0158_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 159,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0159.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0159_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0159_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0159_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0159_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 160,
+      "type": "sign_grid",
+      "chapter": "2.6",
+      "chapter_title": "Thực vật",
+      "full_page_image": "page_0160.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0160_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0160_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0160_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0160_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 161,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0161.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0161_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0161_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0161_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0161_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 162,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0162.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0162_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0162_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0162_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0162_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 163,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0163.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0163_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0163_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0163_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0163_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 164,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0164.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0164_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0164_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0164_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0164_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 165,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0165.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0165_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0165_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0165_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0165_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 166,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0166.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0166_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0166_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0166_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0166_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 167,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0167.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0167_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0167_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0167_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0167_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 168,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0168.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0168_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0168_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0168_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0168_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 169,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0169.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0169_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0169_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0169_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0169_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 170,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0170.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0170_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0170_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0170_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0170_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 171,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0171.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0171_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0171_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0171_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0171_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 172,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0172.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0172_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0172_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0172_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0172_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 173,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0173.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0173_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0173_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0173_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0173_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 174,
+      "type": "sign_grid",
+      "chapter": "2.7",
+      "chapter_title": "Động vật",
+      "full_page_image": "page_0174.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0174_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0174_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0174_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0174_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 175,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0175.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0175_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0175_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0175_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0175_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 176,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0176.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0176_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0176_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0176_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0176_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 177,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0177.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0177_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0177_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0177_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0177_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 178,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0178.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0178_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0178_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0178_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0178_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 179,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0179.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0179_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0179_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0179_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0179_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 180,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0180.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0180_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0180_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0180_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0180_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 181,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0181.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0181_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0181_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0181_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0181_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 182,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0182.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0182_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0182_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0182_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0182_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 183,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0183.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0183_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0183_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0183_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0183_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 184,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0184.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0184_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0184_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0184_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0184_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 185,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0185.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0185_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0185_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0185_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0185_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 186,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0186.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0186_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0186_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0186_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0186_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 187,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0187.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0187_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0187_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0187_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0187_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 188,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0188.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0188_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0188_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0188_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0188_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 189,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0189.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0189_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0189_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0189_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0189_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 190,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0190.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0190_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0190_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0190_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0190_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 191,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0191.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0191_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0191_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0191_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0191_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 192,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0192.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0192_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0192_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0192_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0192_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 193,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0193.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0193_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0193_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0193_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0193_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 194,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0194.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0194_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0194_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0194_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0194_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 195,
+      "type": "sign_grid",
+      "chapter": "2.8",
+      "chapter_title": "Trường học",
+      "full_page_image": "page_0195.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0195_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0195_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0195_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0195_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 196,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0196.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0196_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0196_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0196_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0196_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 197,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0197.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0197_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0197_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0197_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0197_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 198,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0198.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0198_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0198_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0198_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0198_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 199,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0199.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0199_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0199_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0199_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0199_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 200,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0200.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0200_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0200_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0200_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0200_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 201,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0201.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0201_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0201_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0201_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0201_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 202,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0202.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0202_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0202_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0202_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0202_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 203,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0203.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0203_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0203_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0203_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0203_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 204,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0204.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0204_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0204_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0204_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0204_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 205,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0205.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0205_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0205_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0205_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0205_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 206,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0206.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0206_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0206_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0206_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0206_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 207,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0207.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0207_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0207_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0207_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0207_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 208,
+      "type": "sign_grid",
+      "chapter": "2.9",
+      "chapter_title": "Giao thông",
+      "full_page_image": "page_0208.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0208_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0208_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0208_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0208_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 209,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0209.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0209_1.png",
+          "crop_box": [
+            85,
+            176,
+            847,
+            1130
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0209_2.png",
+          "crop_box": [
+            853,
+            176,
+            1615,
+            1130
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0209_3.png",
+          "crop_box": [
+            85,
+            1136,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0209_4.png",
+          "crop_box": [
+            853,
+            1136,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 210,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0210.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0210_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0210_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0210_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0210_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 211,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0211.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0211_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0211_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0211_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0211_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 212,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0212.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0212_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0212_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0212_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0212_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 213,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0213.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0213_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0213_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0213_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0213_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 214,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0214.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0214_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0214_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0214_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0214_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 215,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0215.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0215_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0215_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0215_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0215_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 216,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0216.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0216_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0216_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0216_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0216_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 217,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0217.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0217_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0217_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0217_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0217_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 218,
+      "type": "sign_grid",
+      "chapter": "2.10",
+      "chapter_title": "Quê hương - Đất nước",
+      "full_page_image": "page_0218.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": [
+        {
+          "position": 1,
+          "filename": "sign_p0218_1.png",
+          "crop_box": [
+            85,
+            44,
+            847,
+            1064
+          ]
+        },
+        {
+          "position": 2,
+          "filename": "sign_p0218_2.png",
+          "crop_box": [
+            853,
+            44,
+            1615,
+            1064
+          ]
+        },
+        {
+          "position": 3,
+          "filename": "sign_p0218_3.png",
+          "crop_box": [
+            85,
+            1070,
+            847,
+            2090
+          ]
+        },
+        {
+          "position": 4,
+          "filename": "sign_p0218_4.png",
+          "crop_box": [
+            853,
+            1070,
+            1615,
+            2090
+          ]
+        }
+      ],
+      "grid_layout": "2x2"
+    },
+    {
+      "page_num": 219,
+      "type": "index",
+      "chapter": null,
+      "chapter_title": "Danh mục các kí hiệu",
+      "full_page_image": "page_0219.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 220,
+      "type": "index",
+      "chapter": null,
+      "chapter_title": "Danh mục các kí hiệu",
+      "full_page_image": "page_0220.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 221,
+      "type": "index",
+      "chapter": null,
+      "chapter_title": "Danh mục các kí hiệu",
+      "full_page_image": "page_0221.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 222,
+      "type": "index",
+      "chapter": null,
+      "chapter_title": "Danh mục các kí hiệu",
+      "full_page_image": "page_0222.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 223,
+      "type": "index",
+      "chapter": null,
+      "chapter_title": "Danh mục các kí hiệu",
+      "full_page_image": "page_0223.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 224,
+      "type": "index",
+      "chapter": null,
+      "chapter_title": "Danh mục các kí hiệu",
+      "full_page_image": "page_0224.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 225,
+      "type": "index",
+      "chapter": null,
+      "chapter_title": "Danh mục các kí hiệu",
+      "full_page_image": "page_0225.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 226,
+      "type": "index",
+      "chapter": null,
+      "chapter_title": "Danh mục các bài hát kí hiệu",
+      "full_page_image": "page_0226.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 227,
+      "type": "bibliography",
+      "chapter": null,
+      "chapter_title": "Tài liệu tham khảo",
+      "full_page_image": "page_0227.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 228,
+      "type": "bibliography",
+      "chapter": null,
+      "chapter_title": "Tài liệu tham khảo",
+      "full_page_image": "page_0228.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 229,
+      "type": "appendix",
+      "chapter": null,
+      "chapter_title": "Phụ lục",
+      "full_page_image": "page_0229.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 230,
+      "type": "appendix",
+      "chapter": null,
+      "chapter_title": "Phụ lục",
+      "full_page_image": "page_0230.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 231,
+      "type": "appendix",
+      "chapter": null,
+      "chapter_title": "Phụ lục",
+      "full_page_image": "page_0231.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 232,
+      "type": "appendix",
+      "chapter": null,
+      "chapter_title": "Phụ lục",
+      "full_page_image": "page_0232.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 233,
+      "type": "appendix",
+      "chapter": null,
+      "chapter_title": "Phụ lục",
+      "full_page_image": "page_0233.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 234,
+      "type": "appendix",
+      "chapter": null,
+      "chapter_title": "Phụ lục",
+      "full_page_image": "page_0234.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 235,
+      "type": "appendix",
+      "chapter": null,
+      "chapter_title": "Phụ lục",
+      "full_page_image": "page_0235.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    },
+    {
+      "page_num": 236,
+      "type": "appendix",
+      "chapter": null,
+      "chapter_title": "Phụ lục",
+      "full_page_image": "page_0236.png",
+      "size": {
+        "width": 1700,
+        "height": 2200
+      },
+      "signs": []
+    }
+  ]
+}

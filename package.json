@@ -1,0 +1,21 @@
+{
+  "name": "slms-backend",
+  "version": "0.1.0",
+  "description": "SLMS backend - Express.js API, Swagger, MySQL, and raw SQL",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon --ignore node_modules --ignore database --ignore pdf_extracted src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "multer": "^2.0.0",
+    "mysql2": "^3.14.0",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

@@ -1,0 +1,15 @@
+-- Placeholder migration for normalizing image URLs.
+-- Current app normalizes common old paths at render time in lesson.service.js.
+--
+-- Preferred URL conventions:
+-- Full PDF page image: /images/pages_hires/page_0103.png
+-- Extracted page image: /images/images/page0103_img01.png
+-- Cropped sign image: /images/signs_v2/sign_p0103_1.png
+--
+-- Do not use /images/pages/page_0103.png unless that folder exists.
+--
+-- TODO:
+-- 1. Map each content_item to a cropped signs_v2 image where possible.
+-- 2. Update content_items.image_url from page-level images to cropped sign images.
+-- 3. Keep page_images.image_path for Book Mode only.
+
