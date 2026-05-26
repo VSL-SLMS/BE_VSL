@@ -70,29 +70,50 @@ async function getLessonContent(lessonId) {
     ORDER BY order_index
   `, [lessonId]);
 
-  for (const section of sections) {
-    if (section.type === 'article') {
-      const [blocks] = await pool.query(`
-        SELECT *
-        FROM content_blocks
-        WHERE content_id = ?
-        ORDER BY order_index
-      `, [section.id]);
-      section.blocks = blocks;
-    }
+  if (!sections.length) return [];
 
-    if (section.type === 'grid') {
-      const [items] = await pool.query(`
-        SELECT *
-        FROM content_items
-        WHERE content_id = ?
-        ORDER BY order_index
-      `, [section.id]);
-      section.items = items.map(normalizeContentItemImage);
-    }
+  const articleSectionIds = sections.filter(s => s.type === 'article').map(s => s.id);
+  const gridSectionIds = sections.filter(s => s.type === 'grid').map(s => s.id);
+
+  let allBlocks = [];
+  if (articleSectionIds.length > 0) {
+    const [blocks] = await pool.query(`
+      SELECT *
+      FROM content_blocks
+      WHERE content_id IN (?)
+      ORDER BY order_index
+    `, [articleSectionIds]);
+    allBlocks = blocks;
   }
 
-  return sections;
+  let allItems = [];
+  if (gridSectionIds.length > 0) {
+    const [items] = await pool.query(`
+      SELECT *
+      FROM content_items
+      WHERE content_id IN (?)
+      ORDER BY order_index
+    `, [gridSectionIds]);
+    allItems = items;
+  }
+
+  return sections.map(section => {
+    if (section.type === 'article') {
+      return {
+        ...section,
+        blocks: allBlocks.filter(b => b.content_id === section.id)
+      };
+    }
+    if (section.type === 'grid') {
+      return {
+        ...section,
+        items: allItems
+          .filter(i => i.content_id === section.id)
+          .map(normalizeContentItemImage)
+      };
+    }
+    return section;
+  });
 }
 
 async function getPageImagesByLessonId(lessonId) {

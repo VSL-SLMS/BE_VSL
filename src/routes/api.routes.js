@@ -3,6 +3,8 @@ const authService = require('../services/auth.service');
 const lessonService = require('../services/lesson.service');
 const studentService = require('../services/student.service');
 const userService = require('../services/user.service');
+const { requireAuth } = require('../middlewares/auth.middleware');
+const { requireRole } = require('../middlewares/role.middleware');
 
 const router = express.Router();
 
@@ -47,7 +49,7 @@ router.post('/auth/login', async (req, res, next) => {
   }
 });
 
-router.get('/teachers', async (req, res, next) => {
+router.get('/teachers', requireAuth, async (req, res, next) => {
   try {
     const teachers = await studentService.listTeachers();
     res.json({ data: { teachers } });
@@ -56,7 +58,7 @@ router.get('/teachers', async (req, res, next) => {
   }
 });
 
-router.get('/admin/users', async (req, res, next) => {
+router.get('/admin/users', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
   try {
     const users = await userService.listUsers();
     res.json({ data: { users } });

@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { pool } = require('../config/database');
 
 async function register({ name, email, password, role }) {
@@ -19,7 +20,14 @@ async function register({ name, email, password, role }) {
     await pool.query('INSERT INTO students (user_id) VALUES (?)', [result.insertId]);
   }
 
-  return getUserById(result.insertId);
+  const user = await getUserById(result.insertId);
+  user.token = jwt.sign(
+    { id: user.id, role: user.role, status: user.status },
+    process.env.SESSION_SECRET || 'secret',
+    { expiresIn: '1d' }
+  );
+
+  return user;
 }
 
 async function login(email, password) {
@@ -42,6 +50,12 @@ async function login(email, password) {
   }
 
   delete user.password_hash;
+  user.token = jwt.sign(
+    { id: user.id, role: user.role, status: user.status },
+    process.env.SESSION_SECRET || 'secret',
+    { expiresIn: '1d' }
+  );
+
   return user;
 }
 
