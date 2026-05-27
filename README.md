@@ -90,7 +90,7 @@ DB_SSL=true
 Import the VSL content and LMS tables into MySQL:
 
 ```bash
-./database/import_all.sh
+npm run db:import
 ```
 
 The import script supports both local variable names and Railway MySQL names:
@@ -117,7 +117,7 @@ On Railway MySQL, the default database is often named `railway`. Use this one-of
 npm run db:import:railway
 ```
 
-That command imports the VSL schema and seed data into the active Railway database instead of the hardcoded local `vsl_learning` database.
+That command imports the VSL schema and seed data into the active Railway database instead of the hardcoded local `vsl_learning` database. It uses Node.js and `mysql2`, so it does not require the `mysql` CLI to be installed in the Railway container.
 
 Seeded admin account:
 
