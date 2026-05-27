@@ -7,8 +7,8 @@ const swaggerSpec = {
   },
   servers: [
     {
-      url: 'http://localhost:5050',
-      description: 'Local backend'
+      url: process.env.BACKEND_PUBLIC_URL || 'http://localhost:5050',
+      description: process.env.BACKEND_PUBLIC_URL ? 'Deployed backend' : 'Local backend'
     }
   ],
   tags: [
