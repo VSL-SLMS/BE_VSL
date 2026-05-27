@@ -6,13 +6,41 @@ MYSQL_PASSWORD="${MYSQL_PASSWORD:-${MYSQLPASSWORD:-}}"
 MYSQL_HOST="${MYSQL_HOST:-${MYSQLHOST:-127.0.0.1}}"
 MYSQL_PORT="${MYSQL_PORT:-${MYSQLPORT:-3306}}"
 DB_NAME="${DB_NAME:-${MYSQLDATABASE:-vsl_learning}}"
+SKIP_DROP_DATABASE="${SKIP_DROP_DATABASE:-false}"
+CREATE_DATABASE="${CREATE_DATABASE:-true}"
 
 DATABASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+if [[ ! "$DB_NAME" =~ ^[A-Za-z0-9_]+$ ]]; then
+  echo "Invalid DB_NAME: $DB_NAME"
+  exit 1
+fi
 
 MYSQL_ARGS=(-h "$MYSQL_HOST" -P "$MYSQL_PORT" -u "$MYSQL_USER" --default-character-set=utf8mb4)
 if [[ -n "$MYSQL_PASSWORD" ]]; then
   MYSQL_ARGS+=("-p$MYSQL_PASSWORD")
 fi
+
+normalize_sql_file() {
+  local source_file="$1"
+  local target_file="$TMP_DIR/$(basename "$source_file")"
+
+  if [[ "$CREATE_DATABASE" == "true" ]]; then
+    perl -0pe "
+      s/CREATE DATABASE IF NOT EXISTS\\s+vsl_learning\\s+CHARACTER SET utf8mb4\\s+COLLATE utf8mb4_unicode_ci;/CREATE DATABASE IF NOT EXISTS \`$DB_NAME\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;/g;
+      s/USE vsl_learning;/USE \`$DB_NAME\`;/g;
+    " "$source_file" > "$target_file"
+  else
+    perl -0pe "
+      s/CREATE DATABASE IF NOT EXISTS\\s+vsl_learning\\s+CHARACTER SET utf8mb4\\s+COLLATE utf8mb4_unicode_ci;/-- CREATE DATABASE skipped by CREATE_DATABASE=false/g;
+      s/USE vsl_learning;/USE \`$DB_NAME\`;/g;
+    " "$source_file" > "$target_file"
+  fi
+
+  echo "$target_file"
+}
 
 run_sql_file() {
   local label="$1"
@@ -24,7 +52,7 @@ run_sql_file() {
   fi
 
   echo "$label"
-  mysql "${MYSQL_ARGS[@]}" < "$file"
+  mysql "${MYSQL_ARGS[@]}" < "$(normalize_sql_file "$file")"
 }
 
 echo "============================================"
@@ -32,8 +60,12 @@ echo "   SLMS / VSL Database Import Pipeline"
 echo "============================================"
 echo
 
-echo "[1/14] Dropping old database..."
-mysql "${MYSQL_ARGS[@]}" -e "DROP DATABASE IF EXISTS \`$DB_NAME\`;"
+if [[ "$SKIP_DROP_DATABASE" == "true" ]]; then
+  echo "[1/14] Skipping database drop for '$DB_NAME'..."
+else
+  echo "[1/14] Dropping old database '$DB_NAME'..."
+  mysql "${MYSQL_ARGS[@]}" -e "DROP DATABASE IF EXISTS \`$DB_NAME\`;"
+fi
 
 run_sql_file "[2/14] Creating schema..." "$DATABASE_DIR/schema.sql"
 run_sql_file "[3/14] Importing seed_01_structure..." "$DATABASE_DIR/seed_01_structure.sql"

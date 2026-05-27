@@ -111,6 +111,14 @@ mysql -u root vsl_learning < database/migrations/002_fix_image_urls.sql
 mysql -u root vsl_learning < database/migrations/003_auth_admin_teacher_controls.sql
 ```
 
+On Railway MySQL, the default database is often named `railway`. Use this one-off command in Railway after the MySQL service variables are attached:
+
+```bash
+npm run db:import:railway
+```
+
+That command imports the VSL schema and seed data into the active Railway database instead of the hardcoded local `vsl_learning` database.
+
 Seeded admin account:
 
 ```txt
