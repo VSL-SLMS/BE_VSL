@@ -36,6 +36,10 @@ async function register({ name, email, password }) {
 
   await pool.query('INSERT INTO students (user_id) VALUES (?)', [result.insertId]);
 
+  if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
+    throw new Error('SESSION_SECRET must be set in production');
+  }
+
   const user = await getUserById(result.insertId);
   user.token = signUserToken(user);
 
@@ -59,6 +63,10 @@ async function login(email, password) {
     const error = new Error('Account is not active.');
     error.status = 403;
     throw error;
+  }
+
+  if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
+    throw new Error('SESSION_SECRET must be set in production');
   }
 
   delete user.password_hash;
