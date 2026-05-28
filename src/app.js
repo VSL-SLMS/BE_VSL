@@ -9,17 +9,40 @@ const swaggerSpec = require('./config/swagger');
 
 const app = express();
 
+function getAllowedOrigins() {
+  return [
+    process.env.CORS_ORIGINS,
+    process.env.FRONTEND_URL,
+    'https://fe-vsl.vercel.app',
+    'http://localhost:3000'
+  ]
+    .filter(Boolean)
+    .flatMap((value) => value.split(','))
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
+
+function isOriginAllowed(origin, allowedOrigins) {
+  return allowedOrigins.some((allowedOrigin) => {
+    if (allowedOrigin === '*') return true;
+    if (allowedOrigin === origin) return true;
+    if (allowedOrigin.startsWith('https://*.')) {
+      return origin.endsWith(allowedOrigin.replace('https://*.', '.'));
+    }
+    return false;
+  });
+}
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use((req, res, next) => {
-  const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
-    .split(',')
-    .map((origin) => origin.trim());
+  const allowedOrigins = getAllowedOrigins();
   const origin = req.headers.origin;
 
-  if (origin && allowedOrigins.includes(origin)) {
+  if (origin && isOriginAllowed(origin, allowedOrigins)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
   }
 
   res.setHeader('Access-Control-Allow-Credentials', 'true');
