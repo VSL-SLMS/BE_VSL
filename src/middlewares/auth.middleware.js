@@ -9,6 +9,11 @@ function requireAuth(req, res, next) {
     });
   }
 
+  if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
+    console.error('FATAL ERROR: SESSION_SECRET must be set in production');
+    return res.status(500).json({ error: true, message: 'Internal Server Error' });
+  }
+
   const token = authHeader.split(' ')[1];
 
   try {
