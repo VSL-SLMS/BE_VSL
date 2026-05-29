@@ -1,7 +1,5 @@
 -- Email OTP verification table.
--- Run after 001_lms_tables.sql.
-
-USE vsl_learning;
+-- Run after 001_lms_tables.sql against the selected database.
 
 CREATE TABLE IF NOT EXISTS email_otps (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
