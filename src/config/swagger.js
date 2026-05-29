@@ -7,8 +7,8 @@ const swaggerSpec = {
   },
   servers: [
     {
-      url: process.env.BACKEND_PUBLIC_URL || 'http://localhost:5050',
-      description: process.env.BACKEND_PUBLIC_URL ? 'Deployed backend' : 'Local backend'
+      url: 'http://localhost:5050',
+      description: 'Local backend'
     }
   ],
   tags: [
@@ -99,8 +99,7 @@ const swaggerSpec = {
     '/api/auth/register': {
       post: {
         tags: ['Auth'],
-        summary: 'Register a student account',
-        description: 'Public registration is only available for students. Teacher accounts must be created by an Admin.',
+        summary: 'Register a student or teacher account',
         requestBody: {
           required: true,
           content: {
@@ -110,7 +109,8 @@ const swaggerSpec = {
                 properties: {
                   name: { type: 'string', example: 'Nguyen Van A' },
                   email: { type: 'string', example: 'student@example.com' },
-                  password: { type: 'string', example: 'password123' }
+                  password: { type: 'string', example: 'password123' },
+                  role: { type: 'string', enum: ['STUDENT', 'TEACHER'], example: 'STUDENT' }
                 },
                 required: ['email', 'password']
               }
@@ -120,9 +120,6 @@ const swaggerSpec = {
         responses: {
           201: {
             description: 'Registered user'
-          },
-          403: {
-            description: 'Teacher self-registration is blocked'
           },
           409: {
             description: 'Duplicate account'
@@ -159,36 +156,6 @@ const swaggerSpec = {
         }
       }
     },
-    '/api/auth/change-password': {
-      post: {
-        tags: ['Auth'],
-        summary: 'Change password for the current authenticated user',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  currentPassword: { type: 'string', example: 'Temp@12345' },
-                  newPassword: { type: 'string', example: 'NewPassword@123' }
-                },
-                required: ['currentPassword', 'newPassword']
-              }
-            }
-          }
-        },
-        responses: {
-          200: {
-            description: 'Password changed'
-          },
-          401: {
-            description: 'Invalid current password or token'
-          }
-        }
-      }
-    },
     '/api/teachers': {
       get: {
         tags: ['Teachers'],
@@ -200,61 +167,15 @@ const swaggerSpec = {
         }
       }
     },
-    '/api/admin/teachers': {
-      post: {
-        tags: ['Admin'],
-        summary: 'Create a teacher account',
-        description: 'Admin-only endpoint. The created teacher must change the temporary password at first login.',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  name: { type: 'string', example: 'Tran Thi B' },
-                  email: { type: 'string', example: 'teacher@example.com' },
-                  temporaryPassword: { type: 'string', example: 'Temp@12345' },
-                  status: { type: 'string', enum: ['ACTIVE', 'SUSPENDED'], example: 'ACTIVE' }
-                },
-                required: ['email', 'temporaryPassword']
-              }
-            }
-          }
-        },
-        responses: {
-          201: {
-            description: 'Teacher account created'
-          },
-          403: {
-            description: 'Admin role required'
-          },
-          409: {
-            description: 'Duplicate account'
-          }
-        }
-      }
-    },
     '/api/admin/users': {
       get: {
         tags: ['Admin'],
         summary: 'List users for admin management',
-        security: [{ bearerAuth: [] }],
         responses: {
           200: {
             description: 'User list'
           }
         }
-      }
-    }
-  },
-  components: {
-    securitySchemes: {
-      bearerAuth: {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT'
       }
     }
   }

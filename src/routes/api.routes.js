@@ -27,15 +27,6 @@ router.get('/course-overview', async (req, res, next) => {
 
 router.post('/auth/register', async (req, res, next) => {
   try {
-    if (!req.body.email || !req.body.password) {
-      return res.status(400).json({ error: true, message: 'Email and password are required.' });
-    }
-    if (req.body.role && req.body.role !== 'STUDENT') {
-      return res.status(403).json({
-        error: true,
-        message: 'Public registration is only available for students.'
-      });
-    }
     const user = await authService.register(req.body);
     res.status(201).json({ data: { user } });
   } catch (error) {
@@ -44,6 +35,10 @@ router.post('/auth/register', async (req, res, next) => {
     }
     return next(error);
   }
+});
+
+router.get('/auth/me', requireAuth, (req, res) => {
+  res.json({ data: { user: req.user } });
 });
 
 router.post('/auth/login', async (req, res, next) => {
@@ -58,49 +53,12 @@ router.post('/auth/login', async (req, res, next) => {
   }
 });
 
-router.post('/auth/change-password', requireAuth, async (req, res, next) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({ error: true, message: 'Current and new password are required.' });
-    }
-    if (String(newPassword).length < 6) {
-      return res.status(400).json({ error: true, message: 'New password must be at least 6 characters.' });
-    }
-
-    const user = await authService.changePassword(req.user.id, currentPassword, newPassword);
-    return res.json({ data: { user } });
-  } catch (error) {
-    return next(error);
-  }
-});
-
-router.get('/teachers', async (req, res, next) => {
+router.get('/teachers', requireAuth, async (req, res, next) => {
   try {
     const teachers = await studentService.listTeachers();
     res.json({ data: { teachers } });
   } catch (error) {
     next(error);
-  }
-});
-
-router.post('/admin/teachers', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
-  try {
-    const { name, email, temporaryPassword, status } = req.body;
-    if (!email || !temporaryPassword) {
-      return res.status(400).json({ error: true, message: 'Email and temporary password are required.' });
-    }
-    if (String(temporaryPassword).length < 6) {
-      return res.status(400).json({ error: true, message: 'Temporary password must be at least 6 characters.' });
-    }
-
-    const teacher = await authService.createTeacher({ name, email, temporaryPassword, status });
-    return res.status(201).json({ data: { teacher } });
-  } catch (error) {
-    if (error.code === 'ER_DUP_ENTRY') {
-      return res.status(409).json({ error: true, message: 'Email or username already exists.' });
-    }
-    return next(error);
   }
 });
 
