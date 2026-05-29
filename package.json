@@ -3,15 +3,8 @@
   "version": "0.1.0",
   "description": "SLMS backend - Express.js API, Swagger, MySQL, and raw SQL",
   "main": "src/server.js",
-  "engines": {
-    "node": "20.x"
-  },
   "scripts": {
     "dev": "nodemon --ignore node_modules --ignore database --ignore pdf_extracted src/server.js",
-    "check": "node -c src/app.js && node -c src/server.js && node -c src/config/database.js && node -c src/routes/api.routes.js && node -c src/services/auth.service.js",
-    "db:import": "node scripts/import-database.js",
-    "db:import:shell": "bash database/import_all.sh",
-    "db:import:railway": "SKIP_DROP_DATABASE=true CREATE_DATABASE=false node scripts/import-database.js",
     "start": "node src/server.js"
   },
   "dependencies": {

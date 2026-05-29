@@ -57,4 +57,4 @@ async function testConnection() {
   }
 }
 
-module.exports = { pool, testConnection, getDatabaseConfig };
+module.exports = { pool, testConnection };

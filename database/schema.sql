@@ -134,6 +134,7 @@ CREATE TABLE users (
   display_name VARCHAR(255),
   avatar_url VARCHAR(500),
   role ENUM('student', 'teacher', 'admin') DEFAULT 'student',
+  token_version INT NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_email (email)
