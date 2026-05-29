@@ -1,6 +1,7 @@
 const express = require('express');
 const authService = require('../services/auth.service');
 const lessonService = require('../services/lesson.service');
+const otpService = require('../services/otp.service');
 const studentService = require('../services/student.service');
 const userService = require('../services/user.service');
 const { requireAuth } = require('../middlewares/auth.middleware');
@@ -46,6 +47,24 @@ router.post('/auth/register', async (req, res, next) => {
 
 router.get('/auth/me', requireAuth, (req, res) => {
   res.json({ data: { user: req.user } });
+});
+
+router.post('/auth/request-otp', async (req, res, next) => {
+  try {
+    const result = await otpService.requestOtp(req.body);
+    return res.json({ data: result });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.post('/auth/verify-otp', async (req, res, next) => {
+  try {
+    const result = await otpService.verifyOtp(req.body);
+    return res.json({ data: result });
+  } catch (error) {
+    return next(error);
+  }
 });
 
 router.post('/auth/login', async (req, res, next) => {
