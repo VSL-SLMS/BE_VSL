@@ -133,8 +133,10 @@ CREATE TABLE users (
   password_hash VARCHAR(255) NOT NULL,
   display_name VARCHAR(255),
   avatar_url VARCHAR(500),
-  role ENUM('student', 'teacher', 'admin') DEFAULT 'student',
+  role ENUM('ADMIN', 'TEACHER', 'STUDENT') DEFAULT 'STUDENT',
+  status ENUM('ACTIVE', 'SUSPENDED') NOT NULL DEFAULT 'ACTIVE',
   token_version INT NOT NULL DEFAULT 1,
+  must_change_password BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_email (email)
