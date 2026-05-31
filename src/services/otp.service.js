@@ -42,7 +42,8 @@ function getTransporter() {
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = Number(process.env.SMTP_PORT || 587);
   const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const pass = String(process.env.SMTP_PASS || '').replace(/\s+/g, '');
+  const timeoutMs = Number(process.env.SMTP_TIMEOUT_MS || 4000);
 
   if (!user || !pass) {
     const error = new Error('SMTP credentials are not configured.');
@@ -54,7 +55,10 @@ function getTransporter() {
     host,
     port,
     secure: port === 465,
-    auth: { user, pass }
+    auth: { user, pass },
+    connectionTimeout: timeoutMs,
+    greetingTimeout: timeoutMs,
+    socketTimeout: timeoutMs
   });
 
   return mailer;
@@ -64,27 +68,57 @@ function isSmtpConfigured() {
   return Boolean(process.env.SMTP_USER && process.env.SMTP_PASS);
 }
 
+function withTimeout(promise, timeoutMs, timeoutMessage) {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => {
+      const error = new Error(timeoutMessage);
+      error.code = 'SMTP_TIMEOUT';
+      reject(error);
+    }, timeoutMs);
+  });
+
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId));
+}
+
+async function sendMailWithTimeout(mailOptions) {
+  const timeoutMs = Number(process.env.SMTP_TIMEOUT_MS || 4000);
+  return withTimeout(
+    getTransporter().sendMail(mailOptions),
+    timeoutMs,
+    `SMTP send timed out after ${timeoutMs}ms`
+  );
+}
+
 async function sendTeacherTemporaryPassword(user, temporaryPassword) {
   if (!isSmtpConfigured()) {
     return { sent: false, reason: 'SMTP_NOT_CONFIGURED' };
   }
 
-  await getTransporter().sendMail({
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
-    to: user.email,
-    subject: 'SignLearn teacher account',
-    text: [
-      `Hello ${user.display_name || user.email},`,
-      '',
-      'Your SignLearn teacher account has been created by Admin.',
-      `Email: ${user.email}`,
-      `Temporary password: ${temporaryPassword}`,
-      '',
-      'Please log in and change your password on first login.'
-    ].join('\n')
-  });
+  try {
+    await sendMailWithTimeout({
+      from: process.env.SMTP_FROM || process.env.SMTP_USER,
+      to: user.email,
+      subject: 'SignLearn teacher account',
+      text: [
+        `Hello ${user.display_name || user.email},`,
+        '',
+        'Your SignLearn teacher account has been created by Admin.',
+        `Email: ${user.email}`,
+        `Temporary password: ${temporaryPassword}`,
+        '',
+        'Please log in and change your password on first login.'
+      ].join('\n')
+    });
 
-  return { sent: true };
+    return { sent: true };
+  } catch (error) {
+    console.warn('Teacher temporary password email failed:', error.message);
+    return {
+      sent: false,
+      reason: error.code || error.message || 'SMTP_SEND_FAILED'
+    };
+  }
 }
 
 async function sendPasswordChangeOtp(user) {
@@ -105,7 +139,7 @@ async function sendPasswordChangeOtp(user) {
     VALUES (?, ?, 'CHANGE_PASSWORD', ?)
   `, [user.id, hashOtp(otp), expiresAt]);
 
-  await getTransporter().sendMail({
+  await sendMailWithTimeout({
     from: process.env.SMTP_FROM || process.env.SMTP_USER,
     to: user.email,
     subject: 'SignLearn password change OTP',

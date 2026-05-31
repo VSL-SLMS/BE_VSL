@@ -128,11 +128,7 @@ async function createTeacher({ name, email, temporaryPassword, status = 'ACTIVE'
     await connection.commit();
 
     const teacher = await getUserById(userId);
-    try {
-      teacher.email_delivery = await otpService.sendTeacherTemporaryPassword(teacher, temporaryPassword);
-    } catch (mailError) {
-      teacher.email_delivery = { sent: false, reason: mailError.message };
-    }
+    teacher.email_delivery = await otpService.sendTeacherTemporaryPassword(teacher, temporaryPassword);
     return teacher;
   } catch (error) {
     await connection.rollback();
