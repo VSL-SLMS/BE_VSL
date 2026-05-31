@@ -281,6 +281,45 @@ router.post('/student/request-teacher-change', requireAuth, requireRole('STUDENT
   }
 });
 
+router.get('/student/lessons', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.getLessons(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'STUDENT_LESSONS_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.get('/student/lessons/:slug', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.getLessonDetail(req.user.id, req.params.slug);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'STUDENT_LESSON_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.post('/student/lessons/:lessonId/complete', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.completeLesson(req.user.id, req.params.lessonId);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'LESSON_COMPLETE_ERROR',
+      message: error.message
+    });
+  }
+});
+
 router.get('/student/progress', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
   try {
     const data = await studentService.getProgress(req.user.id);
