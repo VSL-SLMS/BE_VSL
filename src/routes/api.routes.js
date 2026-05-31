@@ -1,8 +1,8 @@
 const express = require('express');
 const authService = require('../services/auth.service');
 const lessonService = require('../services/lesson.service');
-const otpService = require('../services/otp.service');
 const studentService = require('../services/student.service');
+const teacherService = require('../services/teacher.service');
 const userService = require('../services/user.service');
 const { requireAuth } = require('../middlewares/auth.middleware');
 const { requireRole } = require('../middlewares/role.middleware');
@@ -47,24 +47,6 @@ router.get('/auth/me', requireAuth, (req, res) => {
   res.json({ data: { user: req.user } });
 });
 
-router.post('/auth/request-otp', async (req, res, next) => {
-  try {
-    const result = await otpService.requestOtp(req.body);
-    return res.json({ data: result });
-  } catch (error) {
-    return next(error);
-  }
-});
-
-router.post('/auth/verify-otp', async (req, res, next) => {
-  try {
-    const result = await otpService.verifyOtp(req.body);
-    return res.json({ data: result });
-  } catch (error) {
-    return next(error);
-  }
-});
-
 router.post('/auth/login', async (req, res, next) => {
   try {
     const user = await authService.login(req.body.email, req.body.password);
@@ -102,34 +84,6 @@ router.get('/teachers', requireAuth, async (req, res, next) => {
     res.json({ data: { teachers } });
   } catch (error) {
     next(error);
-  }
-});
-
-router.post('/admin/teachers', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
-  try {
-    const { name, email, temporaryPassword, status } = req.body;
-
-    if (!email || !temporaryPassword) {
-      return res.status(400).json({
-        error: true,
-        message: 'Email and temporary password are required.'
-      });
-    }
-
-    if (String(temporaryPassword).length < 6) {
-      return res.status(400).json({
-        error: true,
-        message: 'Temporary password must be at least 6 characters.'
-      });
-    }
-
-    const teacher = await authService.createTeacher({ name, email, temporaryPassword, status });
-    return res.status(201).json({ data: { teacher } });
-  } catch (error) {
-    if (error.code === 'ER_DUP_ENTRY') {
-      return res.status(409).json({ error: true, message: 'Email or username already exists.' });
-    }
-    return next(error);
   }
 });
 
@@ -181,6 +135,86 @@ router.get('/search', async (req, res, next) => {
   try {
     const results = await lessonService.searchContent(req.query.q);
     res.json({ data: results });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+// ==========================================
+// STUDENT ROUTES
+// ==========================================
+router.get('/student/dashboard', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.getDashboard(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/student/choose-teacher', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const { teacherId } = req.body;
+    await studentService.chooseTeacher(req.user.id, teacherId);
+    res.json({ message: 'Teacher selected successfully' });
+  } catch (error) {
+    res.status(400).json({ error: true, message: error.message });
+  }
+});
+
+router.get('/student/progress', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.getProgress(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/student/assignments', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.getAssignments(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ==========================================
+// TEACHER ROUTES
+// ==========================================
+router.get('/teacher/dashboard', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await teacherService.getDashboard(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/teacher/students', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await teacherService.getStudents(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/teacher/assignments', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await teacherService.getAssignments(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/teacher/accuracy', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await teacherService.getAccuracy(req.user.id);
+    res.json({ data });
   } catch (error) {
     next(error);
   }

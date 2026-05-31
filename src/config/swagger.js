@@ -99,7 +99,7 @@ const swaggerSpec = {
     '/api/auth/register': {
       post: {
         tags: ['Auth'],
-        summary: 'Register a student account',
+        summary: 'Register a student or teacher account',
         requestBody: {
           required: true,
           content: {
@@ -109,7 +109,8 @@ const swaggerSpec = {
                 properties: {
                   name: { type: 'string', example: 'Nguyen Van A' },
                   email: { type: 'string', example: 'student@example.com' },
-                  password: { type: 'string', example: 'password123' }
+                  password: { type: 'string', example: 'password123' },
+                  role: { type: 'string', enum: ['STUDENT', 'TEACHER'], example: 'STUDENT' }
                 },
                 required: ['email', 'password']
               }
@@ -122,73 +123,6 @@ const swaggerSpec = {
           },
           409: {
             description: 'Duplicate account'
-          }
-        }
-      }
-    },
-    '/api/auth/request-otp': {
-      post: {
-        tags: ['Auth'],
-        summary: 'Request an email OTP code',
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  email: { type: 'string', example: 'student@example.com' },
-                  purpose: {
-                    type: 'string',
-                    enum: ['EMAIL_VERIFICATION', 'PASSWORD_RESET'],
-                    example: 'EMAIL_VERIFICATION'
-                  }
-                },
-                required: ['email']
-              }
-            }
-          }
-        },
-        responses: {
-          200: {
-            description: 'OTP requested'
-          },
-          503: {
-            description: 'SMTP is not configured'
-          }
-        }
-      }
-    },
-    '/api/auth/verify-otp': {
-      post: {
-        tags: ['Auth'],
-        summary: 'Verify an email OTP code before it expires',
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  email: { type: 'string', example: 'student@example.com' },
-                  otp: { type: 'string', example: '123456' },
-                  purpose: {
-                    type: 'string',
-                    enum: ['EMAIL_VERIFICATION', 'PASSWORD_RESET'],
-                    example: 'EMAIL_VERIFICATION'
-                  }
-                },
-                required: ['email', 'otp']
-              }
-            }
-          }
-        },
-        responses: {
-          200: {
-            description: 'OTP verified'
-          },
-          400: {
-            description: 'Invalid or expired OTP'
           }
         }
       }

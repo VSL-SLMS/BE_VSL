@@ -2,37 +2,13 @@ const mysql = require('mysql2/promise');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
-function getDatabaseConfig() {
-  const connectionUrl =
-    process.env.DATABASE_URL ||
-    process.env.MYSQL_URL ||
-    process.env.MYSQL_PRIVATE_URL ||
-    process.env.MYSQL_PUBLIC_URL;
-
-  if (connectionUrl) {
-    return connectionUrl;
-  }
-
-  const config = {
-    host: process.env.DB_HOST || process.env.MYSQLHOST || 'localhost',
-    port: Number(process.env.DB_PORT || process.env.MYSQLPORT || 3306),
-    user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
-    password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '',
-    database:
-      process.env.DB_NAME ||
-      process.env.MYSQLDATABASE ||
-      process.env.MYSQL_DATABASE ||
-      'vsl_learning'
-  };
-
-  if (String(process.env.DB_SSL || '').toLowerCase() === 'true') {
-    config.ssl = { rejectUnauthorized: true };
-  }
-
-  return config;
-}
-
-const dbConfig = getDatabaseConfig();
+const dbConfig = process.env.DATABASE_URL || process.env.MYSQL_URL || {
+  host: process.env.DB_HOST || 'localhost',
+  port: Number(process.env.DB_PORT || 3306),
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'vsl_learning'
+};
 
 const pool = mysql.createPool(
   typeof dbConfig === 'string'
