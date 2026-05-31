@@ -3,7 +3,6 @@ const nodemailer = require('nodemailer');
 const { pool } = require('../config/database');
 
 let tableReady = false;
-let mailer = null;
 
 function parseBoolean(value, fallback = false) {
   if (value === undefined || value === null || value === '') return fallback;
@@ -47,9 +46,7 @@ function hashOtp(otp) {
     .digest('hex');
 }
 
-function getTransporter() {
-  if (mailer) return mailer;
-
+function getSmtpBaseConfig() {
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = Number(process.env.SMTP_PORT || 587);
   const user = process.env.SMTP_USER;
@@ -63,7 +60,11 @@ function getTransporter() {
     throw error;
   }
 
-  mailer = nodemailer.createTransport({
+  return { host, port, user, pass, secure, timeoutMs };
+}
+
+function createTransporter({ host, port, user, pass, secure, timeoutMs }) {
+  return nodemailer.createTransport({
     host,
     port,
     secure,
@@ -76,8 +77,40 @@ function getTransporter() {
     greetingTimeout: timeoutMs,
     socketTimeout: timeoutMs
   });
+}
 
-  return mailer;
+function getTransportAttempts() {
+  const base = getSmtpBaseConfig();
+  const attempts = [];
+  const isGmail = base.host === 'smtp.gmail.com';
+
+  if (isGmail && base.port === 587) {
+    attempts.push({
+      ...base,
+      port: 465,
+      secure: true,
+      label: 'gmail-ssl-465'
+    });
+  }
+
+  attempts.push({
+    ...base,
+    label: `configured-${base.port}`
+  });
+
+  if (isGmail && base.port !== 465) {
+    const hasSslAttempt = attempts.some((attempt) => attempt.port === 465);
+    if (!hasSslAttempt) {
+      attempts.push({
+        ...base,
+        port: 465,
+        secure: true,
+        label: 'gmail-ssl-465'
+      });
+    }
+  }
+
+  return attempts;
 }
 
 function isSmtpConfigured() {
@@ -98,12 +131,33 @@ function withTimeout(promise, timeoutMs, timeoutMessage) {
 }
 
 async function sendMailWithTimeout(mailOptions) {
-  const timeoutMs = getSmtpTimeoutMs();
-  return withTimeout(
-    getTransporter().sendMail(mailOptions),
-    timeoutMs,
-    `SMTP send timed out after ${timeoutMs}ms`
-  );
+  if (parseBoolean(process.env.SMTP_DRY_RUN, false)) {
+    return {
+      accepted: [mailOptions.to],
+      dryRun: true
+    };
+  }
+
+  const attempts = getTransportAttempts();
+  const errors = [];
+
+  for (const attempt of attempts) {
+    try {
+      const transporter = createTransporter(attempt);
+      return await withTimeout(
+        transporter.sendMail(mailOptions),
+        attempt.timeoutMs,
+        `SMTP ${attempt.label} timed out after ${attempt.timeoutMs}ms`
+      );
+    } catch (error) {
+      errors.push(`${attempt.label}: ${error.code || error.message}`);
+      console.warn(`SMTP attempt failed (${attempt.label}):`, error.message);
+    }
+  }
+
+  const finalError = new Error(errors.join(' | ') || 'SMTP_SEND_FAILED');
+  finalError.code = 'SMTP_SEND_FAILED';
+  throw finalError;
 }
 
 async function sendTeacherTemporaryPassword(user, temporaryPassword) {
