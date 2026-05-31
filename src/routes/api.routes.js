@@ -205,16 +205,16 @@ router.post('/student/choose-teacher', requireAuth, requireRole('STUDENT'), asyn
 
 router.post('/student/request-teacher-change', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
   try {
-    const { requestedTeacherId, reason } = req.body;
+    const { reason } = req.body;
 
-    if (!requestedTeacherId || !reason) {
+    if (!reason) {
       return res.status(400).json({
         error: true,
-        message: 'Requested teacher and reason are required.'
+        message: 'Reason is required.'
       });
     }
 
-    const data = await studentService.requestTeacherChange(req.user.id, requestedTeacherId, reason);
+    const data = await studentService.requestTeacherChange(req.user.id, reason);
     res.status(201).json({ data });
   } catch (error) {
     res.status(error.status || 400).json({ error: true, message: error.message });

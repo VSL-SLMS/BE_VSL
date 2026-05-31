@@ -58,7 +58,7 @@ async function reviewTeacherChangeRequest(requestId, status) {
     await connection.beginTransaction();
 
     const [requests] = await connection.query(`
-      SELECT id, student_id, requested_teacher_id, status
+      SELECT id, student_id, status
       FROM teacher_change_requests
       WHERE id = ?
       LIMIT 1
@@ -80,8 +80,8 @@ async function reviewTeacherChangeRequest(requestId, status) {
 
     if (normalizedStatus === 'APPROVED') {
       await connection.query(
-        'UPDATE students SET teacher_id = ? WHERE id = ?',
-        [request.requested_teacher_id, request.student_id]
+        'UPDATE students SET teacher_id = NULL WHERE id = ?',
+        [request.student_id]
       );
     }
 

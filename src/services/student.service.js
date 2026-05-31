@@ -77,14 +77,11 @@ async function chooseTeacher(userId, teacherId) {
   await pool.query('UPDATE students SET teacher_id = ? WHERE id = ?', [teacherId, student.id]);
 }
 
-async function requestTeacherChange(userId, requestedTeacherId, reason) {
+async function requestTeacherChange(userId, reason) {
   const [students] = await pool.query('SELECT id, teacher_id FROM students WHERE user_id = ? LIMIT 1', [userId]);
   const student = students[0];
   if (!student) throw new Error('Student profile not found.');
   if (!student.teacher_id) throw new Error('Select a teacher before requesting a change.');
-  if (Number(student.teacher_id) === Number(requestedTeacherId)) {
-    throw new Error('Requested teacher must be different from current teacher.');
-  }
 
   const [pending] = await pool.query(`
     SELECT id
@@ -94,15 +91,6 @@ async function requestTeacherChange(userId, requestedTeacherId, reason) {
   `, [student.id]);
   if (pending.length) throw new Error('You already have a pending teacher change request.');
 
-  const [teachers] = await pool.query(`
-    SELECT t.id
-    FROM teachers t
-    JOIN users u ON u.id = t.user_id
-    WHERE t.id = ? AND u.status = 'ACTIVE'
-    LIMIT 1
-  `, [requestedTeacherId]);
-  if (!teachers.length) throw new Error('Requested teacher not found or inactive.');
-
   const [result] = await pool.query(`
     INSERT INTO teacher_change_requests (
       student_id,
@@ -111,7 +99,7 @@ async function requestTeacherChange(userId, requestedTeacherId, reason) {
       reason
     )
     VALUES (?, ?, ?, ?)
-  `, [student.id, student.teacher_id, requestedTeacherId, reason]);
+  `, [student.id, student.teacher_id, null, reason]);
 
   return { id: result.insertId, status: 'PENDING' };
 }
