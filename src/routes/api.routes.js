@@ -205,7 +205,7 @@ router.post('/student/choose-teacher', requireAuth, requireRole('STUDENT'), asyn
 
 router.post('/student/request-teacher-change', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
   try {
-    const { reason } = req.body;
+    const reason = String(req.body.reason || '').trim();
 
     if (!reason) {
       return res.status(400).json({

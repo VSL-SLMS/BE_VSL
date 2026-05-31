@@ -89,7 +89,9 @@ async function requestTeacherChange(userId, reason) {
     WHERE student_id = ? AND status = 'PENDING'
     LIMIT 1
   `, [student.id]);
-  if (pending.length) throw new Error('You already have a pending teacher change request.');
+  if (pending.length) {
+    return { id: pending[0].id, status: 'PENDING', alreadyPending: true };
+  }
 
   const [result] = await pool.query(`
     INSERT INTO teacher_change_requests (
