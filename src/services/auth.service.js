@@ -2,8 +2,39 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { pool } = require('../config/database');
 
+const columnCache = new Map();
+
+async function hasColumn(tableName, columnName) {
+  const cacheKey = `${tableName}.${columnName}`;
+  if (columnCache.has(cacheKey)) return columnCache.get(cacheKey);
+
+  const [rows] = await pool.query(`
+    SELECT COUNT(*) AS count
+    FROM information_schema.columns
+    WHERE table_schema = DATABASE()
+      AND table_name = ?
+      AND column_name = ?
+  `, [tableName, columnName]);
+
+  const exists = Number(rows[0]?.count || 0) > 0;
+  columnCache.set(cacheKey, exists);
+  return exists;
+}
+
+function signAuthToken(user) {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET must be set in environment');
+  }
+
+  return jwt.sign(
+    { id: user.id, role: user.role, status: user.status, token_version: user.token_version },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
+  );
+}
+
 async function register({ name, email, password, role }) {
-  const normalizedRole = ['STUDENT', 'TEACHER'].includes(role) ? role : 'STUDENT';
+  const normalizedRole = role === 'TEACHER' ? 'TEACHER' : 'STUDENT';
   const username = email.split('@')[0];
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -27,16 +58,8 @@ async function register({ name, email, password, role }) {
     await pool.query('INSERT INTO students (user_id) VALUES (?)', [userId]);
   }
 
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET must be set in environment');
-  }
-
   const user = await getUserById(userId);
-  user.token = jwt.sign(
-    { id: user.id, role: user.role, status: user.status, token_version: user.token_version },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
-  );
+  user.token = signAuthToken(user);
 
   return user;
 }
@@ -60,23 +83,110 @@ async function login(email, password) {
     throw error;
   }
 
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET must be set in environment');
-  }
-
   delete user.password_hash;
-  user.token = jwt.sign(
-    { id: user.id, role: user.role, status: user.status, token_version: user.token_version },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
-  );
+  user.token = signAuthToken(user);
 
   return user;
 }
 
+async function createTeacher({ name, email, temporaryPassword, status = 'ACTIVE' }) {
+  const normalizedStatus = status === 'SUSPENDED' ? 'SUSPENDED' : 'ACTIVE';
+  const username = email.split('@')[0];
+  const passwordHash = await bcrypt.hash(temporaryPassword, 10);
+  const hasMustChangePassword = await hasColumn('users', 'must_change_password');
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    if (hasMustChangePassword) {
+      await connection.query(`
+        INSERT INTO users (
+          username,
+          email,
+          password_hash,
+          display_name,
+          role,
+          status,
+          must_change_password
+        )
+        VALUES (?, ?, ?, ?, 'TEACHER', ?, TRUE)
+      `, [username, email, passwordHash, name || username, normalizedStatus]);
+    } else {
+      await connection.query(`
+        INSERT INTO users (username, email, password_hash, display_name, role, status)
+        VALUES (?, ?, ?, ?, 'TEACHER', ?)
+      `, [username, email, passwordHash, name || username, normalizedStatus]);
+    }
+
+    const [userRows] = await connection.query('SELECT id FROM users WHERE email = ? LIMIT 1', [email]);
+    const userId = userRows[0]?.id;
+    if (!userId) throw new Error('Failed to create teacher user.');
+
+    await connection.query('INSERT INTO teachers (user_id) VALUES (?)', [userId]);
+    await connection.commit();
+
+    return getUserById(userId);
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
+async function changePassword(userId, currentPassword, newPassword) {
+  const [users] = await pool.query(`
+    SELECT id, password_hash
+    FROM users
+    WHERE id = ?
+    LIMIT 1
+  `, [userId]);
+
+  const user = users[0];
+  if (!user) {
+    const error = new Error('User not found.');
+    error.status = 404;
+    throw error;
+  }
+
+  const valid = await bcrypt.compare(currentPassword, user.password_hash);
+  if (!valid) {
+    const error = new Error('Current password is incorrect.');
+    error.status = 400;
+    throw error;
+  }
+
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+  const hasMustChangePassword = await hasColumn('users', 'must_change_password');
+
+  if (hasMustChangePassword) {
+    await pool.query(`
+      UPDATE users
+      SET password_hash = ?,
+          must_change_password = FALSE,
+          token_version = token_version + 1
+      WHERE id = ?
+    `, [passwordHash, userId]);
+  } else {
+    await pool.query(`
+      UPDATE users
+      SET password_hash = ?,
+          token_version = token_version + 1
+      WHERE id = ?
+    `, [passwordHash, userId]);
+  }
+
+  const updatedUser = await getUserById(userId);
+  updatedUser.token = signAuthToken(updatedUser);
+  return updatedUser;
+}
+
 async function getUserById(id) {
+  const hasMustChangePassword = await hasColumn('users', 'must_change_password');
+  const mustChangePasswordSelect = hasMustChangePassword ? ', must_change_password' : '';
   const [rows] = await pool.query(`
-    SELECT id, username, email, display_name, avatar_url, role, status, token_version, created_at
+    SELECT id, username, email, display_name, avatar_url, role, status, token_version${mustChangePasswordSelect}, created_at
     FROM users
     WHERE id = ?
     LIMIT 1
@@ -84,4 +194,4 @@ async function getUserById(id) {
   return rows[0] || null;
 }
 
-module.exports = { register, login, getUserById };
+module.exports = { register, login, createTeacher, changePassword, getUserById };

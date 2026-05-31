@@ -13,13 +13,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use((req, res, next) => {
+  const normalizeOrigin = (value) => String(value || '').trim().replace(/\/+$/, '');
   const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
     .split(',')
-    .map((origin) => origin.trim());
-  const origin = req.headers.origin;
+    .map(normalizeOrigin)
+    .filter(Boolean);
+  const origin = normalizeOrigin(req.headers.origin);
 
   if (origin && allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
   }
 
   res.setHeader('Access-Control-Allow-Credentials', 'true');

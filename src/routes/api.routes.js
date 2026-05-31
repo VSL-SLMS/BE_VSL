@@ -59,17 +59,57 @@ router.post('/auth/login', async (req, res, next) => {
   }
 });
 
+router.post('/auth/change-password', requireAuth, async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        error: true,
+        message: 'Current password and new password are required.'
+      });
+    }
+
+    if (String(newPassword).length < 6) {
+      return res.status(400).json({
+        error: true,
+        message: 'New password must be at least 6 characters.'
+      });
+    }
+
+    const user = await authService.changePassword(req.user.id, currentPassword, newPassword);
+    return res.json({ data: { user } });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 router.post('/admin/teachers', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
   try {
-    // Handling form "Create Teacher"
-    const payload = {
+    const temporaryPassword = req.body.temporaryPassword || req.body.password;
+
+    if (!req.body.email || !temporaryPassword) {
+      return res.status(400).json({
+        error: true,
+        message: 'Email and temporary password are required.'
+      });
+    }
+
+    if (String(temporaryPassword).length < 6) {
+      return res.status(400).json({
+        error: true,
+        message: 'Temporary password must be at least 6 characters.'
+      });
+    }
+
+    const teacher = await authService.createTeacher({
       name: req.body.name || req.body.fullName,
       email: req.body.email,
-      password: req.body.password,
-      role: 'TEACHER'
-    };
-    const user = await authService.register(payload);
-    res.status(201).json({ data: { user } });
+      temporaryPassword,
+      status: req.body.status
+    });
+
+    res.status(201).json({ data: { teacher } });
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ error: true, message: 'Email or username already exists.' });
@@ -105,7 +145,7 @@ router.get('/lessons', async (req, res, next) => {
   }
 });
 
-router.get('/lessons/:slug', async (req, res, next) => {
+router.get('/lessons/:slug', requireAuth, async (req, res, next) => {
   try {
     const lesson = await lessonService.getLessonBySlug(req.params.slug);
     if (!lesson) {
