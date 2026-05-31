@@ -50,4 +50,28 @@ function requireGuest(req, res, next) {
   return next();
 }
 
-module.exports = { requireAuth, requireGuest };
+async function optionalAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next();
+  }
+
+  if (!process.env.JWT_SECRET) {
+    return next();
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await authService.getUserById(decoded.id);
+    if (user && user.token_version === decoded.token_version && user.status !== 'SUSPENDED') {
+      req.user = user;
+    }
+  } catch (error) {
+    // Treat as guest if token is invalid or expired
+  }
+  return next();
+}
+
+module.exports = { requireAuth, requireGuest, optionalAuth };
