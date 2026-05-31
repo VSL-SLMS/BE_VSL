@@ -1,5 +1,5 @@
+const jwt = require('jsonwebtoken');
 const authService = require('../services/auth.service');
-const { verifyToken } = require('../utils/jwt');
 
 async function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -10,10 +10,15 @@ async function requireAuth(req, res, next) {
     });
   }
 
+  if (!process.env.JWT_SECRET) {
+    console.error('FATAL ERROR: JWT_SECRET must be set in environment');
+    return res.status(500).json({ error: true, message: 'Internal Server Error' });
+  }
+
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = verifyToken(token);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await authService.getUserById(decoded.id);
     if (!user || user.token_version !== decoded.token_version) {
