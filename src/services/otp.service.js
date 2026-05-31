@@ -5,6 +5,17 @@ const { pool } = require('../config/database');
 let tableReady = false;
 let mailer = null;
 
+function parseBoolean(value, fallback = false) {
+  if (value === undefined || value === null || value === '') return fallback;
+  return String(value).toLowerCase() === 'true';
+}
+
+function getSmtpTimeoutMs() {
+  const configured = Number(process.env.SMTP_TIMEOUT_MS || 15000);
+  if (!Number.isFinite(configured) || configured <= 0) return 15000;
+  return Math.max(configured, 15000);
+}
+
 async function ensureOtpTable() {
   if (tableReady) return;
 
@@ -43,7 +54,8 @@ function getTransporter() {
   const port = Number(process.env.SMTP_PORT || 587);
   const user = process.env.SMTP_USER;
   const pass = String(process.env.SMTP_PASS || '').replace(/\s+/g, '');
-  const timeoutMs = Number(process.env.SMTP_TIMEOUT_MS || 4000);
+  const secure = parseBoolean(process.env.SMTP_SECURE, port === 465);
+  const timeoutMs = getSmtpTimeoutMs();
 
   if (!user || !pass) {
     const error = new Error('SMTP credentials are not configured.');
@@ -54,8 +66,12 @@ function getTransporter() {
   mailer = nodemailer.createTransport({
     host,
     port,
-    secure: port === 465,
+    secure,
     auth: { user, pass },
+    requireTLS: !secure,
+    tls: {
+      minVersion: 'TLSv1.2'
+    },
     connectionTimeout: timeoutMs,
     greetingTimeout: timeoutMs,
     socketTimeout: timeoutMs
@@ -82,7 +98,7 @@ function withTimeout(promise, timeoutMs, timeoutMessage) {
 }
 
 async function sendMailWithTimeout(mailOptions) {
-  const timeoutMs = Number(process.env.SMTP_TIMEOUT_MS || 4000);
+  const timeoutMs = getSmtpTimeoutMs();
   return withTimeout(
     getTransporter().sendMail(mailOptions),
     timeoutMs,
