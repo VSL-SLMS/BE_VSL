@@ -28,14 +28,12 @@ router.get('/course-overview', async (req, res, next) => {
 
 router.post('/auth/register', async (req, res, next) => {
   try {
-    if (req.body.role && req.body.role !== 'STUDENT') {
-      return res.status(403).json({
-        error: true,
-        message: 'Public registration is only available for students.'
-      });
-    }
-
-    const user = await authService.register(req.body);
+    // Public registration is strictly for STUDENTs
+    const payload = {
+      ...req.body,
+      role: 'STUDENT'
+    };
+    const user = await authService.register(payload);
     res.status(201).json({ data: { user } });
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
@@ -79,27 +77,21 @@ router.post('/auth/login', async (req, res, next) => {
   }
 });
 
-router.post('/auth/change-password', requireAuth, async (req, res, next) => {
+router.post('/admin/teachers', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
   try {
-    const { currentPassword, newPassword } = req.body;
-
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({
-        error: true,
-        message: 'Current password and new password are required.'
-      });
-    }
-
-    if (String(newPassword).length < 6) {
-      return res.status(400).json({
-        error: true,
-        message: 'New password must be at least 6 characters.'
-      });
-    }
-
-    const user = await authService.changePassword(req.user.id, currentPassword, newPassword);
-    return res.json({ data: { user } });
+    // Handling form "Create Teacher"
+    const payload = {
+      name: req.body.name || req.body.fullName,
+      email: req.body.email,
+      password: req.body.password,
+      role: 'TEACHER'
+    };
+    const user = await authService.register(payload);
+    res.status(201).json({ data: { user } });
   } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ error: true, message: 'Email or username already exists.' });
+    }
     return next(error);
   }
 });
