@@ -26,11 +26,33 @@ router.get('/course-overview', async (req, res, next) => {
   }
 });
 
+router.post('/auth/request-otp', async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: true, message: "Email is required" });
+    const response = await authService.requestOTP(email);
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/auth/register', async (req, res, next) => {
   try {
+    const { email, otp, ...rest } = req.body;
+    if (!email || !otp) return res.status(400).json({ error: true, message: "Email and OTP are required" });
+
+    // Verify OTP
+    try {
+      await authService.verifyOTP(email, otp);
+    } catch (e) {
+      return res.status(400).json({ error: true, message: e.message });
+    }
+
     // Public registration is strictly for STUDENTs
     const payload = {
-      ...req.body,
+      ...rest,
+      email,
       role: 'STUDENT'
     };
     const user = await authService.register(payload);
