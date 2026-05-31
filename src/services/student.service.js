@@ -1,6 +1,20 @@
 const { pool } = require('../config/database');
 
 async function getDashboard(userId) {
+  const [studentRows] = await pool.query(`
+    SELECT
+      s.id,
+      s.teacher_id,
+      tu.display_name AS teacher_name,
+      tu.email AS teacher_email
+    FROM students s
+    LEFT JOIN teachers t ON t.id = s.teacher_id
+    LEFT JOIN users tu ON tu.id = t.user_id
+    WHERE s.user_id = ?
+    LIMIT 1
+  `, [userId]);
+
+  const student = studentRows[0] || null;
   const [progress] = await pool.query(`
     SELECT
       COUNT(*) AS tracked_lessons,
@@ -10,9 +24,27 @@ async function getDashboard(userId) {
   `, [userId]);
 
   const [totalLessons] = await pool.query('SELECT COUNT(*) AS total FROM lessons');
+  const [changeRequests] = await pool.query(`
+    SELECT
+      tcr.id,
+      tcr.status,
+      tcr.reason,
+      tcr.created_at,
+      requested_user.display_name AS requested_teacher_name,
+      requested_user.email AS requested_teacher_email
+    FROM teacher_change_requests tcr
+    LEFT JOIN teachers requested_teacher ON requested_teacher.id = tcr.requested_teacher_id
+    LEFT JOIN users requested_user ON requested_user.id = requested_teacher.user_id
+    WHERE tcr.student_id = ?
+    ORDER BY tcr.created_at DESC
+    LIMIT 3
+  `, [student?.id || 0]);
+
   return {
+    student,
     progress: progress[0],
-    totalLessons: totalLessons[0].total
+    totalLessons: totalLessons[0].total,
+    teacherChangeRequests: changeRequests
   };
 }
 
@@ -33,7 +65,55 @@ async function chooseTeacher(userId, teacherId) {
   if (!student) throw new Error('Student profile not found.');
   if (student.teacher_id) throw new Error('Teacher already selected.');
 
+  const [teachers] = await pool.query(`
+    SELECT t.id
+    FROM teachers t
+    JOIN users u ON u.id = t.user_id
+    WHERE t.id = ? AND u.status = 'ACTIVE'
+    LIMIT 1
+  `, [teacherId]);
+  if (!teachers.length) throw new Error('Teacher not found or inactive.');
+
   await pool.query('UPDATE students SET teacher_id = ? WHERE id = ?', [teacherId, student.id]);
+}
+
+async function requestTeacherChange(userId, requestedTeacherId, reason) {
+  const [students] = await pool.query('SELECT id, teacher_id FROM students WHERE user_id = ? LIMIT 1', [userId]);
+  const student = students[0];
+  if (!student) throw new Error('Student profile not found.');
+  if (!student.teacher_id) throw new Error('Select a teacher before requesting a change.');
+  if (Number(student.teacher_id) === Number(requestedTeacherId)) {
+    throw new Error('Requested teacher must be different from current teacher.');
+  }
+
+  const [pending] = await pool.query(`
+    SELECT id
+    FROM teacher_change_requests
+    WHERE student_id = ? AND status = 'PENDING'
+    LIMIT 1
+  `, [student.id]);
+  if (pending.length) throw new Error('You already have a pending teacher change request.');
+
+  const [teachers] = await pool.query(`
+    SELECT t.id
+    FROM teachers t
+    JOIN users u ON u.id = t.user_id
+    WHERE t.id = ? AND u.status = 'ACTIVE'
+    LIMIT 1
+  `, [requestedTeacherId]);
+  if (!teachers.length) throw new Error('Requested teacher not found or inactive.');
+
+  const [result] = await pool.query(`
+    INSERT INTO teacher_change_requests (
+      student_id,
+      current_teacher_id,
+      requested_teacher_id,
+      reason
+    )
+    VALUES (?, ?, ?, ?)
+  `, [student.id, student.teacher_id, requestedTeacherId, reason]);
+
+  return { id: result.insertId, status: 'PENDING' };
 }
 
 async function getProgress(userId) {
@@ -60,5 +140,11 @@ async function getAssignments(userId) {
   return rows;
 }
 
-module.exports = { getDashboard, listTeachers, chooseTeacher, getProgress, getAssignments };
-
+module.exports = {
+  getDashboard,
+  listTeachers,
+  chooseTeacher,
+  requestTeacherChange,
+  getProgress,
+  getAssignments
+};

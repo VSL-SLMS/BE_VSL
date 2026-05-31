@@ -203,6 +203,24 @@ router.post('/student/choose-teacher', requireAuth, requireRole('STUDENT'), asyn
   }
 });
 
+router.post('/student/request-teacher-change', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const { requestedTeacherId, reason } = req.body;
+
+    if (!requestedTeacherId || !reason) {
+      return res.status(400).json({
+        error: true,
+        message: 'Requested teacher and reason are required.'
+      });
+    }
+
+    const data = await studentService.requestTeacherChange(req.user.id, requestedTeacherId, reason);
+    res.status(201).json({ data });
+  } catch (error) {
+    res.status(error.status || 400).json({ error: true, message: error.message });
+  }
+});
+
 router.get('/student/progress', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
   try {
     const data = await studentService.getProgress(req.user.id);
@@ -257,6 +275,24 @@ router.get('/teacher/accuracy', requireAuth, requireRole('TEACHER'), async (req,
     res.json({ data });
   } catch (error) {
     next(error);
+  }
+});
+
+router.get('/admin/teacher-change-requests', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
+  try {
+    const requests = await userService.listTeacherChangeRequests();
+    res.json({ data: { requests } });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/admin/teacher-change-requests/:id/review', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
+  try {
+    const data = await userService.reviewTeacherChangeRequest(req.params.id, req.body.status);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 400).json({ error: true, message: error.message });
   }
 });
 
