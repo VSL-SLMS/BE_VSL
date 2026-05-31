@@ -127,7 +127,13 @@ async function createTeacher({ name, email, temporaryPassword, status = 'ACTIVE'
     await connection.query('INSERT INTO teachers (user_id) VALUES (?)', [userId]);
     await connection.commit();
 
-    return getUserById(userId);
+    const teacher = await getUserById(userId);
+    try {
+      teacher.email_delivery = await otpService.sendTeacherTemporaryPassword(teacher, temporaryPassword);
+    } catch (mailError) {
+      teacher.email_delivery = { sent: false, reason: mailError.message };
+    }
+    return teacher;
   } catch (error) {
     await connection.rollback();
     throw error;

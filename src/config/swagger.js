@@ -17,6 +17,7 @@ const swaggerSpec = {
     { name: 'Search' },
     { name: 'Auth' },
     { name: 'Teachers' },
+    { name: 'Admin Teachers' },
     { name: 'Admin' },
     { name: 'Payments' }
   ],
@@ -100,7 +101,7 @@ const swaggerSpec = {
     '/api/auth/register': {
       post: {
         tags: ['Auth'],
-        summary: 'Register a student or teacher account',
+        summary: 'Register a student account. Public teacher registration is not allowed.',
         requestBody: {
           required: true,
           content: {
@@ -111,7 +112,7 @@ const swaggerSpec = {
                   name: { type: 'string', example: 'Nguyen Van A' },
                   email: { type: 'string', example: 'student@example.com' },
                   password: { type: 'string', example: 'password123' },
-                  role: { type: 'string', enum: ['STUDENT', 'TEACHER'], example: 'STUDENT' }
+                  role: { type: 'string', enum: ['STUDENT'], example: 'STUDENT' }
                 },
                 required: ['email', 'password']
               }
@@ -175,6 +176,104 @@ const swaggerSpec = {
         responses: {
           200: {
             description: 'User list'
+          }
+        }
+      }
+    },
+    '/api/admin/teachers': {
+      post: {
+        tags: ['Admin Teachers'],
+        summary: 'Admin creates a Teacher account with a temporary password',
+        description: 'Teacher accounts are admin-managed. If SMTP is configured, the temporary password is emailed to the Teacher. The Teacher must change password on first login.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string', example: 'Tran Thi B' },
+                  email: { type: 'string', example: 'teacher@example.com' },
+                  temporaryPassword: { type: 'string', example: 'Temp@123' },
+                  status: { type: 'string', enum: ['ACTIVE', 'SUSPENDED'], example: 'ACTIVE' }
+                },
+                required: ['email', 'temporaryPassword']
+              }
+            }
+          }
+        },
+        responses: {
+          201: {
+            description: 'Teacher account created'
+          },
+          409: {
+            description: 'Duplicate email or username'
+          }
+        }
+      },
+      get: {
+        tags: ['Admin Teachers'],
+        summary: 'Admin lists all Teacher accounts',
+        responses: {
+          200: {
+            description: 'Teacher account list'
+          }
+        }
+      }
+    },
+    '/api/admin/teachers/{id}': {
+      get: {
+        tags: ['Admin Teachers'],
+        summary: 'Admin gets one Teacher account with assigned students',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Teacher detail'
+          },
+          404: {
+            description: 'Teacher not found'
+          }
+        }
+      }
+    },
+    '/api/admin/teachers/{id}/status': {
+      patch: {
+        tags: ['Admin Teachers'],
+        summary: 'Admin activates or suspends a Teacher account',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  status: { type: 'string', enum: ['ACTIVE', 'SUSPENDED'], example: 'SUSPENDED' }
+                },
+                required: ['status']
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Teacher status updated'
           }
         }
       }

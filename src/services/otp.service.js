@@ -60,6 +60,33 @@ function getTransporter() {
   return mailer;
 }
 
+function isSmtpConfigured() {
+  return Boolean(process.env.SMTP_USER && process.env.SMTP_PASS);
+}
+
+async function sendTeacherTemporaryPassword(user, temporaryPassword) {
+  if (!isSmtpConfigured()) {
+    return { sent: false, reason: 'SMTP_NOT_CONFIGURED' };
+  }
+
+  await getTransporter().sendMail({
+    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    to: user.email,
+    subject: 'SignLearn teacher account',
+    text: [
+      `Hello ${user.display_name || user.email},`,
+      '',
+      'Your SignLearn teacher account has been created by Admin.',
+      `Email: ${user.email}`,
+      `Temporary password: ${temporaryPassword}`,
+      '',
+      'Please log in and change your password on first login.'
+    ].join('\n')
+  });
+
+  return { sent: true };
+}
+
 async function sendPasswordChangeOtp(user) {
   await ensureOtpTable();
 
@@ -115,5 +142,7 @@ async function verifyPasswordChangeOtp(userId, otp) {
 
 module.exports = {
   sendPasswordChangeOtp,
-  verifyPasswordChangeOtp
+  verifyPasswordChangeOtp,
+  sendTeacherTemporaryPassword,
+  isSmtpConfigured
 };

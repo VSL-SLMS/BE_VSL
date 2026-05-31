@@ -4,6 +4,7 @@ const lessonService = require('../services/lesson.service');
 const studentService = require('../services/student.service');
 const teacherService = require('../services/teacher.service');
 const userService = require('../services/user.service');
+const adminTeacherService = require('../services/adminTeacher.service');
 const { requireAuth, optionalAuth } = require('../middlewares/auth.middleware');
 const { requireRole } = require('../middlewares/role.middleware');
 const paymentService = require('../services/payment.service');
@@ -130,6 +131,33 @@ router.post('/admin/teachers', requireAuth, requireRole('ADMIN'), async (req, re
       return res.status(409).json({ error: true, message: 'Email or username already exists.' });
     }
     return next(error);
+  }
+});
+
+router.get('/admin/teachers', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
+  try {
+    const teachers = await adminTeacherService.listTeachers();
+    res.json({ data: { teachers } });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/admin/teachers/:id', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
+  try {
+    const teacher = await adminTeacherService.getTeacherById(req.params.id);
+    res.json({ data: { teacher } });
+  } catch (error) {
+    res.status(error.status || 500).json({ error: true, message: error.message });
+  }
+});
+
+router.patch('/admin/teachers/:id/status', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
+  try {
+    const teacher = await adminTeacherService.updateTeacherStatus(req.params.id, req.body.status);
+    res.json({ data: { teacher } });
+  } catch (error) {
+    res.status(error.status || 500).json({ error: true, message: error.message });
   }
 });
 
