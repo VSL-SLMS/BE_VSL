@@ -14,7 +14,8 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   const normalizeOrigin = (value) => String(value || '').trim().replace(/\/+$/, '');
-  const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
+  const configuredOrigins = process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || 'http://localhost:3000,https://fe-vsl.vercel.app';
+  const allowedOrigins = configuredOrigins
     .split(',')
     .map(normalizeOrigin)
     .filter(Boolean);

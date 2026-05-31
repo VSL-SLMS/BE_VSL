@@ -38,7 +38,7 @@ router.post('/auth/register', async (req, res, next) => {
     const user = await authService.register(payload);
     res.status(201).json({ data: { user } });
   } catch (error) {
-    if (error.code === 'ER_DUP_ENTRY') {
+    if (error.code === 'ER_DUP_ENTRY' || error.status === 409) {
       return res.status(409).json({ error: true, message: 'Email or username already exists.' });
     }
     return next(error);
@@ -127,7 +127,7 @@ router.post('/admin/teachers', requireAuth, requireRole('ADMIN'), async (req, re
 
     res.status(201).json({ data: { teacher } });
   } catch (error) {
-    if (error.code === 'ER_DUP_ENTRY') {
+    if (error.code === 'ER_DUP_ENTRY' || error.status === 409) {
       return res.status(409).json({ error: true, message: 'Email or username already exists.' });
     }
     return next(error);

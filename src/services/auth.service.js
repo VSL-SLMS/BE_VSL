@@ -90,15 +90,78 @@ async function login(email, password) {
   return user;
 }
 
+async function buildUniqueUsername(connection, email) {
+  const base = String(email).split('@')[0].replace(/[^a-zA-Z0-9_]/g, '').slice(0, 40) || 'teacher';
+  const [existing] = await connection.query('SELECT id FROM users WHERE username = ? LIMIT 1', [base]);
+  if (!existing.length) return base;
+  return `${base}_${Date.now()}`.slice(0, 100);
+}
+
 async function createTeacher({ name, email, temporaryPassword, status = 'ACTIVE' }) {
   const normalizedStatus = status === 'SUSPENDED' ? 'SUSPENDED' : 'ACTIVE';
-  const username = email.split('@')[0];
   const passwordHash = await bcrypt.hash(temporaryPassword, 10);
   const hasMustChangePassword = await hasColumn('users', 'must_change_password');
   const connection = await pool.getConnection();
 
   try {
     await connection.beginTransaction();
+
+    const [existingUsers] = await connection.query(`
+      SELECT
+        u.id,
+        u.role,
+        u.email,
+        t.id AS teacher_id
+      FROM users u
+      LEFT JOIN teachers t ON t.user_id = u.id
+      WHERE u.email = ?
+      LIMIT 1
+      FOR UPDATE
+    `, [email]);
+
+    const existingUser = existingUsers[0];
+    if (existingUser) {
+      if (existingUser.role !== 'TEACHER') {
+        const error = new Error('Email already belongs to a non-teacher account.');
+        error.code = 'EMAIL_EXISTS_NON_TEACHER';
+        error.status = 409;
+        throw error;
+      }
+
+      if (hasMustChangePassword) {
+        await connection.query(`
+          UPDATE users
+          SET password_hash = ?,
+              display_name = COALESCE(NULLIF(?, ''), display_name),
+              status = ?,
+              must_change_password = TRUE,
+              token_version = token_version + 1
+          WHERE id = ?
+        `, [passwordHash, name || '', normalizedStatus, existingUser.id]);
+      } else {
+        await connection.query(`
+          UPDATE users
+          SET password_hash = ?,
+              display_name = COALESCE(NULLIF(?, ''), display_name),
+              status = ?,
+              token_version = token_version + 1
+          WHERE id = ?
+        `, [passwordHash, name || '', normalizedStatus, existingUser.id]);
+      }
+
+      if (!existingUser.teacher_id) {
+        await connection.query('INSERT INTO teachers (user_id) VALUES (?)', [existingUser.id]);
+      }
+
+      await connection.commit();
+
+      const teacher = await getUserById(existingUser.id);
+      teacher.temporary_password_reset = true;
+      teacher.email_delivery = await otpService.sendTeacherTemporaryPassword(teacher, temporaryPassword);
+      return teacher;
+    }
+
+    const username = await buildUniqueUsername(connection, email);
 
     if (hasMustChangePassword) {
       await connection.query(`

@@ -186,7 +186,7 @@ async function sendTeacherTemporaryPassword(user, temporaryPassword) {
     console.warn('Teacher temporary password email failed:', error.message);
     return {
       sent: false,
-      reason: error.code || error.message || 'SMTP_SEND_FAILED'
+      reason: error.message || error.code || 'SMTP_SEND_FAILED'
     };
   }
 }
