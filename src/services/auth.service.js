@@ -7,24 +7,31 @@ async function register({ name, email, password, role }) {
   const username = email.split('@')[0];
   const passwordHash = await bcrypt.hash(password, 10);
 
-  const [result] = await pool.query(`
+  await pool.query(`
     INSERT INTO users (username, email, password_hash, display_name, role, status)
     VALUES (?, ?, ?, ?, ?, 'ACTIVE')
   `, [username, email, passwordHash, name || username, normalizedRole]);
 
+  // Query back the user to reliably get the ID (bypassing result.insertId issues on some clouds)
+  const [userRows] = await pool.query('SELECT id FROM users WHERE email = ?', [email]);
+  if (!userRows || userRows.length === 0) {
+    throw new Error('Failed to create user or retrieve user ID after insertion.');
+  }
+  const userId = userRows[0].id;
+
   if (normalizedRole === 'TEACHER') {
-    await pool.query('INSERT INTO teachers (user_id) VALUES (?)', [result.insertId]);
+    await pool.query('INSERT INTO teachers (user_id) VALUES (?)', [userId]);
   }
 
   if (normalizedRole === 'STUDENT') {
-    await pool.query('INSERT INTO students (user_id) VALUES (?)', [result.insertId]);
+    await pool.query('INSERT INTO students (user_id) VALUES (?)', [userId]);
   }
 
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET must be set in environment');
   }
 
-  const user = await getUserById(result.insertId);
+  const user = await getUserById(userId);
   user.token = jwt.sign(
     { id: user.id, role: user.role, status: user.status, token_version: user.token_version },
     process.env.JWT_SECRET,
