@@ -28,7 +28,7 @@ async function getAllPartsWithChapters() {
     ORDER BY c.part_id, c.order_index
   `);
   const [lessons] = await pool.query(`
-    SELECT id, chapter_id, title, slug, lesson_type, estimated_minutes, order_index
+    SELECT id, chapter_id, title, slug, lesson_type, description, estimated_minutes, order_index
     FROM lessons
     ORDER BY chapter_id, order_index
   `);
@@ -60,6 +60,62 @@ async function getLessonBySlug(slug) {
   `, [slug]);
 
   return rows[0] || null;
+}
+
+async function updateLessonById(lessonId, payload) {
+  const id = Number(lessonId);
+  if (!id) {
+    const error = new Error('Lesson ID is required.');
+    error.status = 400;
+    throw error;
+  }
+
+  const fields = {
+    title: payload.title,
+    description: payload.description,
+    lesson_type: payload.lessonType || payload.lesson_type,
+    estimated_minutes: payload.estimatedMinutes ?? payload.estimated_minutes,
+    start_page: payload.startPage ?? payload.start_page,
+    end_page: payload.endPage ?? payload.end_page,
+    order_index: payload.orderIndex ?? payload.order_index
+  };
+
+  const allowedLessonTypes = new Set(['theory', 'practice', 'quiz', 'exercise']);
+  const updates = [];
+  const values = [];
+
+  Object.entries(fields).forEach(([column, value]) => {
+    if (value === undefined) return;
+    if (column === 'lesson_type' && !allowedLessonTypes.has(value)) {
+      const error = new Error('Invalid lesson type.');
+      error.status = 400;
+      throw error;
+    }
+    updates.push(`${column} = ?`);
+    values.push(value === '' ? null : value);
+  });
+
+  if (!updates.length) {
+    const error = new Error('No lesson fields provided.');
+    error.status = 400;
+    throw error;
+  }
+
+  values.push(id);
+  const [result] = await pool.query(`
+    UPDATE lessons
+    SET ${updates.join(', ')}
+    WHERE id = ?
+  `, values);
+
+  if (!result.affectedRows) {
+    const error = new Error('Lesson not found.');
+    error.status = 404;
+    throw error;
+  }
+
+  const [rows] = await pool.query('SELECT * FROM lessons WHERE id = ? LIMIT 1', [id]);
+  return rows[0];
 }
 
 async function getLessonContent(lessonId) {
@@ -247,6 +303,7 @@ module.exports = {
   getCourseOverview,
   getAllPartsWithChapters,
   getLessonBySlug,
+  updateLessonById,
   getLessonContent,
   getPageImagesByLessonId,
   getLessonNavigation,
@@ -254,4 +311,3 @@ module.exports = {
   normalizeExtractedImagePath,
   normalizePageImagePath
 };
-

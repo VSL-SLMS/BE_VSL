@@ -61,12 +61,12 @@ router.post('/auth/login', async (req, res, next) => {
 
 router.post('/auth/change-password', requireAuth, async (req, res, next) => {
   try {
-    const { currentPassword, newPassword } = req.body;
+    const { currentPassword, newPassword, otp } = req.body;
 
-    if (!currentPassword || !newPassword) {
+    if (!currentPassword || !newPassword || !otp) {
       return res.status(400).json({
         error: true,
-        message: 'Current password and new password are required.'
+        message: 'Current password, new password, and OTP are required.'
       });
     }
 
@@ -77,8 +77,22 @@ router.post('/auth/change-password', requireAuth, async (req, res, next) => {
       });
     }
 
-    const user = await authService.changePassword(req.user.id, currentPassword, newPassword);
+    const user = await authService.changePassword(req.user.id, currentPassword, newPassword, otp);
     return res.json({ data: { user } });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.post('/auth/change-password/request-otp', requireAuth, async (req, res, next) => {
+  try {
+    const data = await authService.requestPasswordChangeOtp(req.user.id);
+    return res.json({
+      data: {
+        expiresAt: data.expiresAt
+      },
+      message: 'Password change OTP sent to your email.'
+    });
   } catch (error) {
     return next(error);
   }
@@ -136,6 +150,27 @@ router.get('/admin/users', requireAuth, requireRole('ADMIN'), async (req, res, n
   }
 });
 
+router.patch('/users/:id/profile', requireAuth, async (req, res, next) => {
+  try {
+    const user = await userService.updateUserProfile(req.user, req.params.id, {
+      name: req.body.name || req.body.displayName,
+      avatarUrl: req.body.avatarUrl || req.body.avatar_url
+    });
+    res.json({ data: { user } });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete('/users/:id/avatar', requireAuth, async (req, res, next) => {
+  try {
+    const user = await userService.deleteUserAvatar(req.user, req.params.id);
+    res.json({ data: { user } });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/lessons', async (req, res, next) => {
   try {
     const parts = await lessonService.getAllPartsWithChapters();
@@ -166,6 +201,15 @@ router.get('/lessons/:slug', requireAuth, async (req, res, next) => {
         navigation
       }
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch('/admin/lessons/:id', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
+  try {
+    const lesson = await lessonService.updateLessonById(req.params.id, req.body);
+    res.json({ data: { lesson } });
   } catch (error) {
     next(error);
   }

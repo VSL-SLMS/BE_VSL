@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { pool } = require('../config/database');
+const otpService = require('./otp.service');
 
 const columnCache = new Map();
 
@@ -135,7 +136,24 @@ async function createTeacher({ name, email, temporaryPassword, status = 'ACTIVE'
   }
 }
 
-async function changePassword(userId, currentPassword, newPassword) {
+async function requestPasswordChangeOtp(userId) {
+  const user = await getUserById(userId);
+  if (!user) {
+    const error = new Error('User not found.');
+    error.status = 404;
+    throw error;
+  }
+
+  return otpService.sendPasswordChangeOtp(user);
+}
+
+async function changePassword(userId, currentPassword, newPassword, otp) {
+  if (!otp) {
+    const error = new Error('OTP is required to change password.');
+    error.status = 400;
+    throw error;
+  }
+
   const [users] = await pool.query(`
     SELECT id, password_hash
     FROM users
@@ -156,6 +174,8 @@ async function changePassword(userId, currentPassword, newPassword) {
     error.status = 400;
     throw error;
   }
+
+  await otpService.verifyPasswordChangeOtp(userId, otp);
 
   const passwordHash = await bcrypt.hash(newPassword, 10);
   const hasMustChangePassword = await hasColumn('users', 'must_change_password');
@@ -194,4 +214,4 @@ async function getUserById(id) {
   return rows[0] || null;
 }
 
-module.exports = { register, login, createTeacher, changePassword, getUserById };
+module.exports = { register, login, createTeacher, requestPasswordChangeOtp, changePassword, getUserById };

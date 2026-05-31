@@ -24,6 +24,95 @@ async function listUsers() {
   return rows;
 }
 
+async function updateUserProfile(requestUser, userId, { name, avatarUrl }) {
+  const targetId = Number(userId);
+  if (!targetId) {
+    const error = new Error('User ID is required.');
+    error.status = 400;
+    throw error;
+  }
+
+  if (requestUser.role !== 'ADMIN' && Number(requestUser.id) !== targetId) {
+    const error = new Error('You can only update your own profile.');
+    error.status = 403;
+    throw error;
+  }
+
+  const [users] = await pool.query(`
+    SELECT id, role
+    FROM users
+    WHERE id = ? AND role IN ('STUDENT', 'TEACHER')
+    LIMIT 1
+  `, [targetId]);
+
+  if (!users.length) {
+    const error = new Error('Student or Teacher user not found.');
+    error.status = 404;
+    throw error;
+  }
+
+  const displayName = String(name || '').trim();
+  const avatar = String(avatarUrl || '').trim();
+
+  if (!displayName && !avatar) {
+    const error = new Error('Name or avatarUrl is required.');
+    error.status = 400;
+    throw error;
+  }
+
+  await pool.query(`
+    UPDATE users
+    SET display_name = COALESCE(NULLIF(?, ''), display_name),
+        avatar_url = COALESCE(NULLIF(?, ''), avatar_url)
+    WHERE id = ?
+  `, [displayName, avatar, targetId]);
+
+  const [updated] = await pool.query(`
+    SELECT id, username, email, display_name, avatar_url, role, status, token_version, created_at
+    FROM users
+    WHERE id = ?
+    LIMIT 1
+  `, [targetId]);
+
+  return updated[0];
+}
+
+async function deleteUserAvatar(requestUser, userId) {
+  const targetId = Number(userId);
+  if (!targetId) {
+    const error = new Error('User ID is required.');
+    error.status = 400;
+    throw error;
+  }
+
+  if (requestUser.role !== 'ADMIN' && Number(requestUser.id) !== targetId) {
+    const error = new Error('You can only update your own profile.');
+    error.status = 403;
+    throw error;
+  }
+
+  const [result] = await pool.query(`
+    UPDATE users
+    SET avatar_url = NULL
+    WHERE id = ? AND role IN ('STUDENT', 'TEACHER')
+  `, [targetId]);
+
+  if (!result.affectedRows) {
+    const error = new Error('Student or Teacher user not found.');
+    error.status = 404;
+    throw error;
+  }
+
+  const [updated] = await pool.query(`
+    SELECT id, username, email, display_name, avatar_url, role, status, token_version, created_at
+    FROM users
+    WHERE id = ?
+    LIMIT 1
+  `, [targetId]);
+
+  return updated[0];
+}
+
 async function listTeacherChangeRequests() {
   const [rows] = await pool.query(`
     SELECT
@@ -101,4 +190,4 @@ async function reviewTeacherChangeRequest(requestId, status) {
   }
 }
 
-module.exports = { listUsers, listTeacherChangeRequests, reviewTeacherChangeRequest };
+module.exports = { listUsers, updateUserProfile, deleteUserAvatar, listTeacherChangeRequests, reviewTeacherChangeRequest };
