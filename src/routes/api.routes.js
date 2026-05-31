@@ -2,6 +2,7 @@ const express = require('express');
 const authService = require('../services/auth.service');
 const lessonService = require('../services/lesson.service');
 const studentService = require('../services/student.service');
+const teacherService = require('../services/teacher.service');
 const userService = require('../services/user.service');
 const { requireAuth } = require('../middlewares/auth.middleware');
 const { requireRole } = require('../middlewares/role.middleware');
@@ -134,6 +135,86 @@ router.get('/search', async (req, res, next) => {
   try {
     const results = await lessonService.searchContent(req.query.q);
     res.json({ data: results });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+// ==========================================
+// STUDENT ROUTES
+// ==========================================
+router.get('/student/dashboard', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.getDashboard(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/student/choose-teacher', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const { teacherId } = req.body;
+    await studentService.chooseTeacher(req.user.id, teacherId);
+    res.json({ message: 'Teacher selected successfully' });
+  } catch (error) {
+    res.status(400).json({ error: true, message: error.message });
+  }
+});
+
+router.get('/student/progress', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.getProgress(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/student/assignments', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await studentService.getAssignments(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ==========================================
+// TEACHER ROUTES
+// ==========================================
+router.get('/teacher/dashboard', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await teacherService.getDashboard(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/teacher/students', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await teacherService.getStudents(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/teacher/assignments', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await teacherService.getAssignments(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/teacher/accuracy', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await teacherService.getAccuracy(req.user.id);
+    res.json({ data });
   } catch (error) {
     next(error);
   }
