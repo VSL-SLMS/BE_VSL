@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const path = require('path');
-const qs = require('querystring');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 function getVNPayConfig() {
@@ -26,6 +25,33 @@ function sortObject(obj) {
     }
   }
   return sorted;
+}
+
+function sortAndEncodeObject(obj) {
+  const sorted = {};
+  const keys = Object.keys(obj).sort();
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const value = obj[key];
+    if (value !== undefined && value !== null && value !== '') {
+      sorted[encodeURIComponent(key)] = encodeURIComponent(String(value)).replace(/%20/g, '+');
+    }
+  }
+  return sorted;
+}
+
+function normalizeIpAddr(ipAddr) {
+  const raw = String(ipAddr || '').split(',')[0].trim();
+  if (!raw || raw === '::1') return '127.0.0.1';
+  if (raw.startsWith('::ffff:')) return raw.replace('::ffff:', '');
+  if (raw.includes(':')) return '127.0.0.1';
+  return raw;
+}
+
+function buildQueryString(params) {
+  return Object.entries(params)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
 }
 
 function formatDate(date) {
@@ -60,21 +86,21 @@ function createPaymentUrl(payment, ipAddr) {
     vnp_Locale: 'vn',
     vnp_CurrCode: 'VND',
     vnp_TxnRef: payment.txn_ref,
-    vnp_OrderInfo: payment.order_info || `Thanh toan khoa hoc ${payment.txn_ref}`,
+    vnp_OrderInfo: payment.order_info || `Thanh toan khoa hoc SignLearn ${payment.txn_ref}`,
     vnp_OrderType: 'other',
     vnp_Amount: amount,
     vnp_ReturnUrl: returnUrl,
-    vnp_IpAddr: ipAddr || '127.0.0.1',
+    vnp_IpAddr: normalizeIpAddr(ipAddr),
     vnp_CreateDate: createDate,
   };
 
-  const sortedParams = sortObject(params);
-  const signData = qs.stringify(sortedParams, { encode: false });
+  const sortedParams = sortAndEncodeObject(params);
+  const signData = buildQueryString(sortedParams);
   const hmac = crypto.createHmac('sha512', secretKey);
   const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
   sortedParams.vnp_SecureHash = signed;
 
-  return `${paymentUrl}?${qs.stringify(sortedParams, { encode: false })}`;
+  return `${paymentUrl}?${buildQueryString(sortedParams)}`;
 }
 
 /**
@@ -91,8 +117,8 @@ function verifyReturnUrl(query) {
   delete params.vnp_SecureHash;
   delete params.vnp_SecureHashType;
 
-  const sortedParams = sortObject(params);
-  const signData = qs.stringify(sortedParams, { encode: false });
+  const sortedParams = sortAndEncodeObject(params);
+  const signData = buildQueryString(sortedParams);
   const hmac = crypto.createHmac('sha512', secretKey);
   const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
 
@@ -102,5 +128,6 @@ function verifyReturnUrl(query) {
 module.exports = {
   createPaymentUrl,
   verifyReturnUrl,
-  sortObject
+  sortObject,
+  normalizeIpAddr
 };

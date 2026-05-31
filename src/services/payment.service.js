@@ -130,7 +130,7 @@ async function createPayment(userId, pricingId, ipAddr) {
 
   const amount = pricing.discount_price_vnd || pricing.price_vnd;
   const txnRef = `SLMS${userId}${Date.now()}`;
-  const orderInfo = `Thanh toan khoa hoc: ${pricing.title}`;
+  const orderInfo = `Thanh toan khoa hoc SignLearn ${txnRef}`;
 
   await pool.query(`
     INSERT INTO payments (user_id, txn_ref, amount_vnd, order_info, status)
