@@ -17,7 +17,8 @@ const swaggerSpec = {
     { name: 'Search' },
     { name: 'Auth' },
     { name: 'Teachers' },
-    { name: 'Admin' }
+    { name: 'Admin' },
+    { name: 'Payments' }
   ],
   paths: {
     '/api/health': {
@@ -174,6 +175,74 @@ const swaggerSpec = {
         responses: {
           200: {
             description: 'User list'
+          }
+        }
+      }
+    },
+    '/api/pricing': {
+      get: {
+        tags: ['Payments'],
+        summary: 'Get active course pricing info',
+        responses: {
+          200: {
+            description: 'Active course pricing'
+          }
+        }
+      }
+    },
+    '/api/course-access/me': {
+      get: {
+        tags: ['Payments'],
+        summary: 'Check if current student has purchased the course',
+        responses: {
+          200: {
+            description: 'Course access status'
+          }
+        }
+      }
+    },
+    '/api/payments/vnpay/create': {
+      post: {
+        tags: ['Payments'],
+        summary: 'Create a payment transaction and get VNPay redirect URL',
+        requestBody: {
+          required: false,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  pricingId: { type: 'integer', example: 1 }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          201: {
+            description: 'VNPay payment redirect URL generated successfully'
+          }
+        }
+      }
+    },
+    '/api/payments/vnpay/return': {
+      get: {
+        tags: ['Payments'],
+        summary: 'Verify VNPay checksum and return payment status',
+        responses: {
+          200: {
+            description: 'Payment status'
+          }
+        }
+      }
+    },
+    '/api/payments/vnpay/ipn': {
+      get: {
+        tags: ['Payments'],
+        summary: 'VNPay IPN server-to-server webhook',
+        responses: {
+          200: {
+            description: 'IPN process confirmation code response'
           }
         }
       }

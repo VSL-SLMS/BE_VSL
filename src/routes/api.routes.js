@@ -4,8 +4,9 @@ const lessonService = require('../services/lesson.service');
 const studentService = require('../services/student.service');
 const teacherService = require('../services/teacher.service');
 const userService = require('../services/user.service');
-const { requireAuth } = require('../middlewares/auth.middleware');
+const { requireAuth, optionalAuth } = require('../middlewares/auth.middleware');
 const { requireRole } = require('../middlewares/role.middleware');
+const paymentService = require('../services/payment.service');
 
 const router = express.Router();
 
@@ -180,11 +181,25 @@ router.get('/lessons', async (req, res, next) => {
   }
 });
 
-router.get('/lessons/:slug', requireAuth, async (req, res, next) => {
+router.get('/lessons/:slug', optionalAuth, async (req, res, next) => {
   try {
     const lesson = await lessonService.getLessonBySlug(req.params.slug);
     if (!lesson) {
       return res.status(404).json({ error: true, message: 'Lesson not found.' });
+    }
+
+    const hasAccess = req.user ? await paymentService.getUserCourseAccess(req.user.id) : false;
+
+    if (!hasAccess) {
+      return res.json({
+        data: {
+          lesson,
+          content: [],
+          pages: [],
+          navigation: null,
+          hasAccess: false
+        }
+      });
     }
 
     const [content, pages, navigation] = await Promise.all([
@@ -198,7 +213,8 @@ router.get('/lessons/:slug', requireAuth, async (req, res, next) => {
         lesson,
         content,
         pages,
-        navigation
+        navigation,
+        hasAccess: true
       }
     });
   } catch (error) {
@@ -337,6 +353,62 @@ router.post('/admin/teacher-change-requests/:id/review', requireAuth, requireRol
     res.json({ data });
   } catch (error) {
     res.status(error.status || 400).json({ error: true, message: error.message });
+  }
+});
+
+// ==========================================
+// PAYMENTS & PRICING ROUTES
+// ==========================================
+
+router.get('/pricing', async (req, res, next) => {
+  try {
+    const pricing = await paymentService.getActivePricing();
+    if (!pricing) {
+      return res.status(404).json({ error: true, message: 'No active course pricing found.' });
+    }
+    return res.json({ data: { pricing } });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get('/course-access/me', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const access = await paymentService.getCourseAccess(req.user.id);
+    return res.json({ data: access });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.post('/payments/vnpay/create', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const ipAddr = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    const { pricingId } = req.body || {};
+    
+    const paymentData = await paymentService.createPayment(req.user.id, pricingId, ipAddr);
+    return res.status(201).json({ data: paymentData });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get('/payments/vnpay/return', async (req, res, next) => {
+  try {
+    const result = await paymentService.processReturn(req.query);
+    return res.json({ data: result });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get('/payments/vnpay/ipn', async (req, res, next) => {
+  try {
+    const response = await paymentService.processIpn(req.query);
+    return res.json(response);
+  } catch (error) {
+    console.error('IPN route error:', error);
+    return res.json({ RspCode: '99', Message: 'Unknown error' });
   }
 });
 
