@@ -34,17 +34,17 @@ async function listTeacherChangeRequests() {
       tcr.reviewed_at,
       student_user.display_name AS student_name,
       student_user.email AS student_email,
-      current_user.display_name AS current_teacher_name,
-      current_user.email AS current_teacher_email,
-      requested_user.display_name AS requested_teacher_name,
-      requested_user.email AS requested_teacher_email
+      current_teacher_user.display_name AS current_teacher_name,
+      current_teacher_user.email AS current_teacher_email,
+      requested_teacher_user.display_name AS requested_teacher_name,
+      requested_teacher_user.email AS requested_teacher_email
     FROM teacher_change_requests tcr
     JOIN students s ON s.id = tcr.student_id
     JOIN users student_user ON student_user.id = s.user_id
     LEFT JOIN teachers current_teacher ON current_teacher.id = tcr.current_teacher_id
-    LEFT JOIN users current_user ON current_user.id = current_teacher.user_id
+    LEFT JOIN users current_teacher_user ON current_teacher_user.id = current_teacher.user_id
     LEFT JOIN teachers requested_teacher ON requested_teacher.id = tcr.requested_teacher_id
-    LEFT JOIN users requested_user ON requested_user.id = requested_teacher.user_id
+    LEFT JOIN users requested_teacher_user ON requested_teacher_user.id = requested_teacher.user_id
     ORDER BY tcr.created_at DESC
   `);
   return rows;
