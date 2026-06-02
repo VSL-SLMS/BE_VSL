@@ -68,6 +68,7 @@ function createTransporter({ host, port, user, pass, secure, timeoutMs }) {
     host,
     port,
     secure,
+    family: 4,
     auth: { user, pass },
     requireTLS: !secure,
     tls: {
@@ -84,7 +85,7 @@ function getTransportAttempts() {
   const attempts = [];
   const isGmail = base.host === 'smtp.gmail.com';
 
-  if (isGmail && base.port === 587) {
+  if (isGmail && base.port !== 465) {
     attempts.push({
       ...base,
       port: 465,
@@ -98,16 +99,13 @@ function getTransportAttempts() {
     label: `configured-${base.port}`
   });
 
-  if (isGmail && base.port !== 465) {
-    const hasSslAttempt = attempts.some((attempt) => attempt.port === 465);
-    if (!hasSslAttempt) {
-      attempts.push({
-        ...base,
-        port: 465,
-        secure: true,
-        label: 'gmail-ssl-465'
-      });
-    }
+  if (isGmail && base.port !== 587) {
+    attempts.push({
+      ...base,
+      port: 587,
+      secure: false,
+      label: 'gmail-starttls-587'
+    });
   }
 
   return attempts;
