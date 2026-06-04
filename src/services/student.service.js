@@ -1,6 +1,7 @@
 const { pool } = require('../config/database');
 const lessonService = require('./lesson.service');
 const paymentService = require('./payment.service');
+const assignmentService = require('./assignment.service');
 
 async function ensureLessonProgressTable() {
   await pool.query(`
@@ -319,15 +320,7 @@ async function completeLesson(userId, lessonId) {
 }
 
 async function getAssignments(userId) {
-  const [rows] = await pool.query(`
-    SELECT a.*, s.status AS submission_status, s.score
-    FROM assignment_students ast
-    JOIN assignments a ON a.id = ast.assignment_id
-    LEFT JOIN submissions s ON s.assignment_id = a.id AND s.student_id = ast.student_id
-    WHERE ast.student_id = (SELECT id FROM students WHERE user_id = ?)
-    ORDER BY a.created_at DESC
-  `, [userId]);
-  return rows;
+  return assignmentService.listStudentAssignments(userId);
 }
 
 module.exports = {

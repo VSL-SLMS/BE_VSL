@@ -5,6 +5,7 @@ const studentService = require('../services/student.service');
 const teacherService = require('../services/teacher.service');
 const userService = require('../services/user.service');
 const adminTeacherService = require('../services/adminTeacher.service');
+const assignmentService = require('../services/assignment.service');
 const { requireAuth, optionalAuth } = require('../middlewares/auth.middleware');
 const { requireRole } = require('../middlewares/role.middleware');
 const paymentService = require('../services/payment.service');
@@ -359,10 +360,36 @@ router.get('/student/progress', requireAuth, requireRole('STUDENT'), async (req,
 
 router.get('/student/assignments', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
   try {
-    const data = await studentService.getAssignments(req.user.id);
+    const data = await assignmentService.listStudentAssignments(req.user.id);
     res.json({ data });
   } catch (error) {
     next(error);
+  }
+});
+
+router.get('/student/assignments/:id', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.getStudentAssignmentDetail(req.user.id, req.params.id);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'STUDENT_ASSIGNMENT_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.post('/student/assignments/:id/submit', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.submitAssignment(req.user.id, req.params.id, req.body || {});
+    res.status(201).json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'ASSIGNMENT_SUBMIT_ERROR',
+      message: error.message
+    });
   }
 });
 
@@ -387,12 +414,47 @@ router.get('/teacher/students', requireAuth, requireRole('TEACHER'), async (req,
   }
 });
 
+router.post('/teacher/assignments', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.createTeacherAssignment(req.user.id, req.body || {});
+    res.status(201).json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'ASSIGNMENT_CREATE_ERROR',
+      message: error.message
+    });
+  }
+});
+
 router.get('/teacher/assignments', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
   try {
-    const data = await teacherService.getAssignments(req.user.id);
+    const data = await assignmentService.listTeacherAssignments(req.user.id);
     res.json({ data });
   } catch (error) {
     next(error);
+  }
+});
+
+router.get('/teacher/submissions', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.listTeacherSubmissions(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/teacher/submissions/:id/grade', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.gradeSubmission(req.user.id, req.params.id, req.body || {});
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'SUBMISSION_GRADE_ERROR',
+      message: error.message
+    });
   }
 });
 

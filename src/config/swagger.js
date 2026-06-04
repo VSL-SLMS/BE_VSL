@@ -17,6 +17,8 @@ const swaggerSpec = {
     { name: 'Search' },
     { name: 'Auth' },
     { name: 'Teachers' },
+    { name: 'Teacher Assignments' },
+    { name: 'Student Assignments' },
     { name: 'Admin Teachers' },
     { name: 'Admin' },
     { name: 'Payments' }
@@ -165,6 +167,178 @@ const swaggerSpec = {
         responses: {
           200: {
             description: 'Teacher list'
+          }
+        }
+      }
+    },
+    '/api/teacher/students': {
+      get: {
+        tags: ['Teacher Assignments'],
+        summary: 'Teacher lists assigned Students',
+        responses: {
+          200: {
+            description: 'Assigned student list'
+          }
+        }
+      }
+    },
+    '/api/teacher/assignments': {
+      get: {
+        tags: ['Teacher Assignments'],
+        summary: 'Teacher lists their assignments',
+        responses: {
+          200: {
+            description: 'Teacher assignment list'
+          }
+        }
+      },
+      post: {
+        tags: ['Teacher Assignments'],
+        summary: 'Teacher creates an assignment for assigned Students only',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  title: { type: 'string', example: 'Practice greeting signs' },
+                  instructions: { type: 'string', example: 'Record a short greeting using signs learned in lesson 1.' },
+                  studentIds: { type: 'array', items: { type: 'integer' }, example: [1, 2] },
+                  deadline: { type: 'string', format: 'date-time', nullable: true },
+                  allowLateSubmission: { type: 'boolean', example: false }
+                },
+                required: ['title', 'instructions', 'studentIds']
+              }
+            }
+          }
+        },
+        responses: {
+          201: {
+            description: 'Assignment created'
+          },
+          403: {
+            description: 'Student does not belong to Teacher'
+          }
+        }
+      }
+    },
+    '/api/teacher/submissions': {
+      get: {
+        tags: ['Teacher Assignments'],
+        summary: 'Teacher lists submissions for their assignments',
+        responses: {
+          200: {
+            description: 'Submission list'
+          }
+        }
+      }
+    },
+    '/api/teacher/submissions/{id}/grade': {
+      post: {
+        tags: ['Teacher Assignments'],
+        summary: 'Teacher grades a submitted assignment once and locks the submission',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  score: { type: 'number', example: 85 },
+                  feedback: { type: 'string', example: 'Good hand shape. Improve rhythm in the second sentence.' }
+                },
+                required: ['score', 'feedback']
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Submission graded'
+          },
+          409: {
+            description: 'Submission is locked'
+          }
+        }
+      }
+    },
+    '/api/student/assignments': {
+      get: {
+        tags: ['Student Assignments'],
+        summary: 'Student lists assignments assigned to them',
+        responses: {
+          200: {
+            description: 'Student assignment list'
+          }
+        }
+      }
+    },
+    '/api/student/assignments/{id}': {
+      get: {
+        tags: ['Student Assignments'],
+        summary: 'Student gets one assigned assignment with submission status, score, and feedback',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Student assignment detail'
+          },
+          404: {
+            description: 'Assignment not assigned to this Student'
+          }
+        }
+      }
+    },
+    '/api/student/assignments/{id}/submit': {
+      post: {
+        tags: ['Student Assignments'],
+        summary: 'Student submits an assigned assignment',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  content: { type: 'string', example: 'My answer text or video description.' },
+                  fileUrl: { type: 'string', example: 'https://example.com/submission.mp4' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          201: {
+            description: 'Assignment submitted'
+          },
+          409: {
+            description: 'Assignment already submitted or locked'
           }
         }
       }
