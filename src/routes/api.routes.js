@@ -180,6 +180,27 @@ router.get('/admin/users', requireAuth, requireRole('ADMIN'), async (req, res, n
   }
 });
 
+router.patch('/users/me/profile', requireAuth, async (req, res, next) => {
+  try {
+    const user = await userService.updateUserProfile(req.user, req.user.id, {
+      name: req.body.name || req.body.displayName,
+      avatarUrl: req.body.avatarUrl || req.body.avatar_url
+    });
+    res.json({ data: { user } });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete('/users/me/avatar', requireAuth, async (req, res, next) => {
+  try {
+    const user = await userService.deleteUserAvatar(req.user, req.user.id);
+    res.json({ data: { user } });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.patch('/users/:id/profile', requireAuth, async (req, res, next) => {
   try {
     const user = await userService.updateUserProfile(req.user, req.params.id, {

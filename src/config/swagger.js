@@ -16,6 +16,7 @@ const swaggerSpec = {
     { name: 'Lessons' },
     { name: 'Search' },
     { name: 'Auth' },
+    { name: 'Profile' },
     { name: 'Teachers' },
     { name: 'Teacher Assignments' },
     { name: 'Student Assignments' },
@@ -167,6 +168,45 @@ const swaggerSpec = {
         responses: {
           200: {
             description: 'Teacher list'
+          }
+        }
+      }
+    },
+    '/api/users/me/profile': {
+      patch: {
+        tags: ['Profile'],
+        summary: 'Current Student or Teacher updates their own profile',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string', example: 'Nguyen Van A' },
+                  avatarUrl: { type: 'string', example: 'https://example.com/avatar.png' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Profile updated'
+          },
+          403: {
+            description: 'User cannot update this profile'
+          }
+        }
+      }
+    },
+    '/api/users/me/avatar': {
+      delete: {
+        tags: ['Profile'],
+        summary: 'Current Student or Teacher removes their avatar URL',
+        responses: {
+          200: {
+            description: 'Avatar removed'
           }
         }
       }
