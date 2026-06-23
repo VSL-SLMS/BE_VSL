@@ -64,20 +64,27 @@ function getSmtpBaseConfig() {
 }
 
 function createTransporter({ host, port, user, pass, secure, timeoutMs }) {
-  return nodemailer.createTransport({
+  const options = {
     host,
     port,
     secure,
     family: 4,
     auth: { user, pass },
-    requireTLS: !secure,
     tls: {
-      minVersion: 'TLSv1.2'
+      minVersion: 'TLSv1.2',
+      servername: host
     },
+    dnsTimeout: timeoutMs,
     connectionTimeout: timeoutMs,
     greetingTimeout: timeoutMs,
     socketTimeout: timeoutMs
-  });
+  };
+
+  if (!secure) {
+    options.requireTLS = true;
+  }
+
+  return nodemailer.createTransport(options);
 }
 
 function getTransportAttempts() {
@@ -140,8 +147,9 @@ async function sendMailWithTimeout(mailOptions) {
   const errors = [];
 
   for (const attempt of attempts) {
+    let transporter;
     try {
-      const transporter = createTransporter(attempt);
+      transporter = createTransporter(attempt);
       return await withTimeout(
         transporter.sendMail(mailOptions),
         attempt.timeoutMs,
@@ -150,11 +158,16 @@ async function sendMailWithTimeout(mailOptions) {
     } catch (error) {
       errors.push(`${attempt.label}: ${error.code || error.message}`);
       console.warn(`SMTP attempt failed (${attempt.label}):`, error.message);
+    } finally {
+      if (transporter) {
+        transporter.close();
+      }
     }
   }
 
   const finalError = new Error(errors.join(' | ') || 'SMTP_SEND_FAILED');
   finalError.code = 'SMTP_SEND_FAILED';
+  finalError.status = 503;
   throw finalError;
 }
 
@@ -202,17 +215,24 @@ async function sendPasswordChangeOtp(user) {
     WHERE user_id = ? AND purpose = 'CHANGE_PASSWORD' AND consumed_at IS NULL
   `, [user.id]);
 
-  await pool.query(`
+  const [insertResult] = await pool.query(`
     INSERT INTO password_reset_otps (user_id, otp_hash, purpose, expires_at)
     VALUES (?, ?, 'CHANGE_PASSWORD', ?)
   `, [user.id, hashOtp(otp), expiresAt]);
 
-  await sendMailWithTimeout({
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
-    to: user.email,
-    subject: 'SignLearn password change OTP',
-    text: `Your SignLearn password change OTP is ${otp}. It expires in ${expiresInMinutes} minutes.`
-  });
+  try {
+    await sendMailWithTimeout({
+      from: process.env.SMTP_FROM || process.env.SMTP_USER,
+      to: user.email,
+      subject: 'SignLearn password change OTP',
+      text: `Your SignLearn password change OTP is ${otp}. It expires in ${expiresInMinutes} minutes.`
+    });
+  } catch (error) {
+    if (insertResult.insertId) {
+      await pool.query('DELETE FROM password_reset_otps WHERE id = ?', [insertResult.insertId]);
+    }
+    throw error;
+  }
 
   return { expiresAt };
 }
