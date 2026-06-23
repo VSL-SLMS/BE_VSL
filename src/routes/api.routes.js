@@ -65,12 +65,12 @@ router.post('/auth/login', async (req, res, next) => {
 
 router.post('/auth/change-password', requireAuth, async (req, res, next) => {
   try {
-    const { currentPassword, newPassword, otp } = req.body;
+    const { currentPassword, newPassword, otp, verificationToken } = req.body;
 
-    if (!currentPassword || !newPassword || !otp) {
+    if (!currentPassword || !newPassword || (!verificationToken && !otp)) {
       return res.status(400).json({
         error: true,
-        message: 'Current password, new password, and OTP are required.'
+        message: 'Current password, new password, and verified OTP are required.'
       });
     }
 
@@ -81,7 +81,10 @@ router.post('/auth/change-password', requireAuth, async (req, res, next) => {
       });
     }
 
-    const user = await authService.changePassword(req.user.id, currentPassword, newPassword, otp);
+    const user = await authService.changePassword(req.user.id, currentPassword, newPassword, {
+      otp,
+      verificationToken
+    });
     return res.json({ data: { user } });
   } catch (error) {
     return next(error);
@@ -96,6 +99,25 @@ router.post('/auth/change-password/request-otp', requireAuth, async (req, res, n
         expiresAt: data.expiresAt
       },
       message: 'Password change OTP sent to your email.'
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.post('/auth/change-password/verify-otp', requireAuth, async (req, res, next) => {
+  try {
+    if (!req.body.otp) {
+      return res.status(400).json({
+        error: true,
+        message: 'OTP is required.'
+      });
+    }
+
+    const data = await authService.verifyPasswordChangeOtp(req.user.id, req.body.otp);
+    return res.json({
+      data,
+      message: 'OTP verified. You can now change your password.'
     });
   } catch (error) {
     return next(error);

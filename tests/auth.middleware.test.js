@@ -126,3 +126,23 @@ test('UC-SYS-01: optionalAuth treats invalid tokens as guest without failing', a
   assert.equal(req.user, undefined);
   assert.equal(res.statusCode, 200);
 });
+
+test('UC-SYS-02: password change verification token is scoped to user and token version', () => {
+  const user = {
+    id: 10,
+    role: 'TEACHER',
+    status: 'ACTIVE',
+    token_version: 3
+  };
+  const token = authService.__testing.signPasswordChangeToken(user);
+
+  assert.doesNotThrow(() => authService.__testing.verifyPasswordChangeToken(user, token));
+  assert.throws(
+    () => authService.__testing.verifyPasswordChangeToken({ ...user, id: 11 }, token),
+    /invalid|expired/i
+  );
+  assert.throws(
+    () => authService.__testing.verifyPasswordChangeToken({ ...user, token_version: 4 }, token),
+    /invalid|expired/i
+  );
+});

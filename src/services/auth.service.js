@@ -34,6 +34,48 @@ function signAuthToken(user) {
   );
 }
 
+function signPasswordChangeToken(user) {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET must be set in environment');
+  }
+
+  return jwt.sign(
+    {
+      id: user.id,
+      purpose: 'CHANGE_PASSWORD',
+      token_version: user.token_version
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: '5m' }
+  );
+}
+
+function verifyPasswordChangeToken(user, verificationToken) {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET must be set in environment');
+  }
+
+  try {
+    const payload = jwt.verify(verificationToken, process.env.JWT_SECRET);
+    const isValid =
+      payload.purpose === 'CHANGE_PASSWORD' &&
+      Number(payload.id) === Number(user.id) &&
+      Number(payload.token_version) === Number(user.token_version);
+
+    if (!isValid) {
+      const error = new Error('Password change verification is invalid. Request a new OTP.');
+      error.status = 400;
+      throw error;
+    }
+  } catch (error) {
+    if (!error.status) {
+      error.message = 'Password change verification expired. Request a new OTP.';
+      error.status = 400;
+    }
+    throw error;
+  }
+}
+
 async function register({ name, email, password, role }) {
   const normalizedRole = role === 'TEACHER' ? 'TEACHER' : 'STUDENT';
   const username = email.split('@')[0];
@@ -212,15 +254,37 @@ async function requestPasswordChangeOtp(userId) {
   return otpService.sendPasswordChangeOtp(user);
 }
 
-async function changePassword(userId, currentPassword, newPassword, otp) {
+async function verifyPasswordChangeOtp(userId, otp) {
   if (!otp) {
-    const error = new Error('OTP is required to change password.');
+    const error = new Error('OTP is required.');
+    error.status = 400;
+    throw error;
+  }
+
+  const user = await getUserById(userId);
+  if (!user) {
+    const error = new Error('User not found.');
+    error.status = 404;
+    throw error;
+  }
+
+  await otpService.verifyPasswordChangeOtp(userId, otp);
+
+  return {
+    verificationToken: signPasswordChangeToken(user),
+    expiresInMinutes: 5
+  };
+}
+
+async function changePassword(userId, currentPassword, newPassword, credential = {}) {
+  if (!credential.verificationToken && !credential.otp) {
+    const error = new Error('Verified OTP is required to change password.');
     error.status = 400;
     throw error;
   }
 
   const [users] = await pool.query(`
-    SELECT id, password_hash
+    SELECT id, password_hash, token_version
     FROM users
     WHERE id = ?
     LIMIT 1
@@ -240,7 +304,11 @@ async function changePassword(userId, currentPassword, newPassword, otp) {
     throw error;
   }
 
-  await otpService.verifyPasswordChangeOtp(userId, otp);
+  if (credential.verificationToken) {
+    verifyPasswordChangeToken(user, credential.verificationToken);
+  } else {
+    await otpService.verifyPasswordChangeOtp(userId, credential.otp);
+  }
 
   const passwordHash = await bcrypt.hash(newPassword, 10);
   const hasMustChangePassword = await hasColumn('users', 'must_change_password');
@@ -292,4 +360,16 @@ async function getUserById(id) {
   return rows[0] || null;
 }
 
-module.exports = { register, login, createTeacher, requestPasswordChangeOtp, changePassword, getUserById };
+module.exports = {
+  register,
+  login,
+  createTeacher,
+  requestPasswordChangeOtp,
+  verifyPasswordChangeOtp,
+  changePassword,
+  getUserById,
+  __testing: {
+    signPasswordChangeToken,
+    verifyPasswordChangeToken
+  }
+};
