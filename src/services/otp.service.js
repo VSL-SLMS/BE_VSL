@@ -122,6 +122,10 @@ function isSmtpConfigured() {
   return Boolean(process.env.SMTP_USER && process.env.SMTP_PASS);
 }
 
+function isSmtpFailure(error) {
+  return error?.code === 'SMTP_SEND_FAILED' || /SMTP_/i.test(String(error?.message || ''));
+}
+
 function withTimeout(promise, timeoutMs, timeoutMessage) {
   let timeoutId;
   const timeout = new Promise((_, reject) => {
@@ -231,6 +235,13 @@ async function sendPasswordChangeOtp(user) {
     if (insertResult.insertId) {
       await pool.query('DELETE FROM password_reset_otps WHERE id = ?', [insertResult.insertId]);
     }
+    if (isSmtpFailure(error)) {
+      const publicError = new Error('Email service is temporarily unavailable. Please try again later or contact Admin.');
+      publicError.status = 503;
+      publicError.code = 'EMAIL_SERVICE_UNAVAILABLE';
+      publicError.details = error.message;
+      throw publicError;
+    }
     throw error;
   }
 
@@ -266,5 +277,8 @@ module.exports = {
   sendPasswordChangeOtp,
   verifyPasswordChangeOtp,
   sendTeacherTemporaryPassword,
-  isSmtpConfigured
+  isSmtpConfigured,
+  __testing: {
+    isSmtpFailure
+  }
 };
