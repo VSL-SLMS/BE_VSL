@@ -4,11 +4,13 @@
   "description": "SLMS backend - Express.js API, Swagger, MySQL, and raw SQL",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon --ignore node_modules --ignore database --ignore pdf_extracted src/server.js",
-    "start": "node src/server.js"
+    "dev": "nodemon --watch src src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.10.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.3",

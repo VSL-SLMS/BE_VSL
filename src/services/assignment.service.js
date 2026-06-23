@@ -681,5 +681,12 @@ module.exports = {
   listStudentAssignments,
   getStudentAssignmentDetail,
   submitAssignment,
-  ensureAssignmentTables
+  ensureAssignmentTables,
+  __testing: {
+    canSubmit,
+    getStudentFacingStatus,
+    normalizeDeadline,
+    normalizeStudentIds,
+    validateSubmissionFile
+  }
 };

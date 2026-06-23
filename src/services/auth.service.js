@@ -84,10 +84,10 @@ async function login(email, password) {
     throw error;
   }
 
-  delete user.password_hash;
-  user.token = signAuthToken(user);
+  const publicUser = await getUserById(user.id);
+  publicUser.token = signAuthToken(publicUser);
 
-  return user;
+  return publicUser;
 }
 
 async function buildUniqueUsername(connection, email) {
@@ -269,11 +269,24 @@ async function changePassword(userId, currentPassword, newPassword, otp) {
 
 async function getUserById(id) {
   const hasMustChangePassword = await hasColumn('users', 'must_change_password');
+  const hasStudentDateOfBirth = await hasColumn('students', 'date_of_birth');
   const mustChangePasswordSelect = hasMustChangePassword ? ', must_change_password' : '';
+  const studentDateOfBirthSelect = hasStudentDateOfBirth ? ', s.date_of_birth' : ', NULL AS date_of_birth';
   const [rows] = await pool.query(`
-    SELECT id, username, email, display_name, avatar_url, role, status, token_version${mustChangePasswordSelect}, created_at
-    FROM users
-    WHERE id = ?
+    SELECT
+      u.id,
+      u.username,
+      u.email,
+      u.display_name,
+      u.avatar_url,
+      u.role,
+      u.status,
+      u.token_version${mustChangePasswordSelect},
+      u.created_at
+      ${studentDateOfBirthSelect}
+    FROM users u
+    LEFT JOIN students s ON s.user_id = u.id
+    WHERE u.id = ?
     LIMIT 1
   `, [id]);
   return rows[0] || null;
