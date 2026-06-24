@@ -15,6 +15,14 @@ function getSmtpTimeoutMs() {
   return Math.max(configured, 15000);
 }
 
+function getMailProvider() {
+  return String(process.env.MAIL_PROVIDER || 'auto').trim().toLowerCase();
+}
+
+function getMailTimeoutMs() {
+  return getSmtpTimeoutMs();
+}
+
 async function ensureOtpTable() {
   if (tableReady) return;
 
@@ -126,6 +134,21 @@ function isSmtpFailure(error) {
   return error?.code === 'SMTP_SEND_FAILED' || /SMTP_/i.test(String(error?.message || ''));
 }
 
+function isResendConfigured() {
+  return Boolean(process.env.RESEND_API_KEY);
+}
+
+function isMailConfigured() {
+  const provider = getMailProvider();
+  if (provider === 'resend') return isResendConfigured();
+  if (provider === 'smtp') return isSmtpConfigured();
+  return isResendConfigured() || isSmtpConfigured();
+}
+
+function normalizeRecipients(to) {
+  return Array.isArray(to) ? to : [to];
+}
+
 function withTimeout(promise, timeoutMs, timeoutMessage) {
   let timeoutId;
   const timeout = new Promise((_, reject) => {
@@ -175,13 +198,93 @@ async function sendMailWithTimeout(mailOptions) {
   throw finalError;
 }
 
+async function sendMailWithResend(mailOptions) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    const error = new Error('RESEND_API_KEY is not configured.');
+    error.status = 500;
+    error.code = 'RESEND_NOT_CONFIGURED';
+    throw error;
+  }
+
+  const timeoutMs = getMailTimeoutMs();
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        from: process.env.RESEND_FROM || process.env.SMTP_FROM || process.env.SMTP_USER,
+        to: normalizeRecipients(mailOptions.to),
+        subject: mailOptions.subject,
+        text: mailOptions.text
+      })
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const error = new Error(payload.message || payload.error || 'Resend email delivery failed.');
+      error.status = response.status >= 500 ? 503 : 502;
+      error.code = 'RESEND_SEND_FAILED';
+      throw error;
+    }
+
+    return {
+      accepted: normalizeRecipients(mailOptions.to),
+      provider: 'resend',
+      id: payload.id
+    };
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      const timeoutError = new Error(`Resend timed out after ${timeoutMs}ms`);
+      timeoutError.status = 503;
+      timeoutError.code = 'RESEND_TIMEOUT';
+      throw timeoutError;
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function sendMail(mailOptions) {
+  if (parseBoolean(process.env.SMTP_DRY_RUN, false)) {
+    return {
+      accepted: normalizeRecipients(mailOptions.to),
+      dryRun: true
+    };
+  }
+
+  const provider = getMailProvider();
+
+  if (provider === 'resend') {
+    return sendMailWithResend(mailOptions);
+  }
+
+  if (provider === 'smtp') {
+    return sendMailWithTimeout(mailOptions);
+  }
+
+  if (isResendConfigured()) {
+    return sendMailWithResend(mailOptions);
+  }
+
+  return sendMailWithTimeout(mailOptions);
+}
+
 async function sendTeacherTemporaryPassword(user, temporaryPassword) {
-  if (!isSmtpConfigured()) {
-    return { sent: false, reason: 'SMTP_NOT_CONFIGURED' };
+  if (!isMailConfigured()) {
+    return { sent: false, reason: 'MAIL_NOT_CONFIGURED' };
   }
 
   try {
-    await sendMailWithTimeout({
+    await sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
       to: user.email,
       subject: 'SignLearn teacher account',
@@ -225,7 +328,7 @@ async function sendPasswordChangeOtp(user) {
   `, [user.id, hashOtp(otp), expiresAt]);
 
   try {
-    await sendMailWithTimeout({
+    await sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
       to: user.email,
       subject: 'SignLearn password change OTP',
@@ -235,7 +338,7 @@ async function sendPasswordChangeOtp(user) {
     if (insertResult.insertId) {
       await pool.query('DELETE FROM password_reset_otps WHERE id = ?', [insertResult.insertId]);
     }
-    if (isSmtpFailure(error)) {
+    if (isSmtpFailure(error) || error.code === 'RESEND_SEND_FAILED' || error.code === 'RESEND_TIMEOUT') {
       const publicError = new Error('Email service is temporarily unavailable. Please try again later or contact Admin.');
       publicError.status = 503;
       publicError.code = 'EMAIL_SERVICE_UNAVAILABLE';
@@ -279,6 +382,8 @@ module.exports = {
   sendTeacherTemporaryPassword,
   isSmtpConfigured,
   __testing: {
+    getMailProvider,
+    isMailConfigured,
     isSmtpFailure
   }
 };
