@@ -135,7 +135,7 @@ function isSmtpFailure(error) {
 }
 
 function isResendConfigured() {
-  return Boolean(process.env.RESEND_API_KEY);
+  return Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM);
 }
 
 function isMailConfigured() {
@@ -207,6 +207,14 @@ async function sendMailWithResend(mailOptions) {
     throw error;
   }
 
+  const from = process.env.RESEND_FROM;
+  if (!from) {
+    const error = new Error('RESEND_FROM is not configured. Use a verified sender such as SLMS <no-reply@mail.vsl.lat>.');
+    error.status = 500;
+    error.code = 'RESEND_FROM_NOT_CONFIGURED';
+    throw error;
+  }
+
   const timeoutMs = getMailTimeoutMs();
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -220,7 +228,7 @@ async function sendMailWithResend(mailOptions) {
       },
       signal: controller.signal,
       body: JSON.stringify({
-        from: process.env.RESEND_FROM || process.env.SMTP_FROM || process.env.SMTP_USER,
+        from,
         to: normalizeRecipients(mailOptions.to),
         subject: mailOptions.subject,
         text: mailOptions.text
@@ -285,7 +293,6 @@ async function sendTeacherTemporaryPassword(user, temporaryPassword) {
 
   try {
     await sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
       to: user.email,
       subject: 'SignLearn teacher account',
       text: [
@@ -329,7 +336,6 @@ async function sendPasswordChangeOtp(user) {
 
   try {
     await sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
       to: user.email,
       subject: 'SignLearn password change OTP',
       text: `Your SignLearn password change OTP is ${otp}. It expires in ${expiresInMinutes} minutes.`
