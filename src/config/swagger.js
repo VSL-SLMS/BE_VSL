@@ -20,6 +20,7 @@ const swaggerSpec = {
     { name: 'Teachers' },
     { name: 'Teacher Assignments' },
     { name: 'Student Assignments' },
+    { name: 'Student Topic Lessons' },
     { name: 'Admin Teachers' },
     { name: 'Admin' },
     { name: 'Payments' }
@@ -164,10 +165,76 @@ const swaggerSpec = {
     '/api/teachers': {
       get: {
         tags: ['Teachers'],
-        summary: 'List active teachers for student teacher selection',
+        summary: 'List active teachers for Student selection',
+        description: 'Returns practical Teacher profile data for Student selection. Accuracy is simplified and only exposed when the Teacher has verification history.',
+        parameters: [
+          {
+            name: 'recommend',
+            in: 'query',
+            required: false,
+            schema: { type: 'boolean' },
+            example: true,
+            description: 'When true, returns only Teachers accepting Students, sorted by capacity first and reliability second.'
+          }
+        ],
         responses: {
           200: {
-            description: 'Teacher list'
+            description: 'Teacher list',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    data: {
+                      type: 'object',
+                      properties: {
+                        teachers: {
+                          type: 'array',
+                          items: {
+                            type: 'object',
+                            properties: {
+                              id: { type: 'integer', example: 1 },
+                              full_name: { type: 'string', example: 'Tran Thi B' },
+                              display_name: { type: 'string', example: 'Tran Thi B' },
+                              email: { type: 'string', example: 'teacher@example.com' },
+                              avatar_url: { type: 'string', nullable: true },
+                              bio: { type: 'string', example: 'Supports beginners learning Vietnamese Sign Language.' },
+                              specialization: { type: 'string', example: 'Beginner VSL, alphabet, daily conversation' },
+                              current_student_count: { type: 'integer', example: 8 },
+                              max_students: { type: 'integer', example: 30 },
+                              availability_status: {
+                                type: 'string',
+                                enum: ['OPEN', 'LIMITED', 'FULL'],
+                                example: 'OPEN'
+                              },
+                              reliability_label: {
+                                type: 'string',
+                                enum: ['NEW', 'RELIABLE', 'HIGHLY_RELIABLE'],
+                                example: 'NEW'
+                              },
+                              accuracy: {
+                                type: 'number',
+                                nullable: true,
+                                example: null,
+                                description: 'Null when the Teacher has no verified grading history.'
+                              },
+                              accuracy_verified: { type: 'boolean', example: false },
+                              is_accepting_students: { type: 'boolean', example: true },
+                              is_recommended: { type: 'boolean', example: true }
+                            }
+                          }
+                        },
+                        recommendedTeacher: {
+                          type: 'object',
+                          nullable: true,
+                          description: 'First recommended Teacher when recommend=true.'
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -184,7 +251,14 @@ const swaggerSpec = {
                 type: 'object',
                 properties: {
                   name: { type: 'string', example: 'Nguyen Van A' },
-                  avatarUrl: { type: 'string', example: 'https://example.com/avatar.png' }
+                  email: { type: 'string', example: 'student@example.com' },
+                  avatarUrl: { type: 'string', example: 'https://example.com/avatar.png' },
+                  dateOfBirth: {
+                    type: 'string',
+                    format: 'date',
+                    example: '2004-12-21',
+                    description: 'Student only. Use YYYY-MM-DD.'
+                  }
                 }
               }
             }
@@ -383,6 +457,102 @@ const swaggerSpec = {
         }
       }
     },
+    '/api/student/topic-lessons': {
+      get: {
+        tags: ['Student Topic Lessons'],
+        summary: 'Student lists Cloudinary video topic lessons',
+        description: 'Requires Student login, selected Teacher, and purchased course access. Returns topic-level progress and VSL vocabulary topic metadata.',
+        responses: {
+          200: {
+            description: 'Topic lessons grouped by subject'
+          },
+          403: {
+            description: 'Teacher selection or course purchase is required'
+          }
+        }
+      }
+    },
+    '/api/student/topic-lessons/progress': {
+      get: {
+        tags: ['Student Topic Lessons'],
+        summary: 'Student gets Cloudinary topic lesson progress summary',
+        responses: {
+          200: {
+            description: 'Topic lesson progress summary'
+          }
+        }
+      }
+    },
+    '/api/student/topic-lessons/{slug}': {
+      get: {
+        tags: ['Student Topic Lessons'],
+        summary: 'Student opens one topic lesson with word-level Cloudinary videos',
+        parameters: [
+          {
+            name: 'slug',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+            example: 'geography'
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Topic lesson detail with word/video items'
+          },
+          404: {
+            description: 'Topic lesson not found'
+          }
+        }
+      }
+    },
+    '/api/student/topic-lessons/{slug}/items/{itemId}/complete': {
+      post: {
+        tags: ['Student Topic Lessons'],
+        summary: 'Student marks one topic vocabulary video as learned',
+        parameters: [
+          {
+            name: 'slug',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+            example: 'geography'
+          },
+          {
+            name: 'itemId',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Video item progress updated'
+          }
+        }
+      }
+    },
+    '/api/student/topic-lessons/{slug}/complete': {
+      post: {
+        tags: ['Student Topic Lessons'],
+        summary: 'Student marks an entire Cloudinary topic lesson as completed',
+        parameters: [
+          {
+            name: 'slug',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+            example: 'geography'
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Topic lesson completed'
+          }
+        }
+      }
+    },
     '/api/admin/users': {
       get: {
         tags: ['Admin'],
@@ -488,6 +658,61 @@ const swaggerSpec = {
         responses: {
           200: {
             description: 'Teacher status updated'
+          }
+        }
+      }
+    },
+    '/api/admin/teachers/{id}/profile': {
+      patch: {
+        tags: ['Admin Teachers'],
+        summary: 'Admin updates Teacher selection profile fields',
+        description: 'Updates Teacher public selection information used by Students. Accuracy logs remain internal and are not editable here.',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string', example: 'Tran Thi B' },
+                  avatarUrl: { type: 'string', example: 'https://example.com/avatar.png' },
+                  bio: { type: 'string', example: 'Supports beginner Students learning daily VSL conversation.' },
+                  specialization: { type: 'string', example: 'Beginner VSL, alphabet, family signs' },
+                  availabilityStatus: {
+                    type: 'string',
+                    enum: ['OPEN', 'LIMITED', 'FULL'],
+                    example: 'OPEN'
+                  },
+                  maxStudents: { type: 'integer', example: 30 },
+                  reliabilityLabel: {
+                    type: 'string',
+                    enum: ['NEW', 'RELIABLE', 'HIGHLY_RELIABLE'],
+                    example: 'NEW'
+                  }
+                },
+                required: ['name', 'availabilityStatus', 'maxStudents', 'reliabilityLabel']
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Teacher profile updated'
+          },
+          400: {
+            description: 'Invalid profile payload'
+          },
+          404: {
+            description: 'Teacher not found'
           }
         }
       }

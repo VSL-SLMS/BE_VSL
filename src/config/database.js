@@ -1,4 +1,3 @@
-const mysql = require('mysql2/promise');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
@@ -10,17 +9,47 @@ const dbConfig = process.env.DATABASE_URL || process.env.MYSQL_URL || {
   database: process.env.DB_NAME || 'vsl_learning'
 };
 
-const pool = mysql.createPool(
-  typeof dbConfig === 'string'
-    ? dbConfig
-    : {
-        ...dbConfig,
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0,
-        charset: 'utf8mb4'
-      }
-);
+let poolInstance;
+
+function createPool() {
+  const mysql = require('mysql2/promise');
+  return mysql.createPool(
+    typeof dbConfig === 'string'
+      ? dbConfig
+      : {
+          ...dbConfig,
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0,
+          charset: 'utf8mb4'
+        }
+  );
+}
+
+function getPool() {
+  if (!poolInstance) {
+    poolInstance = createPool();
+  }
+  return poolInstance;
+}
+
+const pool = {
+  query(...args) {
+    return getPool().query(...args);
+  },
+  execute(...args) {
+    return getPool().execute(...args);
+  },
+  getConnection(...args) {
+    return getPool().getConnection(...args);
+  },
+  async end(...args) {
+    if (!poolInstance) return;
+    const instance = poolInstance;
+    poolInstance = undefined;
+    await instance.end(...args);
+  }
+};
 
 async function testConnection() {
   try {

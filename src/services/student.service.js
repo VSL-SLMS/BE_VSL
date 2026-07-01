@@ -3,6 +3,72 @@ const lessonService = require('./lesson.service');
 const paymentService = require('./payment.service');
 const assignmentService = require('./assignment.service');
 
+let teacherProfileColumnsReady = false;
+
+function normalizeTeacherProfile(row) {
+  const maxStudents = Number(row.max_students || 30);
+  const currentStudentCount = Number(row.current_student_count || 0);
+  const verificationCount = Number(row.accuracy_verification_count || 0);
+  const hasVerifiedAccuracy = verificationCount > 0;
+  const reliabilityLabel = hasVerifiedAccuracy ? (row.reliability_label || 'NEW') : 'NEW';
+  const isAcceptingStudents = row.availability_status !== 'FULL' && currentStudentCount < maxStudents;
+
+  return {
+    id: row.id,
+    full_name: row.full_name,
+    display_name: row.full_name,
+    email: row.email,
+    avatar_url: row.avatar_url,
+    bio: row.bio || '',
+    specialization: row.specialization || 'General VSL learning',
+    current_student_count: currentStudentCount,
+    max_students: maxStudents,
+    availability_status: row.availability_status || 'OPEN',
+    reliability_label: reliabilityLabel,
+    accuracy: hasVerifiedAccuracy ? Number(row.accuracy) : null,
+    accuracy_verified: hasVerifiedAccuracy,
+    accuracy_verification_count: verificationCount,
+    is_accepting_students: isAcceptingStudents,
+    is_recommended: false
+  };
+}
+
+async function hasColumn(tableName, columnName) {
+  const [rows] = await pool.query(`
+    SELECT COUNT(*) AS count
+    FROM information_schema.columns
+    WHERE table_schema = DATABASE()
+      AND table_name = ?
+      AND column_name = ?
+  `, [tableName, columnName]);
+  return Number(rows[0]?.count || 0) > 0;
+}
+
+async function addTeacherProfileColumnIfMissing(columnName, ddl) {
+  const exists = await hasColumn('teachers', columnName);
+  if (!exists) {
+    await pool.query(`ALTER TABLE teachers ADD COLUMN ${ddl}`);
+  }
+}
+
+async function ensureTeacherProfileColumns() {
+  if (teacherProfileColumnsReady) return;
+
+  await addTeacherProfileColumnIfMissing('bio', 'bio TEXT NULL');
+  await addTeacherProfileColumnIfMissing('specialization', 'specialization VARCHAR(255) NULL');
+  await addTeacherProfileColumnIfMissing(
+    'availability_status',
+    "availability_status ENUM('OPEN', 'LIMITED', 'FULL') NOT NULL DEFAULT 'OPEN'"
+  );
+  await addTeacherProfileColumnIfMissing('max_students', 'max_students INT NOT NULL DEFAULT 30');
+  await addTeacherProfileColumnIfMissing(
+    'reliability_label',
+    "reliability_label ENUM('NEW', 'RELIABLE', 'HIGHLY_RELIABLE') NOT NULL DEFAULT 'NEW'"
+  );
+
+  teacherProfileColumnsReady = true;
+}
+
 async function ensureLessonProgressTable() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS lesson_progress (
@@ -117,15 +183,66 @@ async function getDashboard(userId) {
   };
 }
 
-async function listTeachers() {
+async function listTeachers({ recommend = false } = {}) {
+  await ensureTeacherProfileColumns();
+
   const [rows] = await pool.query(`
-    SELECT t.id, u.display_name, u.email, t.accuracy
+    SELECT
+      t.id,
+      u.display_name AS full_name,
+      u.email,
+      u.avatar_url,
+      t.bio,
+      t.specialization,
+      t.accuracy,
+      t.availability_status,
+      t.max_students,
+      t.reliability_label,
+      COUNT(DISTINCT assigned_students.id) AS current_student_count,
+      COUNT(DISTINCT tal.id) AS accuracy_verification_count
     FROM teachers t
     JOIN users u ON u.id = t.user_id
+    LEFT JOIN students assigned_students ON assigned_students.teacher_id = t.id
+    LEFT JOIN teacher_accuracy_logs tal ON tal.teacher_id = t.id
     WHERE u.status = 'ACTIVE'
+    GROUP BY
+      t.id,
+      u.display_name,
+      u.email,
+      u.avatar_url,
+      t.bio,
+      t.specialization,
+      t.accuracy,
+      t.availability_status,
+      t.max_students,
+      t.reliability_label
     ORDER BY u.display_name
   `);
-  return rows;
+
+  const teachers = rows.map(normalizeTeacherProfile);
+
+  if (!recommend) {
+    return teachers;
+  }
+
+  const reliabilityScore = {
+    HIGHLY_RELIABLE: 3,
+    RELIABLE: 2,
+    NEW: 1
+  };
+
+  return teachers
+    .filter((teacher) => teacher.is_accepting_students)
+    .sort((a, b) => {
+      const capacityDelta = (a.current_student_count / a.max_students) - (b.current_student_count / b.max_students);
+      if (capacityDelta !== 0) return capacityDelta;
+      if (a.current_student_count !== b.current_student_count) return a.current_student_count - b.current_student_count;
+      return (reliabilityScore[b.reliability_label] || 0) - (reliabilityScore[a.reliability_label] || 0);
+    })
+    .map((teacher, index) => ({
+      ...teacher,
+      is_recommended: index === 0
+    }));
 }
 
 async function chooseTeacher(userId, teacherId) {
@@ -134,14 +251,26 @@ async function chooseTeacher(userId, teacherId) {
   if (!student) throw new Error('Student profile not found.');
   if (student.teacher_id) throw new Error('Teacher already selected.');
 
+  await ensureTeacherProfileColumns();
+
   const [teachers] = await pool.query(`
-    SELECT t.id
+    SELECT
+      t.id,
+      t.availability_status,
+      t.max_students,
+      COUNT(assigned_students.id) AS current_student_count
     FROM teachers t
     JOIN users u ON u.id = t.user_id
+    LEFT JOIN students assigned_students ON assigned_students.teacher_id = t.id
     WHERE t.id = ? AND u.status = 'ACTIVE'
+    GROUP BY t.id, t.availability_status, t.max_students
     LIMIT 1
   `, [teacherId]);
   if (!teachers.length) throw new Error('Teacher not found or inactive.');
+  const teacher = teachers[0];
+  if (teacher.availability_status === 'FULL' || Number(teacher.current_student_count || 0) >= Number(teacher.max_students || 30)) {
+    throw new Error('Teacher is currently full.');
+  }
 
   await pool.query('UPDATE students SET teacher_id = ? WHERE id = ?', [teacherId, student.id]);
 }
@@ -332,5 +461,11 @@ module.exports = {
   getLessonDetail,
   completeLesson,
   getProgress,
-  getAssignments
+  getAssignments,
+  __testing: {
+    resetTeacherProfileColumnsReady() {
+      teacherProfileColumnsReady = false;
+    },
+    normalizeTeacherProfile
+  }
 };

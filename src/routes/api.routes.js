@@ -6,6 +6,7 @@ const teacherService = require('../services/teacher.service');
 const userService = require('../services/user.service');
 const adminTeacherService = require('../services/adminTeacher.service');
 const assignmentService = require('../services/assignment.service');
+const topicLessonService = require('../services/topicLesson.service');
 const { requireAuth, optionalAuth } = require('../middlewares/auth.middleware');
 const { requireRole } = require('../middlewares/role.middleware');
 const paymentService = require('../services/payment.service');
@@ -64,12 +65,12 @@ router.post('/auth/login', async (req, res, next) => {
 
 router.post('/auth/change-password', requireAuth, async (req, res, next) => {
   try {
-    const { currentPassword, newPassword, otp } = req.body;
+    const { currentPassword, newPassword, otp, verificationToken } = req.body;
 
-    if (!currentPassword || !newPassword || !otp) {
+    if (!currentPassword || !newPassword || (!verificationToken && !otp)) {
       return res.status(400).json({
         error: true,
-        message: 'Current password, new password, and OTP are required.'
+        message: 'Current password, new password, and verified OTP are required.'
       });
     }
 
@@ -80,7 +81,10 @@ router.post('/auth/change-password', requireAuth, async (req, res, next) => {
       });
     }
 
-    const user = await authService.changePassword(req.user.id, currentPassword, newPassword, otp);
+    const user = await authService.changePassword(req.user.id, currentPassword, newPassword, {
+      otp,
+      verificationToken
+    });
     return res.json({ data: { user } });
   } catch (error) {
     return next(error);
@@ -95,6 +99,25 @@ router.post('/auth/change-password/request-otp', requireAuth, async (req, res, n
         expiresAt: data.expiresAt
       },
       message: 'Password change OTP sent to your email.'
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.post('/auth/change-password/verify-otp', requireAuth, async (req, res, next) => {
+  try {
+    if (!req.body.otp) {
+      return res.status(400).json({
+        error: true,
+        message: 'OTP is required.'
+      });
+    }
+
+    const data = await authService.verifyPasswordChangeOtp(req.user.id, req.body.otp);
+    return res.json({
+      data,
+      message: 'OTP verified. You can now change your password.'
     });
   } catch (error) {
     return next(error);
@@ -153,6 +176,15 @@ router.get('/admin/teachers/:id', requireAuth, requireRole('ADMIN'), async (req,
   }
 });
 
+router.patch('/admin/teachers/:id/profile', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
+  try {
+    const teacher = await adminTeacherService.updateTeacherProfile(req.params.id, req.body || {});
+    res.json({ data: { teacher } });
+  } catch (error) {
+    res.status(error.status || 500).json({ error: true, message: error.message });
+  }
+});
+
 router.patch('/admin/teachers/:id/status', requireAuth, requireRole('ADMIN'), async (req, res, next) => {
   try {
     const teacher = await adminTeacherService.updateTeacherStatus(req.params.id, req.body.status);
@@ -164,8 +196,9 @@ router.patch('/admin/teachers/:id/status', requireAuth, requireRole('ADMIN'), as
 
 router.get('/teachers', requireAuth, async (req, res, next) => {
   try {
-    const teachers = await studentService.listTeachers();
-    res.json({ data: { teachers } });
+    const recommend = String(req.query.recommend || '').toLowerCase() === 'true';
+    const teachers = await studentService.listTeachers({ recommend });
+    res.json({ data: { teachers, recommendedTeacher: recommend ? teachers[0] || null : null } });
   } catch (error) {
     next(error);
   }
@@ -184,7 +217,9 @@ router.patch('/users/me/profile', requireAuth, async (req, res, next) => {
   try {
     const user = await userService.updateUserProfile(req.user, req.user.id, {
       name: req.body.name || req.body.displayName,
-      avatarUrl: req.body.avatarUrl || req.body.avatar_url
+      email: req.body.email,
+      avatarUrl: req.body.avatarUrl || req.body.avatar_url,
+      dateOfBirth: req.body.dateOfBirth || req.body.date_of_birth
     });
     res.json({ data: { user } });
   } catch (error) {
@@ -205,7 +240,9 @@ router.patch('/users/:id/profile', requireAuth, async (req, res, next) => {
   try {
     const user = await userService.updateUserProfile(req.user, req.params.id, {
       name: req.body.name || req.body.displayName,
-      avatarUrl: req.body.avatarUrl || req.body.avatar_url
+      email: req.body.email,
+      avatarUrl: req.body.avatarUrl || req.body.avatar_url,
+      dateOfBirth: req.body.dateOfBirth || req.body.date_of_birth
     });
     res.json({ data: { user } });
   } catch (error) {
@@ -365,6 +402,71 @@ router.post('/student/lessons/:lessonId/complete', requireAuth, requireRole('STU
     res.status(error.status || 500).json({
       error: true,
       code: error.code || 'LESSON_COMPLETE_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.get('/student/topic-lessons', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await topicLessonService.listStudentTopicLessons(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'TOPIC_LESSONS_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.get('/student/topic-lessons/progress', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await topicLessonService.getStudentTopicProgress(req.user.id);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'TOPIC_PROGRESS_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.get('/student/topic-lessons/:slug', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await topicLessonService.getTopicLessonBySlug(req.user.id, req.params.slug);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'TOPIC_LESSON_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.post('/student/topic-lessons/:slug/items/:itemId/complete', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await topicLessonService.completeTopicLessonItem(req.user.id, req.params.slug, req.params.itemId);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'TOPIC_ITEM_COMPLETE_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.post('/student/topic-lessons/:slug/complete', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await topicLessonService.completeTopicLesson(req.user.id, req.params.slug);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'TOPIC_COMPLETE_ERROR',
       message: error.message
     });
   }
