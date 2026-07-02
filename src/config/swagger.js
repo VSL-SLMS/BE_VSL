@@ -340,10 +340,53 @@ const swaggerSpec = {
     '/api/teacher/submissions': {
       get: {
         tags: ['Teacher Assignments'],
-        summary: 'Teacher lists submissions for their assignments',
+        summary: 'Teacher lists finalized media submissions for their assignments',
         responses: {
           200: {
             description: 'Submission list'
+          }
+        }
+      }
+    },
+    '/api/teacher/submissions/{id}': {
+      get: {
+        tags: ['Teacher Assignments'],
+        summary: 'Teacher gets one finalized media submission',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Submission detail'
+          },
+          404: {
+            description: 'Submission not found for this Teacher'
+          }
+        }
+      }
+    },
+    '/api/teacher/submissions/{id}/media': {
+      get: {
+        tags: ['Teacher Assignments'],
+        summary: 'Teacher gets authorized playback metadata for a finalized submission',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Authorized submission media metadata'
           }
         }
       }
@@ -423,7 +466,7 @@ const swaggerSpec = {
     '/api/student/assignments/{id}/submit': {
       post: {
         tags: ['Student Assignments'],
-        summary: 'Student submits an assigned assignment',
+        summary: 'Student finalizes an assigned assignment after direct Cloudinary upload',
         parameters: [
           {
             name: 'id',
@@ -441,8 +484,22 @@ const swaggerSpec = {
                 type: 'object',
                 properties: {
                   content: { type: 'string', example: 'My answer text or video description.' },
-                  fileUrl: { type: 'string', example: 'https://example.com/submission.mp4' }
-                }
+                  cloudinary: {
+                    type: 'object',
+                    properties: {
+                      public_id: { type: 'string', example: 'slms/submissions/1/2/1780000000-abcd1234' },
+                      asset_id: { type: 'string', example: 'cloudinary-asset-id' },
+                      secure_url: { type: 'string', example: 'https://res.cloudinary.com/demo/video/authenticated/v1/slms/submissions/1/2/1780000000-abcd1234.mp4' },
+                      resource_type: { type: 'string', example: 'video' },
+                      format: { type: 'string', example: 'mp4' },
+                      bytes: { type: 'integer', example: 2457600 },
+                      duration: { type: 'number', example: 18.2 },
+                      original_filename: { type: 'string', example: 'practice.mp4' }
+                    },
+                    required: ['public_id', 'secure_url', 'resource_type', 'format', 'bytes', 'duration']
+                  }
+                },
+                required: ['cloudinary']
               }
             }
           }
@@ -453,6 +510,65 @@ const swaggerSpec = {
           },
           409: {
             description: 'Assignment already submitted or locked'
+          }
+        }
+      }
+    },
+    '/api/student/assignments/{id}/upload-signature': {
+      post: {
+        tags: ['Student Assignments'],
+        summary: 'Student requests a signed Cloudinary direct-upload payload',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  fileName: { type: 'string', example: 'practice.mp4' },
+                  fileSize: { type: 'integer', example: 2457600 },
+                  contentType: { type: 'string', example: 'video/mp4' }
+                },
+                required: ['fileName', 'fileSize']
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Signed Cloudinary upload payload'
+          },
+          409: {
+            description: 'Assignment is not open for submission'
+          }
+        }
+      }
+    },
+    '/api/student/submissions/{id}/media': {
+      get: {
+        tags: ['Student Assignments'],
+        summary: 'Student gets authorized playback metadata for their own submission',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Authorized submission media metadata'
           }
         }
       }

@@ -1,6 +1,12 @@
 const { pool } = require('../config/database');
+const {
+  createUploadSignature,
+  getSubmissionFolder,
+  getUploadLimits
+} = require('../config/cloudinary');
 
 let tablesReady = false;
+const SUBMITTED_STATUSES = ['SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED'];
 
 function appError(message, status = 400, code = 'ASSIGNMENT_ERROR') {
   const error = new Error(message);
@@ -60,10 +66,175 @@ function getStudentFacingStatus(status) {
 
 function validateSubmissionFile(filePath) {
   if (!filePath) return;
-  const allowed = /\.(pdf|png|jpe?g|webp|mp4|mov|webm|txt|docx?)$/i;
+  const allowed = /\.(mp4|mov|webm)$/i;
   if (!allowed.test(filePath)) {
-    throw appError('Unsupported submission file format.', 400, 'UNSUPPORTED_FILE_FORMAT');
+    throw appError('Unsupported submission video format.', 400, 'UNSUPPORTED_FILE_FORMAT');
   }
+}
+
+function isSubmittedStatus(status) {
+  return SUBMITTED_STATUSES.includes(normalizeSubmissionStatus(status));
+}
+
+function detectUploadFormat(payload = {}) {
+  const explicit = payload.format || payload.extension;
+  if (explicit) return String(explicit).trim().replace(/^\./, '').toLowerCase();
+
+  const fileName = String(payload.fileName || payload.filename || payload.originalFilename || '').trim();
+  const match = fileName.match(/\.([a-z0-9]+)$/i);
+  return match ? match[1].toLowerCase() : '';
+}
+
+function assertAllowedVideoFormat(format, limits = getUploadLimits()) {
+  if (!format) {
+    throw appError('Submission video format is required.', 400, 'UPLOAD_FORMAT_REQUIRED');
+  }
+  if (!limits.allowedFormats.includes(format)) {
+    throw appError('Unsupported submission video format.', 400, 'UNSUPPORTED_FILE_FORMAT');
+  }
+}
+
+function validateUploadRequest(payload = {}) {
+  const limits = getUploadLimits();
+  const format = detectUploadFormat(payload);
+  assertAllowedVideoFormat(format, limits);
+
+  const contentType = String(payload.contentType || payload.mimeType || '').toLowerCase();
+  if (contentType && !['video/mp4', 'video/quicktime', 'video/webm'].includes(contentType)) {
+    throw appError('Unsupported submission video type.', 400, 'UNSUPPORTED_FILE_TYPE');
+  }
+
+  const bytes = Number(payload.bytes ?? payload.fileSize ?? payload.size);
+  if (!Number.isFinite(bytes) || bytes <= 0) {
+    throw appError('Submission video size is required.', 400, 'UPLOAD_SIZE_REQUIRED');
+  }
+  if (bytes > limits.maxBytes) {
+    throw appError('Submission video is too large.', 400, 'UPLOAD_TOO_LARGE');
+  }
+
+  return { format, bytes };
+}
+
+function readCloudinaryPayload(payload = {}) {
+  return payload.cloudinary || payload.media || payload.upload || payload;
+}
+
+function finitePositiveNumber(value, fieldName) {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number <= 0) {
+    throw appError(`${fieldName} is required.`, 400, 'INVALID_CLOUDINARY_METADATA');
+  }
+  return number;
+}
+
+function validateCloudinarySubmissionMetadata(payload = {}, { assignmentId, studentId }) {
+  const source = readCloudinaryPayload(payload);
+  const limits = getUploadLimits();
+  const publicId = String(source.publicId || source.public_id || source.cloudinaryPublicId || '').trim();
+  const assetId = String(source.assetId || source.asset_id || source.cloudinaryAssetId || '').trim() || null;
+  const secureUrl = String(source.secureUrl || source.secure_url || source.url || '').trim();
+  const resourceType = String(source.resourceType || source.resource_type || '').trim().toLowerCase();
+  const format = String(source.format || '').trim().replace(/^\./, '').toLowerCase();
+  const bytesValue = source.bytes ?? source.mediaBytes ?? source.size;
+  const durationValue = source.durationSeconds ?? source.duration_seconds ?? source.duration;
+  const originalFilename = String(source.originalFilename || source.original_filename || source.fileName || '').trim() || null;
+  const deliveryType = String(source.type || source.deliveryType || source.delivery_type || 'authenticated').trim() || 'authenticated';
+  const expectedPrefix = `${getSubmissionFolder(assignmentId, studentId)}/`;
+
+  if (!publicId || !secureUrl || !resourceType || !format || bytesValue === undefined || durationValue === undefined) {
+    throw appError('Cloudinary submission metadata is incomplete.', 400, 'CLOUDINARY_METADATA_REQUIRED');
+  }
+  const bytes = finitePositiveNumber(bytesValue, 'Cloudinary video size');
+  const durationSeconds = finitePositiveNumber(durationValue, 'Cloudinary video duration');
+  if (resourceType !== 'video') {
+    throw appError('Submission media must be a Cloudinary video.', 400, 'INVALID_CLOUDINARY_RESOURCE_TYPE');
+  }
+  assertAllowedVideoFormat(format, limits);
+  if (bytes > limits.maxBytes) {
+    throw appError('Submission video is too large.', 400, 'UPLOAD_TOO_LARGE');
+  }
+  if (durationSeconds > limits.maxDurationSeconds) {
+    throw appError('Submission video is too long.', 400, 'UPLOAD_TOO_LONG');
+  }
+  if (!publicId.startsWith(expectedPrefix) || publicId.includes('..')) {
+    throw appError('Cloudinary public ID is outside the assigned upload folder.', 400, 'INVALID_CLOUDINARY_PUBLIC_ID');
+  }
+  if (!/^https:\/\//i.test(secureUrl)) {
+    throw appError('Cloudinary secure URL must use HTTPS.', 400, 'INVALID_CLOUDINARY_SECURE_URL');
+  }
+
+  return {
+    publicId,
+    assetId,
+    secureUrl,
+    resourceType,
+    format,
+    bytes,
+    durationSeconds,
+    originalFilename,
+    deliveryType
+  };
+}
+
+function submissionMediaFromRow(row) {
+  if (!row?.cloudinary_public_id) return null;
+  return {
+    public_id: row.cloudinary_public_id,
+    asset_id: row.cloudinary_asset_id,
+    secure_url: row.cloudinary_secure_url,
+    playback_url: row.cloudinary_secure_url,
+    resource_type: row.cloudinary_resource_type,
+    format: row.cloudinary_format,
+    bytes: row.media_bytes,
+    duration_seconds: row.media_duration_seconds,
+    original_filename: row.original_filename,
+    delivery_type: row.media_delivery_type || 'authenticated'
+  };
+}
+
+async function ensureColumn(tableName, columnName, definition) {
+  const [rows] = await pool.query(`
+    SELECT COUNT(*) AS found
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = ?
+      AND COLUMN_NAME = ?
+  `, [tableName, columnName]);
+
+  if (!Number(rows[0]?.found)) {
+    await pool.query(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${definition}`);
+  }
+}
+
+async function ensureIndex(tableName, indexName, createSql) {
+  const [rows] = await pool.query(`
+    SELECT COUNT(*) AS found
+    FROM information_schema.STATISTICS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = ?
+      AND INDEX_NAME = ?
+  `, [tableName, indexName]);
+
+  if (!Number(rows[0]?.found)) {
+    await pool.query(createSql);
+  }
+}
+
+async function ensureSubmissionCloudinaryColumns() {
+  await ensureColumn('submissions', 'cloudinary_public_id', 'VARCHAR(255) NULL');
+  await ensureColumn('submissions', 'cloudinary_asset_id', 'VARCHAR(255) NULL');
+  await ensureColumn('submissions', 'cloudinary_secure_url', 'TEXT NULL');
+  await ensureColumn('submissions', 'cloudinary_resource_type', 'VARCHAR(50) NULL');
+  await ensureColumn('submissions', 'cloudinary_format', 'VARCHAR(30) NULL');
+  await ensureColumn('submissions', 'media_bytes', 'BIGINT NULL');
+  await ensureColumn('submissions', 'media_duration_seconds', 'DECIMAL(10,3) NULL');
+  await ensureColumn('submissions', 'original_filename', 'VARCHAR(255) NULL');
+  await ensureColumn('submissions', 'media_delivery_type', "VARCHAR(30) NULL DEFAULT 'authenticated'");
+  await ensureIndex(
+    'submissions',
+    'idx_submissions_cloudinary_public_id',
+    'CREATE INDEX idx_submissions_cloudinary_public_id ON submissions (cloudinary_public_id)'
+  );
 }
 
 async function ensureAssignmentTables() {
@@ -102,6 +273,15 @@ async function ensureAssignmentTables() {
       student_id INT NOT NULL,
       content TEXT,
       file_path VARCHAR(500),
+      cloudinary_public_id VARCHAR(255) NULL,
+      cloudinary_asset_id VARCHAR(255) NULL,
+      cloudinary_secure_url TEXT NULL,
+      cloudinary_resource_type VARCHAR(50) NULL,
+      cloudinary_format VARCHAR(30) NULL,
+      media_bytes BIGINT NULL,
+      media_duration_seconds DECIMAL(10,3) NULL,
+      original_filename VARCHAR(255) NULL,
+      media_delivery_type VARCHAR(30) NULL DEFAULT 'authenticated',
       status ENUM('DRAFT', 'SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED') NOT NULL DEFAULT 'DRAFT',
       score DECIMAL(5,2) NULL,
       feedback TEXT,
@@ -115,9 +295,12 @@ async function ensureAssignmentTables() {
       FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE,
       FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
       UNIQUE KEY unique_student_assignment_submission (assignment_id, student_id),
-      INDEX idx_submissions_status (status)
+      INDEX idx_submissions_status (status),
+      INDEX idx_submissions_cloudinary_public_id (cloudinary_public_id)
     ) ENGINE=InnoDB
   `);
+
+  await ensureSubmissionCloudinaryColumns();
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS submission_grades (
@@ -376,6 +559,15 @@ async function listTeacherSubmissions(userId) {
       sub.id AS submission_id,
       sub.content,
       sub.file_path,
+      sub.cloudinary_public_id,
+      sub.cloudinary_asset_id,
+      sub.cloudinary_secure_url,
+      sub.cloudinary_resource_type,
+      sub.cloudinary_format,
+      sub.media_bytes,
+      sub.media_duration_seconds,
+      sub.original_filename,
+      sub.media_delivery_type,
       sub.status AS submission_status,
       sub.score,
       sub.feedback,
@@ -386,16 +578,96 @@ async function listTeacherSubmissions(userId) {
     JOIN assignments a ON a.id = ast.assignment_id
     JOIN students s ON s.id = ast.student_id
     JOIN users su ON su.id = s.user_id
-    LEFT JOIN submissions sub ON sub.assignment_id = a.id AND sub.student_id = s.id
+    JOIN submissions sub ON sub.assignment_id = a.id AND sub.student_id = s.id
     WHERE a.teacher_id = ?
-    ORDER BY COALESCE(sub.submitted_at, ast.assigned_at) DESC
+      AND sub.status IN ('SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
+      AND sub.cloudinary_public_id IS NOT NULL
+    ORDER BY sub.submitted_at DESC
   `, [teacher.id]);
 
   return rows.map((row) => ({
     ...row,
     submission_status: normalizeSubmissionStatus(row.submission_status),
-    can_grade: row.submission_id && row.submission_status === 'SUBMITTED' && !row.is_locked
+    media: submissionMediaFromRow(row),
+    can_grade: row.submission_status === 'SUBMITTED' && !row.is_locked
   }));
+}
+
+async function getTeacherSubmissionDetail(userId, submissionId) {
+  await ensureAssignmentTables();
+  const teacher = await getTeacherProfile(userId);
+
+  const [rows] = await pool.query(`
+    SELECT
+      a.id AS assignment_id,
+      a.title AS assignment_title,
+      a.instructions AS assignment_instructions,
+      a.deadline,
+      s.id AS student_id,
+      su.display_name AS student_name,
+      su.email AS student_email,
+      sub.*
+    FROM submissions sub
+    JOIN assignments a ON a.id = sub.assignment_id
+    JOIN assignment_students ast ON ast.assignment_id = a.id AND ast.student_id = sub.student_id
+    JOIN students s ON s.id = sub.student_id
+    JOIN users su ON su.id = s.user_id
+    WHERE sub.id = ?
+      AND a.teacher_id = ?
+      AND sub.status IN ('SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
+      AND sub.cloudinary_public_id IS NOT NULL
+    LIMIT 1
+  `, [submissionId, teacher.id]);
+
+  const submission = rows[0];
+  if (!submission) {
+    throw appError('Submission not found for this Teacher.', 404, 'SUBMISSION_NOT_FOUND');
+  }
+
+  return {
+    ...submission,
+    submission_status: normalizeSubmissionStatus(submission.status),
+    media: submissionMediaFromRow(submission),
+    can_grade: submission.status === 'SUBMITTED' && !submission.is_locked
+  };
+}
+
+async function getSubmissionMedia(user, submissionId) {
+  await ensureAssignmentTables();
+  const role = String(user?.role || '').toUpperCase();
+  const params = [submissionId, user?.id];
+  let scopeJoin = '';
+  let scopeWhere = '';
+
+  if (role === 'TEACHER') {
+    scopeJoin = 'JOIN teachers owner_t ON owner_t.id = a.teacher_id';
+    scopeWhere = 'AND owner_t.user_id = ?';
+  } else if (role === 'STUDENT') {
+    scopeJoin = 'JOIN students owner_s ON owner_s.id = sub.student_id';
+    scopeWhere = 'AND owner_s.user_id = ?';
+  } else {
+    throw appError('Submission media is only available to the owner Student or Teacher.', 403, 'SUBMISSION_MEDIA_FORBIDDEN');
+  }
+
+  const [rows] = await pool.query(`
+    SELECT sub.*
+    FROM submissions sub
+    JOIN assignments a ON a.id = sub.assignment_id
+    JOIN assignment_students ast ON ast.assignment_id = a.id AND ast.student_id = sub.student_id
+    ${scopeJoin}
+    WHERE sub.id = ?
+      ${scopeWhere}
+      AND sub.status IN ('SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
+      AND sub.cloudinary_public_id IS NOT NULL
+    LIMIT 1
+  `, params);
+
+  const submission = rows[0];
+  if (!submission) {
+    throw appError('Submission media not found.', 404, 'SUBMISSION_MEDIA_NOT_FOUND');
+  }
+
+  return submissionMediaFromRow(submission);
 }
 
 async function gradeSubmission(userId, submissionId, payload) {
@@ -423,6 +695,7 @@ async function gradeSubmission(userId, submissionId, payload) {
         stu.user_id AS student_user_id
       FROM submissions sub
       JOIN assignments a ON a.id = sub.assignment_id
+      JOIN assignment_students ast ON ast.assignment_id = a.id AND ast.student_id = sub.student_id
       JOIN students stu ON stu.id = sub.student_id
       WHERE sub.id = ? AND a.teacher_id = ?
       LIMIT 1
@@ -438,6 +711,9 @@ async function gradeSubmission(userId, submissionId, payload) {
     }
     if (submission.is_locked) {
       throw appError('Submission is locked and cannot be graded again.', 409, 'SUBMISSION_LOCKED');
+    }
+    if (!submission.cloudinary_public_id || !submission.cloudinary_secure_url) {
+      throw appError('Teacher can only grade finalized media submissions.', 400, 'SUBMISSION_MEDIA_REQUIRED');
     }
 
     await connection.query(`
@@ -490,7 +766,8 @@ async function getGradedSubmission(userId, submissionId) {
     LIMIT 1
   `, [userId, submissionId]);
 
-  return rows[0] || null;
+  const submission = rows[0];
+  return submission ? { ...submission, media: submissionMediaFromRow(submission) } : null;
 }
 
 async function listStudentAssignments(userId) {
@@ -507,6 +784,15 @@ async function listStudentAssignments(userId) {
       a.created_at,
       tu.display_name AS teacher_name,
       sub.id AS submission_id,
+      sub.cloudinary_public_id,
+      sub.cloudinary_asset_id,
+      sub.cloudinary_secure_url,
+      sub.cloudinary_resource_type,
+      sub.cloudinary_format,
+      sub.media_bytes,
+      sub.media_duration_seconds,
+      sub.original_filename,
+      sub.media_delivery_type,
       sub.status AS submission_status,
       sub.score,
       sub.feedback,
@@ -526,13 +812,14 @@ async function listStudentAssignments(userId) {
     ...row,
     submission_status: normalizeSubmissionStatus(row.submission_status),
     student_facing_status: getStudentFacingStatus(row.submission_status),
+    media: submissionMediaFromRow(row),
     can_submit: canSubmit(row)
   }));
 }
 
 function canSubmit(row) {
   const status = normalizeSubmissionStatus(row.submission_status);
-  if (['SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED'].includes(status)) return false;
+  if (SUBMITTED_STATUSES.includes(status)) return false;
   if (row.is_locked) return false;
   if (!row.deadline || row.allow_late_submission) return true;
   return new Date(row.deadline).getTime() >= Date.now();
@@ -551,6 +838,15 @@ async function getStudentAssignmentDetail(userId, assignmentId) {
       sub.id AS submission_id,
       sub.content AS submission_content,
       sub.file_path,
+      sub.cloudinary_public_id,
+      sub.cloudinary_asset_id,
+      sub.cloudinary_secure_url,
+      sub.cloudinary_resource_type,
+      sub.cloudinary_format,
+      sub.media_bytes,
+      sub.media_duration_seconds,
+      sub.original_filename,
+      sub.media_delivery_type,
       sub.status AS submission_status,
       sub.score,
       sub.feedback,
@@ -575,24 +871,56 @@ async function getStudentAssignmentDetail(userId, assignmentId) {
     ...assignment,
     submission_status: normalizeSubmissionStatus(assignment.submission_status),
     student_facing_status: getStudentFacingStatus(assignment.submission_status),
+    media: submissionMediaFromRow(assignment),
     can_submit: canSubmit(assignment)
   };
+}
+
+async function requestSubmissionUploadSignature(userId, assignmentId, payload = {}) {
+  await ensureAssignmentTables();
+  const student = await getStudentProfile(userId);
+  validateUploadRequest(payload);
+
+  const [rows] = await pool.query(`
+    SELECT
+      a.id,
+      a.deadline,
+      a.allow_late_submission,
+      sub.status AS submission_status,
+      sub.is_locked
+    FROM assignment_students ast
+    JOIN assignments a ON a.id = ast.assignment_id
+    LEFT JOIN submissions sub ON sub.assignment_id = a.id AND sub.student_id = ast.student_id
+    WHERE ast.student_id = ? AND a.id = ?
+    LIMIT 1
+  `, [student.id, assignmentId]);
+
+  const assignment = rows[0];
+  if (!assignment) {
+    throw appError('Assignment not found for this Student.', 404, 'ASSIGNMENT_NOT_FOUND');
+  }
+  if (!canSubmit(assignment)) {
+    throw appError('Assignment is not open for submission.', 409, 'SUBMISSION_NOT_OPEN');
+  }
+
+  return createUploadSignature({
+    assignmentId: assignment.id,
+    studentId: student.id
+  });
 }
 
 async function submitAssignment(userId, assignmentId, payload) {
   await ensureAssignmentTables();
 
   const content = String(payload.content || payload.answer || '').trim();
-  const filePath = String(payload.filePath || payload.file_path || payload.fileUrl || '').trim() || null;
-  if (!content && !filePath) {
-    throw appError('Submission content or file URL is required.', 400, 'SUBMISSION_CONTENT_REQUIRED');
-  }
-  validateSubmissionFile(filePath);
-
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
     const student = await getStudentProfile(userId, connection);
+    const media = validateCloudinarySubmissionMetadata(payload, {
+      assignmentId,
+      studentId: student.id
+    });
 
     const [assignmentRows] = await connection.query(`
       SELECT
@@ -639,17 +967,67 @@ async function submitAssignment(userId, assignmentId, payload) {
       await connection.query(`
         UPDATE submissions
         SET content = ?,
-            file_path = ?,
+            file_path = NULL,
+            cloudinary_public_id = ?,
+            cloudinary_asset_id = ?,
+            cloudinary_secure_url = ?,
+            cloudinary_resource_type = ?,
+            cloudinary_format = ?,
+            media_bytes = ?,
+            media_duration_seconds = ?,
+            original_filename = ?,
+            media_delivery_type = ?,
             status = 'SUBMITTED',
             submitted_at = NOW()
         WHERE id = ?
-      `, [content || null, filePath, existing.id]);
+      `, [
+        content || null,
+        media.publicId,
+        media.assetId,
+        media.secureUrl,
+        media.resourceType,
+        media.format,
+        media.bytes,
+        media.durationSeconds,
+        media.originalFilename,
+        media.deliveryType,
+        existing.id
+      ]);
       submissionId = existing.id;
     } else {
       const [result] = await connection.query(`
-        INSERT INTO submissions (assignment_id, student_id, content, file_path, status, submitted_at)
-        VALUES (?, ?, ?, ?, 'SUBMITTED', NOW())
-      `, [assignment.id, student.id, content || null, filePath]);
+        INSERT INTO submissions (
+          assignment_id,
+          student_id,
+          content,
+          file_path,
+          cloudinary_public_id,
+          cloudinary_asset_id,
+          cloudinary_secure_url,
+          cloudinary_resource_type,
+          cloudinary_format,
+          media_bytes,
+          media_duration_seconds,
+          original_filename,
+          media_delivery_type,
+          status,
+          submitted_at
+        )
+        VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'SUBMITTED', NOW())
+      `, [
+        assignment.id,
+        student.id,
+        content || null,
+        media.publicId,
+        media.assetId,
+        media.secureUrl,
+        media.resourceType,
+        media.format,
+        media.bytes,
+        media.durationSeconds,
+        media.originalFilename,
+        media.deliveryType
+      ]);
       submissionId = result.insertId;
     }
 
@@ -677,16 +1055,23 @@ module.exports = {
   getTeacherAssignmentById,
   listTeacherAssignments,
   listTeacherSubmissions,
+  getTeacherSubmissionDetail,
+  getSubmissionMedia,
   gradeSubmission,
   listStudentAssignments,
   getStudentAssignmentDetail,
+  requestSubmissionUploadSignature,
   submitAssignment,
   ensureAssignmentTables,
   __testing: {
     canSubmit,
     getStudentFacingStatus,
+    isSubmittedStatus,
     normalizeDeadline,
     normalizeStudentIds,
-    validateSubmissionFile
+    submissionMediaFromRow,
+    validateCloudinarySubmissionMetadata,
+    validateSubmissionFile,
+    validateUploadRequest
   }
 };

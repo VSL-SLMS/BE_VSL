@@ -7,11 +7,11 @@ async function getDashboard(userId) {
     SELECT
       COUNT(DISTINCT s.id) AS student_count,
       COUNT(DISTINCT a.id) AS assignment_count,
-      COUNT(DISTINCT CASE WHEN sub.status = 'SUBMITTED' THEN sub.id END) AS pending_submission_count
+      COUNT(DISTINCT CASE WHEN sub.status = 'SUBMITTED' AND sub.cloudinary_public_id IS NOT NULL THEN sub.id END) AS pending_submission_count
     FROM teachers t
     LEFT JOIN students s ON s.teacher_id = t.id
     LEFT JOIN assignments a ON a.teacher_id = t.id
-    LEFT JOIN submissions sub ON sub.assignment_id = a.id AND sub.status = 'SUBMITTED'
+    LEFT JOIN submissions sub ON sub.assignment_id = a.id AND sub.status = 'SUBMITTED' AND sub.cloudinary_public_id IS NOT NULL
     WHERE t.user_id = ?
   `, [userId]);
   return rows[0];
@@ -27,8 +27,8 @@ async function getStudents(userId) {
       u.status,
       s.created_at,
       COUNT(DISTINCT ast.assignment_id) AS assignment_count,
-      COUNT(DISTINCT CASE WHEN sub.status = 'SUBMITTED' THEN sub.id END) AS submitted_count,
-      COUNT(DISTINCT CASE WHEN sub.status = 'GRADED' THEN sub.id END) AS graded_count
+      COUNT(DISTINCT CASE WHEN sub.status = 'SUBMITTED' AND sub.cloudinary_public_id IS NOT NULL THEN sub.id END) AS submitted_count,
+      COUNT(DISTINCT CASE WHEN sub.status = 'GRADED' AND sub.cloudinary_public_id IS NOT NULL THEN sub.id END) AS graded_count
     FROM teachers t
     JOIN students s ON s.teacher_id = t.id
     JOIN users u ON u.id = s.user_id
