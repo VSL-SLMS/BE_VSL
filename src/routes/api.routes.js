@@ -13,6 +13,24 @@ const paymentService = require('../services/payment.service');
 
 const router = express.Router();
 
+function getFrontendUrl() {
+  return process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:3000';
+}
+
+function buildPaymentResultRedirectUrl(query) {
+  const redirectUrl = new URL('/payment/result', getFrontendUrl());
+  Object.entries(query || {}).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((item) => redirectUrl.searchParams.append(key, item));
+      return;
+    }
+    if (value !== undefined && value !== null) {
+      redirectUrl.searchParams.set(key, value);
+    }
+  });
+  return redirectUrl.toString();
+}
+
 router.get('/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -648,6 +666,9 @@ router.post('/payments/vnpay/create', requireAuth, requireRole('STUDENT'), async
 router.get('/payments/vnpay/return', async (req, res, next) => {
   try {
     const result = await paymentService.processReturn(req.query);
+    if (String(req.headers.accept || '').includes('text/html')) {
+      return res.redirect(buildPaymentResultRedirectUrl(req.query));
+    }
     return res.json({ data: result });
   } catch (error) {
     return next(error);

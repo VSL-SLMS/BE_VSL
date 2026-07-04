@@ -6,13 +6,41 @@ function getVNPayConfig() {
   const tmnCode = process.env.VNPAY_TMN_CODE || process.env.VNP_TMN_CODE;
   const secretKey = process.env.VNPAY_HASH_SECRET || process.env.VNP_HASH_SECRET;
   const paymentUrl = process.env.VNPAY_PAYMENT_URL || process.env.VNP_URL;
-  const returnUrl = process.env.VNPAY_RETURN_URL || process.env.VNP_RETURN_URL;
+  const returnUrl = getReturnUrl();
 
   if (!tmnCode || !secretKey || !paymentUrl || !returnUrl) {
     throw new Error('VNPay environment variables are not configured.');
   }
 
   return { tmnCode, secretKey, paymentUrl, returnUrl };
+}
+
+function joinUrl(baseUrl, pathname) {
+  return `${String(baseUrl || '').trim().replace(/\/+$/, '')}${pathname}`;
+}
+
+function getBackendReturnUrl() {
+  const backendUrl = process.env.BACKEND_PUBLIC_URL || process.env.API_PUBLIC_URL || process.env.PUBLIC_BACKEND_URL;
+  return backendUrl ? joinUrl(backendUrl, '/api/payments/vnpay/return') : '';
+}
+
+function isFrontendPaymentResultUrl(value) {
+  try {
+    return new URL(value).pathname === '/payment/result';
+  } catch {
+    return false;
+  }
+}
+
+function getReturnUrl() {
+  const configuredReturnUrl = process.env.VNPAY_RETURN_URL || process.env.VNP_RETURN_URL;
+  const backendReturnUrl = getBackendReturnUrl();
+
+  if (backendReturnUrl && isFrontendPaymentResultUrl(configuredReturnUrl)) {
+    return backendReturnUrl;
+  }
+
+  return configuredReturnUrl || backendReturnUrl;
 }
 
 function sortObject(obj) {
@@ -129,5 +157,6 @@ module.exports = {
   createPaymentUrl,
   verifyReturnUrl,
   sortObject,
-  normalizeIpAddr
+  normalizeIpAddr,
+  getReturnUrl
 };
