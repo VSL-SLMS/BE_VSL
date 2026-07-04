@@ -188,18 +188,37 @@ async function getPageImagesByLessonId(lessonId) {
 
 async function getLessonNavigation(lesson) {
   const [rows] = await pool.query(`
-    (SELECT slug, title, 'prev' AS direction
-     FROM lessons
-     WHERE chapter_id = ? AND order_index < ?
-     ORDER BY order_index DESC
-     LIMIT 1)
-    UNION ALL
-    (SELECT slug, title, 'next' AS direction
-     FROM lessons
-     WHERE chapter_id = ? AND order_index > ?
-     ORDER BY order_index ASC
-     LIMIT 1)
-  `, [lesson.chapter_id, lesson.order_index, lesson.chapter_id, lesson.order_index]);
+    SELECT
+      ordered.slug,
+      ordered.title,
+      CASE
+        WHEN ordered.position = current_lesson.position - 1 THEN 'prev'
+        WHEN ordered.position = current_lesson.position + 1 THEN 'next'
+      END AS direction
+    FROM (
+      SELECT
+        l.id,
+        l.slug,
+        l.title,
+        ROW_NUMBER() OVER (ORDER BY p.order_index, c.order_index, l.order_index) AS position
+      FROM lessons l
+      JOIN chapters c ON c.id = l.chapter_id
+      JOIN parts p ON p.id = c.part_id
+    ) ordered
+    JOIN (
+      SELECT position
+      FROM (
+        SELECT
+          l.id,
+          ROW_NUMBER() OVER (ORDER BY p.order_index, c.order_index, l.order_index) AS position
+        FROM lessons l
+        JOIN chapters c ON c.id = l.chapter_id
+        JOIN parts p ON p.id = c.part_id
+      ) ranked
+      WHERE ranked.id = ?
+    ) current_lesson ON ordered.position IN (current_lesson.position - 1, current_lesson.position + 1)
+    ORDER BY ordered.position
+  `, [lesson.id]);
 
   return {
     prev: rows.find((item) => item.direction === 'prev') || null,
