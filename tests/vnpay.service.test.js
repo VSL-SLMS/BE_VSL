@@ -7,6 +7,7 @@ const originalEnv = {
   VNPAY_HASH_SECRET: process.env.VNPAY_HASH_SECRET,
   VNPAY_PAYMENT_URL: process.env.VNPAY_PAYMENT_URL,
   VNPAY_RETURN_URL: process.env.VNPAY_RETURN_URL,
+  BACKEND_PUBLIC_URL: process.env.BACKEND_PUBLIC_URL,
   VNP_TMN_CODE: process.env.VNP_TMN_CODE,
   VNP_HASH_SECRET: process.env.VNP_HASH_SECRET,
   VNP_URL: process.env.VNP_URL,
@@ -18,6 +19,7 @@ test.beforeEach(() => {
   process.env.VNPAY_HASH_SECRET = 'TESTSECRET';
   process.env.VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
   process.env.VNPAY_RETURN_URL = 'https://frontend.test/payment/result';
+  process.env.BACKEND_PUBLIC_URL = 'https://backend.test';
 });
 
 test.afterEach(() => {
@@ -88,8 +90,16 @@ test('UC-STU-03: VNPay payment URL contains signed required parameters', () => {
   assert.equal(params.vnp_TxnRef, 'SLMS1001');
   assert.equal(params.vnp_Amount, '29900000');
   assert.equal(params.vnp_IpAddr, '127.0.0.1');
+  assert.equal(params.vnp_ReturnUrl, 'https://backend.test/api/payments/vnpay/return');
   assert.ok(params.vnp_SecureHash);
   assert.equal(vnpayService.verifyReturnUrl(params), true);
+});
+
+test('UC-STU-03: VNPay keeps explicit non-frontend return URLs', () => {
+  process.env.VNPAY_RETURN_URL = 'https://backend.example/api/payments/vnpay/return';
+  process.env.BACKEND_PUBLIC_URL = 'https://backend.test';
+
+  assert.equal(vnpayService.getReturnUrl(), 'https://backend.example/api/payments/vnpay/return');
 });
 
 test('UC-STU-03: VNPay checksum verification fails after tampering', () => {
