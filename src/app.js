@@ -13,6 +13,8 @@ function getAllowedOrigins() {
   return [
     process.env.CORS_ORIGINS,
     process.env.FRONTEND_URL,
+    'https://vsl.lat',
+    'https://www.vsl.lat',
     'https://fe-vsl.vercel.app',
     'http://localhost:3000'
   ]
@@ -36,7 +38,7 @@ function isOriginAllowed(origin, allowedOrigins) {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use((req, res, next) => {
+function corsMiddleware(req, res, next) {
   const allowedOrigins = getAllowedOrigins();
   const origin = req.headers.origin;
 
@@ -54,7 +56,9 @@ app.use((req, res, next) => {
   }
 
   return next();
-});
+}
+
+app.use(corsMiddleware);
 
 app.use('/images/images', express.static(path.join(__dirname, '../pdf_extracted/images')));
 app.use('/images/pages_hires', express.static(path.join(__dirname, '../pdf_extracted/pages_hires')));
@@ -75,3 +79,4 @@ app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
+module.exports.__testing = { corsMiddleware };
