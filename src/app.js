@@ -12,13 +12,24 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use((req, res, next) => {
-  const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
-    .split(',')
-    .map((origin) => origin.trim());
-  const origin = req.headers.origin;
+const defaultCorsOrigins = [
+  'http://localhost:3000',
+  'https://fe-vsl.vercel.app',
+  'https://vsl.lat',
+  'https://www.vsl.lat'
+];
 
-  if (origin && allowedOrigins.includes(origin)) {
+function corsMiddleware(req, res, next) {
+  const normalizeOrigin = (value) => String(value || '').trim().replace(/\/+$/, '');
+  const configuredOrigins = [process.env.CORS_ORIGINS, process.env.CORS_ORIGIN]
+    .filter(Boolean)
+    .flatMap((value) => value.split(','));
+  const allowedOrigins = new Set([...defaultCorsOrigins, ...configuredOrigins]
+    .map(normalizeOrigin)
+    .filter(Boolean));
+  const origin = normalizeOrigin(req.headers.origin);
+
+  if (origin && allowedOrigins.has(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
 
@@ -31,7 +42,9 @@ app.use((req, res, next) => {
   }
 
   return next();
-});
+}
+
+app.use(corsMiddleware);
 
 app.use('/images/images', express.static(path.join(__dirname, '../pdf_extracted/images')));
 app.use('/images/pages_hires', express.static(path.join(__dirname, '../pdf_extracted/pages_hires')));
@@ -52,3 +65,4 @@ app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
+module.exports.__testing = { corsMiddleware };
