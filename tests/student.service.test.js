@@ -2,9 +2,11 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { pool } = require('../src/config/database');
 const studentService = require('../src/services/student.service');
+const assignmentService = require('../src/services/assignment.service');
 const { expectRejectsWithMessage } = require('./helpers');
 
 const originalQuery = pool.query;
+const originalEnsureAssignmentTables = assignmentService.ensureAssignmentTables;
 
 function mockPoolQueries(results, assertions = []) {
   const calls = [];
@@ -31,10 +33,12 @@ function mockPoolQueries(results, assertions = []) {
 
 test.beforeEach(() => {
   studentService.__testing.resetTeacherProfileColumnsReady();
+  assignmentService.ensureAssignmentTables = async () => {};
 });
 
 test.afterEach(() => {
   pool.query = originalQuery;
+  assignmentService.ensureAssignmentTables = originalEnsureAssignmentTables;
 });
 
 test('UC-STU-01: Student can select exactly one active Teacher', async () => {
@@ -111,6 +115,7 @@ test('UC-STU-01: Teacher list returns practical profile data and hides unverifie
       max_students: 20,
       reliability_label: 'HIGHLY_RELIABLE',
       current_student_count: 0,
+      assignments_graded: 0,
       accuracy_verification_count: 0
     }]]
   ]);
@@ -119,9 +124,10 @@ test('UC-STU-01: Teacher list returns practical profile data and hides unverifie
 
   assert.equal(teachers.length, 1);
   assert.equal(teachers[0].full_name, 'New Teacher');
-  assert.equal(teachers[0].reliability_label, 'NEW');
   assert.equal(teachers[0].accuracy, null);
   assert.equal(teachers[0].accuracy_verified, false);
+  assert.equal(teachers[0].experience_badge, 'New Teacher');
+  assert.equal(teachers[0].assignments_graded, 0);
   assert.equal(teachers[0].is_accepting_students, true);
 });
 
@@ -140,6 +146,7 @@ test('UC-STU-01: Teacher recommendation prefers accepting Teachers with lower st
         max_students: 30,
         reliability_label: 'HIGHLY_RELIABLE',
         current_student_count: 20,
+        assignments_graded: 50,
         accuracy_verification_count: 5
       },
       {
@@ -154,6 +161,7 @@ test('UC-STU-01: Teacher recommendation prefers accepting Teachers with lower st
         max_students: 30,
         reliability_label: 'NEW',
         current_student_count: 2,
+        assignments_graded: 0,
         accuracy_verification_count: 0
       },
       {
@@ -168,6 +176,7 @@ test('UC-STU-01: Teacher recommendation prefers accepting Teachers with lower st
         max_students: 30,
         reliability_label: 'HIGHLY_RELIABLE',
         current_student_count: 30,
+        assignments_graded: 100,
         accuracy_verification_count: 4
       }
     ]]
@@ -177,7 +186,47 @@ test('UC-STU-01: Teacher recommendation prefers accepting Teachers with lower st
 
   assert.deepEqual(teachers.map((teacher) => teacher.id), [2, 1]);
   assert.equal(teachers[0].is_recommended, true);
-  assert.equal(teachers[0].reliability_label, 'NEW');
+  assert.equal(teachers[0].experience_badge, 'Active Teacher');
+});
+
+test('UC-STU-01: Recommendation uses OPEN capacity first and graded activity as tie-breaker', () => {
+  const teachers = [
+    studentService.__testing.normalizeTeacherProfile({
+      id: 1,
+      full_name: 'Less Active Open',
+      email: 'a@example.com',
+      availability_status: 'OPEN',
+      max_students: 30,
+      current_student_count: 2,
+      assignments_graded: 1,
+      created_at: '2026-01-02T00:00:00.000Z'
+    }),
+    studentService.__testing.normalizeTeacherProfile({
+      id: 2,
+      full_name: 'More Active Open',
+      email: 'b@example.com',
+      availability_status: 'OPEN',
+      max_students: 30,
+      current_student_count: 2,
+      assignments_graded: 20,
+      created_at: '2026-01-03T00:00:00.000Z'
+    }),
+    studentService.__testing.normalizeTeacherProfile({
+      id: 3,
+      full_name: 'Empty Limited',
+      email: 'c@example.com',
+      availability_status: 'LIMITED',
+      max_students: 30,
+      current_student_count: 0,
+      assignments_graded: 100,
+      created_at: '2026-01-01T00:00:00.000Z'
+    })
+  ];
+
+  const recommended = studentService.__testing.recommendTeachers(teachers);
+
+  assert.deepEqual(recommended.map((teacher) => teacher.id), [2, 1]);
+  assert.equal(recommended[0].is_recommended, true);
 });
 
 test('UC-STU-02: Student can request Teacher change when assigned', async () => {

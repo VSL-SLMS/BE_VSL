@@ -6,7 +6,7 @@ const {
 } = require('../config/cloudinary');
 
 let tablesReady = false;
-const SUBMITTED_STATUSES = ['SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED'];
+const VISIBLE_SUBMISSION_STATUSES = ['SUBMITTED', 'NEEDS_REVISION', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED'];
 
 function appError(message, status = 400, code = 'ASSIGNMENT_ERROR') {
   const error = new Error(message);
@@ -48,10 +48,28 @@ function normalizeSubmissionStatus(status) {
   return status;
 }
 
+function getWorkflowStatus(status) {
+  switch (normalizeSubmissionStatus(status)) {
+    case 'SUBMITTED':
+      return 'SUBMITTED';
+    case 'NEEDS_REVISION':
+      return 'NEEDS_REVISION';
+    case 'GRADED':
+    case 'RECHECKING':
+    case 'ESCALATED':
+    case 'FINALIZED':
+      return 'GRADED';
+    default:
+      return 'ASSIGNED';
+  }
+}
+
 function getStudentFacingStatus(status) {
-  switch (status) {
+  switch (normalizeSubmissionStatus(status)) {
     case 'GRADED':
       return 'Graded';
+    case 'NEEDS_REVISION':
+      return 'Needs revision';
     case 'RECHECKING':
       return 'Rechecking';
     case 'ESCALATED':
@@ -60,7 +78,23 @@ function getStudentFacingStatus(status) {
     case 'SUBMITTED':
       return 'Submitted';
     default:
-      return 'Not Submitted';
+      return 'To Do';
+  }
+}
+
+function getTeacherFacingStatus(status) {
+  switch (normalizeSubmissionStatus(status)) {
+    case 'SUBMITTED':
+      return 'Waiting for review';
+    case 'NEEDS_REVISION':
+      return 'Returned for revision';
+    case 'GRADED':
+    case 'RECHECKING':
+    case 'ESCALATED':
+    case 'FINALIZED':
+      return 'Graded';
+    default:
+      return 'Not submitted';
   }
 }
 
@@ -73,7 +107,18 @@ function validateSubmissionFile(filePath) {
 }
 
 function isSubmittedStatus(status) {
-  return SUBMITTED_STATUSES.includes(normalizeSubmissionStatus(status));
+  return VISIBLE_SUBMISSION_STATUSES.includes(normalizeSubmissionStatus(status));
+}
+
+function normalizeCommentContent(value) {
+  const content = String(value || '').trim();
+  if (!content) {
+    throw appError('Comment is required.', 400, 'COMMENT_REQUIRED');
+  }
+  if (content.length > 1000) {
+    throw appError('Comment must be 1000 characters or fewer.', 400, 'COMMENT_TOO_LONG');
+  }
+  return content;
 }
 
 function detectUploadFormat(payload = {}) {
@@ -237,6 +282,43 @@ async function ensureSubmissionCloudinaryColumns() {
   );
 }
 
+async function ensureSubmissionRevisionColumns() {
+  await ensureColumn('submissions', 'revision_count', 'INT NOT NULL DEFAULT 0');
+  const [rows] = await pool.query(`
+    SELECT COLUMN_TYPE AS column_type
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'submissions'
+      AND COLUMN_NAME = 'status'
+    LIMIT 1
+  `);
+
+  if (!String(rows[0]?.column_type || '').includes('NEEDS_REVISION')) {
+    await pool.query(`
+      ALTER TABLE submissions
+      MODIFY COLUMN status ENUM('DRAFT', 'SUBMITTED', 'NEEDS_REVISION', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED') NOT NULL DEFAULT 'DRAFT'
+    `);
+  }
+}
+
+async function ensureSubmissionCommentTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS submission_comments (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      submission_id INT NOT NULL,
+      author_user_id INT NOT NULL,
+      content TEXT NOT NULL,
+      event_type ENUM('COMMENT', 'RETURNED_FOR_REVISION', 'RESUBMITTED', 'GRADED') NOT NULL DEFAULT 'COMMENT',
+      is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE,
+      FOREIGN KEY (author_user_id) REFERENCES users(id) ON DELETE CASCADE,
+      INDEX idx_submission_comments_submission (submission_id)
+    ) ENGINE=InnoDB
+  `);
+}
+
 async function ensureAssignmentTables() {
   if (tablesReady) return;
 
@@ -282,9 +364,10 @@ async function ensureAssignmentTables() {
       media_duration_seconds DECIMAL(10,3) NULL,
       original_filename VARCHAR(255) NULL,
       media_delivery_type VARCHAR(30) NULL DEFAULT 'authenticated',
-      status ENUM('DRAFT', 'SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED') NOT NULL DEFAULT 'DRAFT',
+      status ENUM('DRAFT', 'SUBMITTED', 'NEEDS_REVISION', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED') NOT NULL DEFAULT 'DRAFT',
       score DECIMAL(5,2) NULL,
       feedback TEXT,
+      revision_count INT NOT NULL DEFAULT 0,
       appeal_count INT NOT NULL DEFAULT 0,
       is_locked BOOLEAN NOT NULL DEFAULT FALSE,
       submitted_at DATETIME NULL,
@@ -301,6 +384,7 @@ async function ensureAssignmentTables() {
   `);
 
   await ensureSubmissionCloudinaryColumns();
+  await ensureSubmissionRevisionColumns();
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS submission_grades (
@@ -315,6 +399,8 @@ async function ensureAssignmentTables() {
       INDEX idx_submission_grades_submission (submission_id)
     ) ENGINE=InnoDB
   `);
+
+  await ensureSubmissionCommentTable();
 
   tablesReady = true;
 }
@@ -395,6 +481,84 @@ async function createAuditLog(actorUserId, action, entity, entityId, metadata = 
   }
 }
 
+async function getSubmissionCommentAccess(user, submissionId, connection = pool) {
+  const role = String(user?.role || '').toUpperCase();
+  const [rows] = await connection.query(`
+    SELECT
+      sub.id,
+      sub.student_id,
+      a.teacher_id,
+      student_user.id AS student_user_id,
+      teacher_user.id AS teacher_user_id
+    FROM submissions sub
+    JOIN assignments a ON a.id = sub.assignment_id
+    JOIN students s ON s.id = sub.student_id
+    JOIN users student_user ON student_user.id = s.user_id
+    JOIN teachers t ON t.id = a.teacher_id
+    JOIN users teacher_user ON teacher_user.id = t.user_id
+    WHERE sub.id = ?
+    LIMIT 1
+  `, [submissionId]);
+
+  const submission = rows[0];
+  if (!submission) {
+    throw appError('Submission not found.', 404, 'SUBMISSION_NOT_FOUND');
+  }
+
+  const isStudentOwner = role === 'STUDENT' && Number(submission.student_user_id) === Number(user.id);
+  const isTeacherOwner = role === 'TEACHER' && Number(submission.teacher_user_id) === Number(user.id);
+  if (role !== 'ADMIN' && !isStudentOwner && !isTeacherOwner) {
+    throw appError('You cannot access comments for this submission.', 403, 'SUBMISSION_COMMENT_FORBIDDEN');
+  }
+
+  return submission;
+}
+
+async function listSubmissionCommentsForDisplay(submissionId) {
+  const [comments] = await pool.query(`
+    SELECT
+      sc.id,
+      sc.submission_id,
+      sc.author_user_id,
+      u.display_name AS author_name,
+      u.role AS author_role,
+      sc.content,
+      sc.event_type,
+      sc.created_at,
+      sc.updated_at
+    FROM submission_comments sc
+    JOIN users u ON u.id = sc.author_user_id
+    WHERE sc.submission_id = ?
+      AND sc.is_deleted = FALSE
+    ORDER BY sc.created_at ASC, sc.id ASC
+  `, [submissionId]);
+
+  return comments;
+}
+
+async function listSubmissionComments(user, submissionId) {
+  await ensureAssignmentTables();
+  await getSubmissionCommentAccess(user, submissionId);
+  return listSubmissionCommentsForDisplay(submissionId);
+}
+
+async function addSubmissionComment(user, submissionId, payload = {}) {
+  await ensureAssignmentTables();
+  const content = normalizeCommentContent(payload.content || payload.comment);
+  await getSubmissionCommentAccess(user, submissionId);
+
+  const [result] = await pool.query(`
+    INSERT INTO submission_comments (submission_id, author_user_id, content, event_type)
+    VALUES (?, ?, ?, ?)
+  `, [submissionId, user.id, content, 'COMMENT']);
+
+  const comments = await listSubmissionCommentsForDisplay(submissionId);
+  return {
+    comment: comments.find((item) => Number(item.id) === Number(result.insertId)) || comments[comments.length - 1],
+    comments
+  };
+}
+
 async function createTeacherAssignment(userId, payload) {
   await ensureAssignmentTables();
 
@@ -468,7 +632,7 @@ async function getTeacherAssignmentById(userId, assignmentId) {
       (
         SELECT COUNT(*)
         FROM submissions s
-        WHERE s.assignment_id = a.id AND s.status IN ('SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
+        WHERE s.assignment_id = a.id AND s.status IN ('SUBMITTED', 'NEEDS_REVISION', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
       ) AS submitted_count,
       (
         SELECT COUNT(*)
@@ -509,7 +673,9 @@ async function getTeacherAssignmentById(userId, assignmentId) {
     students: students.map((row) => ({
       ...row,
       submission_status: normalizeSubmissionStatus(row.submission_status),
-      student_facing_status: getStudentFacingStatus(row.submission_status)
+      workflow_status: getWorkflowStatus(row.submission_status),
+      student_facing_status: getStudentFacingStatus(row.submission_status),
+      teacher_facing_status: getTeacherFacingStatus(row.submission_status)
     }))
   };
 }
@@ -529,7 +695,7 @@ async function listTeacherAssignments(userId) {
       (
         SELECT COUNT(*)
         FROM submissions s
-        WHERE s.assignment_id = a.id AND s.status IN ('SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
+        WHERE s.assignment_id = a.id AND s.status IN ('SUBMITTED', 'NEEDS_REVISION', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
       ) AS submitted_count,
       (
         SELECT COUNT(*)
@@ -580,7 +746,7 @@ async function listTeacherSubmissions(userId) {
     JOIN users su ON su.id = s.user_id
     JOIN submissions sub ON sub.assignment_id = a.id AND sub.student_id = s.id
     WHERE a.teacher_id = ?
-      AND sub.status IN ('SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
+      AND sub.status IN ('SUBMITTED', 'NEEDS_REVISION', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
       AND sub.cloudinary_public_id IS NOT NULL
     ORDER BY sub.submitted_at DESC
   `, [teacher.id]);
@@ -588,8 +754,10 @@ async function listTeacherSubmissions(userId) {
   return rows.map((row) => ({
     ...row,
     submission_status: normalizeSubmissionStatus(row.submission_status),
+    teacher_facing_status: getTeacherFacingStatus(row.submission_status),
     media: submissionMediaFromRow(row),
-    can_grade: row.submission_status === 'SUBMITTED' && !row.is_locked
+    can_grade: row.submission_status === 'SUBMITTED' && !row.is_locked,
+    can_return_revision: row.submission_status === 'SUBMITTED' && !row.is_locked
   }));
 }
 
@@ -614,7 +782,7 @@ async function getTeacherSubmissionDetail(userId, submissionId) {
     JOIN users su ON su.id = s.user_id
     WHERE sub.id = ?
       AND a.teacher_id = ?
-      AND sub.status IN ('SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
+      AND sub.status IN ('SUBMITTED', 'NEEDS_REVISION', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
       AND sub.cloudinary_public_id IS NOT NULL
     LIMIT 1
   `, [submissionId, teacher.id]);
@@ -627,8 +795,11 @@ async function getTeacherSubmissionDetail(userId, submissionId) {
   return {
     ...submission,
     submission_status: normalizeSubmissionStatus(submission.status),
+    teacher_facing_status: getTeacherFacingStatus(submission.status),
     media: submissionMediaFromRow(submission),
-    can_grade: submission.status === 'SUBMITTED' && !submission.is_locked
+    can_grade: submission.status === 'SUBMITTED' && !submission.is_locked,
+    can_return_revision: submission.status === 'SUBMITTED' && !submission.is_locked,
+    comments: await listSubmissionCommentsForDisplay(submission.id)
   };
 }
 
@@ -657,7 +828,7 @@ async function getSubmissionMedia(user, submissionId) {
     ${scopeJoin}
     WHERE sub.id = ?
       ${scopeWhere}
-      AND sub.status IN ('SUBMITTED', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
+      AND sub.status IN ('SUBMITTED', 'NEEDS_REVISION', 'GRADED', 'RECHECKING', 'ESCALATED', 'FINALIZED')
       AND sub.cloudinary_public_id IS NOT NULL
     LIMIT 1
   `, params);
@@ -731,6 +902,11 @@ async function gradeSubmission(userId, submissionId, payload) {
       VALUES (?, ?, ?, ?)
     `, [submission.id, userId, score, feedback]);
 
+    await connection.query(`
+      INSERT INTO submission_comments (submission_id, author_user_id, content, event_type)
+      VALUES (?, ?, ?, 'GRADED')
+    `, [submission.id, userId, feedback]);
+
     await connection.commit();
 
     await createNotification(
@@ -742,6 +918,79 @@ async function gradeSubmission(userId, submissionId, payload) {
     await createAuditLog(userId, 'GRADE_SUBMISSION', 'submission', submission.id, { score });
 
     return getGradedSubmission(userId, submission.id);
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
+async function returnSubmissionForRevision(userId, submissionId, payload = {}) {
+  await ensureAssignmentTables();
+  const comment = normalizeCommentContent(payload.comment || payload.content);
+
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+    const teacher = await getTeacherProfile(userId, connection);
+
+    const [rows] = await connection.query(`
+      SELECT
+        sub.*,
+        a.teacher_id,
+        a.title AS assignment_title,
+        stu.user_id AS student_user_id
+      FROM submissions sub
+      JOIN assignments a ON a.id = sub.assignment_id
+      JOIN assignment_students ast ON ast.assignment_id = a.id AND ast.student_id = sub.student_id
+      JOIN students stu ON stu.id = sub.student_id
+      WHERE sub.id = ? AND a.teacher_id = ?
+      LIMIT 1
+      FOR UPDATE
+    `, [submissionId, teacher.id]);
+
+    const submission = rows[0];
+    if (!submission) {
+      throw appError('Submission not found for this Teacher.', 404, 'SUBMISSION_NOT_FOUND');
+    }
+    if (submission.status !== 'SUBMITTED') {
+      throw appError('Only submitted assignments can be returned for revision.', 400, 'SUBMISSION_NOT_SUBMITTED');
+    }
+    if (submission.is_locked) {
+      throw appError('Submission is locked.', 409, 'SUBMISSION_LOCKED');
+    }
+
+    await connection.query(`
+      UPDATE submissions
+      SET status = 'NEEDS_REVISION',
+          score = NULL,
+          feedback = ?,
+          graded_at = NULL,
+          is_locked = FALSE
+      WHERE id = ?
+    `, [comment, submission.id]);
+
+    const [commentResult] = await connection.query(`
+      INSERT INTO submission_comments (submission_id, author_user_id, content, event_type)
+      VALUES (?, ?, ?, 'RETURNED_FOR_REVISION')
+    `, [submission.id, userId, comment]);
+
+    await connection.commit();
+
+    await createNotification(
+      submission.student_user_id,
+      'Assignment needs revision',
+      `Your Teacher returned "${submission.assignment_title}" for revision.`,
+      'ASSIGNMENT'
+    );
+    await createAuditLog(userId, 'RETURN_SUBMISSION_REVISION', 'submission', submission.id, { commentId: commentResult.insertId });
+
+    const detail = await getTeacherSubmissionDetail(userId, submission.id);
+    return {
+      ...detail,
+      latest_comment: detail.comments?.find((item) => Number(item.id) === Number(commentResult.insertId)) || null
+    };
   } catch (error) {
     await connection.rollback();
     throw error;
@@ -811,6 +1060,7 @@ async function listStudentAssignments(userId) {
   return rows.map((row) => ({
     ...row,
     submission_status: normalizeSubmissionStatus(row.submission_status),
+    workflow_status: getWorkflowStatus(row.submission_status),
     student_facing_status: getStudentFacingStatus(row.submission_status),
     media: submissionMediaFromRow(row),
     can_submit: canSubmit(row)
@@ -819,8 +1069,9 @@ async function listStudentAssignments(userId) {
 
 function canSubmit(row) {
   const status = normalizeSubmissionStatus(row.submission_status);
-  if (SUBMITTED_STATUSES.includes(status)) return false;
   if (row.is_locked) return false;
+  if (status === 'NEEDS_REVISION') return true;
+  if (VISIBLE_SUBMISSION_STATUSES.includes(status)) return false;
   if (!row.deadline || row.allow_late_submission) return true;
   return new Date(row.deadline).getTime() >= Date.now();
 }
@@ -867,12 +1118,22 @@ async function getStudentAssignmentDetail(userId, assignmentId) {
     throw appError('Assignment not found for this Student.', 404, 'ASSIGNMENT_NOT_FOUND');
   }
 
+  const comments = assignment.submission_id
+    ? await listSubmissionCommentsForDisplay(assignment.submission_id)
+    : [];
+  const latestRevisionComment = [...comments]
+    .reverse()
+    .find((comment) => comment.event_type === 'RETURNED_FOR_REVISION');
+
   return {
     ...assignment,
     submission_status: normalizeSubmissionStatus(assignment.submission_status),
+    workflow_status: getWorkflowStatus(assignment.submission_status),
     student_facing_status: getStudentFacingStatus(assignment.submission_status),
     media: submissionMediaFromRow(assignment),
-    can_submit: canSubmit(assignment)
+    can_submit: canSubmit(assignment),
+    revision_note: latestRevisionComment?.content || null,
+    comments
   };
 }
 
@@ -942,10 +1203,6 @@ async function submitAssignment(userId, assignmentId, payload) {
       throw appError('Assignment not found for this Student.', 404, 'ASSIGNMENT_NOT_FOUND');
     }
 
-    if (assignment.deadline && !assignment.allow_late_submission && new Date(assignment.deadline).getTime() < Date.now()) {
-      throw appError('Assignment deadline has passed.', 400, 'ASSIGNMENT_DEADLINE_PASSED');
-    }
-
     const [existingRows] = await connection.query(`
       SELECT *
       FROM submissions
@@ -955,11 +1212,15 @@ async function submitAssignment(userId, assignmentId, payload) {
     `, [assignment.id, student.id]);
 
     const existing = existingRows[0];
-    if (existing && existing.status !== 'DRAFT') {
+    const isResubmission = existing?.status === 'NEEDS_REVISION';
+    if (existing && !['DRAFT', 'NEEDS_REVISION'].includes(existing.status)) {
       throw appError('This assignment has already been submitted.', 409, 'SUBMISSION_ALREADY_SUBMITTED');
     }
     if (existing?.is_locked) {
       throw appError('Submission is locked.', 409, 'SUBMISSION_LOCKED');
+    }
+    if (!isResubmission && assignment.deadline && !assignment.allow_late_submission && new Date(assignment.deadline).getTime() < Date.now()) {
+      throw appError('Assignment deadline has passed.', 400, 'ASSIGNMENT_DEADLINE_PASSED');
     }
 
     let submissionId;
@@ -978,7 +1239,11 @@ async function submitAssignment(userId, assignmentId, payload) {
             original_filename = ?,
             media_delivery_type = ?,
             status = 'SUBMITTED',
+            score = NULL,
+            feedback = NULL,
+            is_locked = FALSE,
             submitted_at = NOW()
+            ${isResubmission ? ', revision_count = revision_count + 1' : ''}
         WHERE id = ?
       `, [
         content || null,
@@ -1031,6 +1296,13 @@ async function submitAssignment(userId, assignmentId, payload) {
       submissionId = result.insertId;
     }
 
+    if (isResubmission) {
+      await connection.query(`
+        INSERT INTO submission_comments (submission_id, author_user_id, content, event_type)
+        VALUES (?, ?, ?, 'RESUBMITTED')
+      `, [submissionId, userId, 'Student resubmitted the assignment.']);
+    }
+
     await connection.commit();
 
     await createNotification(
@@ -1058,15 +1330,22 @@ module.exports = {
   getTeacherSubmissionDetail,
   getSubmissionMedia,
   gradeSubmission,
+  returnSubmissionForRevision,
   listStudentAssignments,
   getStudentAssignmentDetail,
   requestSubmissionUploadSignature,
   submitAssignment,
+  listSubmissionComments,
+  addSubmissionComment,
   ensureAssignmentTables,
   __testing: {
     canSubmit,
+    getWorkflowStatus,
     getStudentFacingStatus,
+    getTeacherFacingStatus,
     isSubmittedStatus,
+    normalizeCommentContent,
+    getSubmissionCommentAccess,
     normalizeDeadline,
     normalizeStudentIds,
     submissionMediaFromRow,

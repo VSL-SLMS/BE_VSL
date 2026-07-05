@@ -558,6 +558,32 @@ router.post('/student/assignments/:id/submit', requireAuth, requireRole('STUDENT
   }
 });
 
+router.get('/submissions/:id/comments', requireAuth, async (req, res, next) => {
+  try {
+    const data = await assignmentService.listSubmissionComments(req.user, req.params.id);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'SUBMISSION_COMMENTS_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.post('/submissions/:id/comments', requireAuth, async (req, res, next) => {
+  try {
+    const data = await assignmentService.addSubmissionComment(req.user, req.params.id, req.body || {});
+    res.status(201).json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'SUBMISSION_COMMENT_CREATE_ERROR',
+      message: error.message
+    });
+  }
+});
+
 router.get('/student/submissions/:id/media', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
   try {
     const data = await assignmentService.getSubmissionMedia(req.user, req.params.id);
@@ -657,6 +683,19 @@ router.post('/teacher/submissions/:id/grade', requireAuth, requireRole('TEACHER'
     res.status(error.status || 500).json({
       error: true,
       code: error.code || 'SUBMISSION_GRADE_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.post('/teacher/submissions/:id/return-revision', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.returnSubmissionForRevision(req.user.id, req.params.id, req.body || {});
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'SUBMISSION_REVISION_ERROR',
       message: error.message
     });
   }

@@ -9,8 +9,12 @@ process.env.CLOUDINARY_MAX_UPLOAD_BYTES = String(100 * 1024 * 1024);
 process.env.CLOUDINARY_MAX_VIDEO_DURATION_SECONDS = '600';
 
 test('UC-STU-07: Student-facing submission status hides internal lifecycle details', () => {
-  assert.equal(__testing.getStudentFacingStatus(undefined), 'Not Submitted');
+  assert.equal(__testing.getWorkflowStatus(undefined), 'ASSIGNED');
+  assert.equal(__testing.getStudentFacingStatus(undefined), 'To Do');
   assert.equal(__testing.getStudentFacingStatus('SUBMITTED'), 'Submitted');
+  assert.equal(__testing.getWorkflowStatus('NEEDS_REVISION'), 'NEEDS_REVISION');
+  assert.equal(__testing.getStudentFacingStatus('NEEDS_REVISION'), 'Needs revision');
+  assert.equal(__testing.getTeacherFacingStatus('NEEDS_REVISION'), 'Returned for revision');
   assert.equal(__testing.getStudentFacingStatus('GRADED'), 'Graded');
   assert.equal(__testing.getStudentFacingStatus('RECHECKING'), 'Rechecking');
   assert.equal(__testing.getStudentFacingStatus('ESCALATED'), 'Final Result');
@@ -40,6 +44,11 @@ test('UC-STU-08: Student can submit before deadline or when late submission is a
     submission_status: 'DRAFT',
     deadline: new Date(Date.now() - 60_000),
     allow_late_submission: true
+  }), true);
+  assert.equal(__testing.canSubmit({
+    submission_status: 'NEEDS_REVISION',
+    deadline: new Date(Date.now() - 60_000),
+    allow_late_submission: false
   }), true);
 });
 
@@ -171,4 +180,17 @@ test('UC-TEA-04: Abandoned uploads have no visible submission media', () => {
   assert.equal(__testing.submissionMediaFromRow({ cloudinary_public_id: null }), null);
   assert.equal(__testing.isSubmittedStatus('DRAFT'), false);
   assert.equal(__testing.isSubmittedStatus('SUBMITTED'), true);
+  assert.equal(__testing.isSubmittedStatus('NEEDS_REVISION'), true);
+});
+
+test('UC-STU-08: Submission comments require bounded plain text', () => {
+  assert.equal(__testing.normalizeCommentContent('  Please try again  '), 'Please try again');
+  assert.throws(
+    () => __testing.normalizeCommentContent(''),
+    /Comment is required/
+  );
+  assert.throws(
+    () => __testing.normalizeCommentContent('a'.repeat(1001)),
+    /1000 characters/
+  );
 });

@@ -166,7 +166,7 @@ const swaggerSpec = {
       get: {
         tags: ['Teachers'],
         summary: 'List active teachers for Student selection',
-        description: 'Returns practical Teacher profile data for Student selection. Accuracy is simplified and only exposed when the Teacher has verification history.',
+        description: 'Returns practical Teacher profile data for Student selection. Teacher Accuracy is not exposed as a Student-facing quality score.',
         parameters: [
           {
             name: 'recommend',
@@ -174,7 +174,7 @@ const swaggerSpec = {
             required: false,
             schema: { type: 'boolean' },
             example: true,
-            description: 'When true, returns only Teachers accepting Students, sorted by capacity first and reliability second.'
+            description: 'When true, returns accepting Teachers sorted by OPEN availability, current capacity, and graded activity tie-breaks.'
           }
         ],
         responses: {
@@ -207,17 +207,15 @@ const swaggerSpec = {
                                 enum: ['OPEN', 'LIMITED', 'FULL'],
                                 example: 'OPEN'
                               },
-                              reliability_label: {
-                                type: 'string',
-                                enum: ['NEW', 'RELIABLE', 'HIGHLY_RELIABLE'],
-                                example: 'NEW'
-                              },
-                              accuracy: {
-                                type: 'number',
+                              assignments_graded: { type: 'integer', example: 12 },
+                              students_supported: {
+                                type: 'integer',
                                 nullable: true,
                                 example: null,
-                                description: 'Null when the Teacher has no verified grading history.'
+                                description: 'Null until a historical Teacher assignment table exists.'
                               },
+                              experience_badge: { type: 'string', example: 'Active Teacher' },
+                              accuracy: { type: 'number', nullable: true, example: null },
                               accuracy_verified: { type: 'boolean', example: false },
                               is_accepting_students: { type: 'boolean', example: true },
                               is_recommended: { type: 'boolean', example: true }
@@ -432,6 +430,90 @@ const swaggerSpec = {
           409: {
             description: 'Submission is locked'
           }
+        }
+      }
+    },
+    '/api/teacher/submissions/{id}/return-revision': {
+      post: {
+        tags: ['Teacher Assignments'],
+        summary: 'Teacher returns a submitted assignment for revision',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  comment: { type: 'string', maxLength: 1000, example: 'Please record again with both hands visible.' }
+                },
+                required: ['comment']
+              }
+            }
+          }
+        },
+        responses: {
+          200: { description: 'Submission returned for revision' },
+          400: { description: 'Missing comment or invalid submission state' },
+          404: { description: 'Submission not found for this Teacher' }
+        }
+      }
+    },
+    '/api/submissions/{id}/comments': {
+      get: {
+        tags: ['Submission Comments'],
+        summary: 'List comments for an authorized submission',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        responses: {
+          200: { description: 'Submission comments' },
+          403: { description: 'Current user cannot access this submission' }
+        }
+      },
+      post: {
+        tags: ['Submission Comments'],
+        summary: 'Add a plain-text comment to an authorized submission',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  content: { type: 'string', maxLength: 1000, example: 'I uploaded a clearer video.' }
+                },
+                required: ['content']
+              }
+            }
+          }
+        },
+        responses: {
+          201: { description: 'Comment added' },
+          403: { description: 'Current user cannot access this submission' }
         }
       }
     },
