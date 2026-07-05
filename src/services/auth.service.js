@@ -341,8 +341,10 @@ async function changePassword(userId, currentPassword, newPassword, credential =
 async function getUserById(id) {
   const hasMustChangePassword = await hasColumn('users', 'must_change_password');
   const hasStudentDateOfBirth = await hasColumn('students', 'date_of_birth');
+  const hasTeacherBio = await hasColumn('teachers', 'bio');
   const mustChangePasswordSelect = hasMustChangePassword ? ', must_change_password' : '';
   const studentDateOfBirthSelect = hasStudentDateOfBirth ? ', s.date_of_birth' : ', NULL AS date_of_birth';
+  const teacherBioSelect = hasTeacherBio ? ', t.bio' : ', NULL AS bio';
   const [rows] = await pool.query(`
     SELECT
       u.id,
@@ -355,8 +357,10 @@ async function getUserById(id) {
       u.token_version${mustChangePasswordSelect},
       u.created_at
       ${studentDateOfBirthSelect}
+      ${teacherBioSelect}
     FROM users u
     LEFT JOIN students s ON s.user_id = u.id
+    LEFT JOIN teachers t ON t.user_id = u.id
     WHERE u.id = ?
     LIMIT 1
   `, [id]);

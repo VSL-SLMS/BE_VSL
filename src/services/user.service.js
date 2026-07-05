@@ -5,6 +5,7 @@ const {
 } = require('../config/cloudinary');
 
 let studentProfileColumnsReady = false;
+let teacherProfileColumnsReady = false;
 const AVATAR_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 function appError(message, status = 400, code = 'USER_PROFILE_ERROR') {
@@ -34,6 +35,17 @@ async function ensureStudentProfileColumns() {
   }
 
   studentProfileColumnsReady = true;
+}
+
+async function ensureTeacherProfileColumns() {
+  if (teacherProfileColumnsReady) return;
+
+  const hasBio = await hasColumn('teachers', 'bio');
+  if (!hasBio) {
+    await pool.query('ALTER TABLE teachers ADD COLUMN bio TEXT NULL');
+  }
+
+  teacherProfileColumnsReady = true;
 }
 
 function normalizeEmail(value) {
@@ -112,6 +124,17 @@ function normalizeDateOfBirth(value) {
   return raw;
 }
 
+function normalizeTeacherBio(value) {
+  if (value === undefined) return undefined;
+  const bio = String(value || '').trim();
+  if (bio.length > 1000) {
+    const error = new Error('Bio must be 1000 characters or fewer.');
+    error.status = 400;
+    throw error;
+  }
+  return bio;
+}
+
 async function listUsers() {
   const [rows] = await pool.query(`
     SELECT
@@ -137,7 +160,7 @@ async function listUsers() {
   return rows;
 }
 
-async function updateUserProfile(requestUser, userId, { name, email, avatarUrl, dateOfBirth }) {
+async function updateUserProfile(requestUser, userId, { name, email, avatarUrl, dateOfBirth, bio }) {
   const targetId = Number(userId);
   if (!targetId) {
     const error = new Error('User ID is required.');
@@ -171,15 +194,19 @@ async function updateUserProfile(requestUser, userId, { name, email, avatarUrl, 
   const normalizedDateOfBirth = shouldUpdateDateOfBirth
     ? normalizeDateOfBirth(dateOfBirth)
     : null;
+  const normalizedBio = users[0].role === 'TEACHER' ? normalizeTeacherBio(bio) : undefined;
 
-  if (!displayName && !normalizedEmail && !avatar && !shouldUpdateDateOfBirth) {
-    const error = new Error('Name, email, avatarUrl, or dateOfBirth is required.');
+  if (!displayName && !normalizedEmail && !avatar && !shouldUpdateDateOfBirth && normalizedBio === undefined) {
+    const error = new Error('Name, email, avatarUrl, dateOfBirth, or bio is required.');
     error.status = 400;
     throw error;
   }
 
   if (users[0].role === 'STUDENT') {
     await ensureStudentProfileColumns();
+  }
+  if (users[0].role === 'TEACHER') {
+    await ensureTeacherProfileColumns();
   }
 
   const connection = await pool.getConnection();
@@ -200,6 +227,14 @@ async function updateUserProfile(requestUser, userId, { name, email, avatarUrl, 
         SET date_of_birth = ?
         WHERE user_id = ?
       `, [normalizedDateOfBirth, targetId]);
+    }
+
+    if (normalizedBio !== undefined) {
+      await connection.query(`
+        UPDATE teachers
+        SET bio = ?
+        WHERE user_id = ?
+      `, [normalizedBio || null, targetId]);
     }
 
     await connection.commit();
@@ -225,9 +260,11 @@ async function updateUserProfile(requestUser, userId, { name, email, avatarUrl, 
       u.status,
       u.token_version,
       u.created_at,
-      s.date_of_birth
+      s.date_of_birth,
+      t.bio
     FROM users u
     LEFT JOIN students s ON s.user_id = u.id
+    LEFT JOIN teachers t ON t.user_id = u.id
     WHERE u.id = ?
     LIMIT 1
   `, [targetId]);
@@ -357,6 +394,7 @@ module.exports = {
   reviewTeacherChangeRequest,
   __testing: {
     detectAvatarFormat,
-    validateAvatarUploadRequest
+    validateAvatarUploadRequest,
+    normalizeTeacherBio
   }
 };

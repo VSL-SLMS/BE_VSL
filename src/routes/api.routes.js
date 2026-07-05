@@ -237,7 +237,8 @@ router.patch('/users/me/profile', requireAuth, async (req, res, next) => {
       name: req.body.name || req.body.displayName,
       email: req.body.email,
       avatarUrl: req.body.avatarUrl || req.body.avatar_url,
-      dateOfBirth: req.body.dateOfBirth || req.body.date_of_birth
+      dateOfBirth: req.body.dateOfBirth || req.body.date_of_birth,
+      bio: req.body.bio
     });
     res.json({ data: { user } });
   } catch (error) {
@@ -269,7 +270,8 @@ router.patch('/users/:id/profile', requireAuth, async (req, res, next) => {
       name: req.body.name || req.body.displayName,
       email: req.body.email,
       avatarUrl: req.body.avatarUrl || req.body.avatar_url,
-      dateOfBirth: req.body.dateOfBirth || req.body.date_of_birth
+      dateOfBirth: req.body.dateOfBirth || req.body.date_of_birth,
+      bio: req.body.bio
     });
     res.json({ data: { user } });
   } catch (error) {

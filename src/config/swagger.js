@@ -258,6 +258,12 @@ const swaggerSpec = {
                     format: 'date',
                     example: '2004-12-21',
                     description: 'Student only. Use YYYY-MM-DD.'
+                  },
+                  bio: {
+                    type: 'string',
+                    maxLength: 1000,
+                    example: 'Supports beginner Students learning daily VSL conversation.',
+                    description: 'Teacher only. Shown during Student teacher selection.'
                   }
                 }
               }

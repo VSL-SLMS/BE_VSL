@@ -53,3 +53,13 @@ test('UC-SYS-01: Avatar Cloudinary signature is scoped by role and email', () =>
   assert.ok(signature.signature);
   assert.equal(JSON.stringify(signature).includes('secret-key'), false);
 });
+
+test('UC-TEA-01: Teacher bio is trimmed and length-limited', () => {
+  assert.equal(userService.__testing.normalizeTeacherBio('  Beginner VSL support  '), 'Beginner VSL support');
+  assert.equal(userService.__testing.normalizeTeacherBio(''), '');
+  assert.equal(userService.__testing.normalizeTeacherBio(undefined), undefined);
+  assert.throws(
+    () => userService.__testing.normalizeTeacherBio('a'.repeat(1001)),
+    /1000 characters/
+  );
+});
