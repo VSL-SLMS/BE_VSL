@@ -68,14 +68,24 @@ function buildQueryString(params) {
     .join('&');
 }
 
-function formatDate(date) {
+function formatDate(date, timeZone = process.env.VNPAY_TIMEZONE || 'Asia/Ho_Chi_Minh') {
   const pad = (num) => String(num).padStart(2, '0');
-  const yyyy = date.getFullYear();
-  const MM = pad(date.getMonth() + 1);
-  const dd = pad(date.getDate());
-  const HH = pad(date.getHours());
-  const mm = pad(date.getMinutes());
-  const ss = pad(date.getSeconds());
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).formatToParts(date).map((part) => [part.type, part.value]));
+  const yyyy = parts.year;
+  const MM = parts.month;
+  const dd = parts.day;
+  const HH = pad(parts.hour);
+  const mm = pad(parts.minute);
+  const ss = pad(parts.second);
   return `${yyyy}${MM}${dd}${HH}${mm}${ss}`;
 }
 
@@ -146,5 +156,8 @@ module.exports = {
   verifyReturnUrl,
   sortObject,
   normalizeIpAddr,
-  getReturnUrl
+  getReturnUrl,
+  __testing: {
+    formatDate
+  }
 };

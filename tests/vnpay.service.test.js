@@ -52,6 +52,13 @@ test('UC-STU-03: VNPay sortObject drops empty values and sorts keys', () => {
   });
 });
 
+test('UC-STU-03: VNPay payment dates use Vietnam timezone', () => {
+  assert.equal(
+    vnpayService.__testing.formatDate(new Date('2026-07-05T14:05:38.000Z')),
+    '20260705210538'
+  );
+});
+
 test('UC-STU-03: VNPay rejects missing config and callbacks without secure hash', () => {
   delete process.env.VNPAY_TMN_CODE;
   delete process.env.VNPAY_HASH_SECRET;
