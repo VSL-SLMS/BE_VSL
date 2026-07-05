@@ -37,10 +37,6 @@ test.afterEach(() => {
   pool.query = originalQuery;
 });
 
-test.after(async () => {
-  await pool.end();
-});
-
 test('UC-STU-01: Student can select exactly one active Teacher', async () => {
   const calls = mockPoolQueries([
     [[{ id: 5, teacher_id: null }]],

@@ -1,9 +1,12 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { pool } = require('../config/database');
-const otpService = require('./otp.service');
+const jwt = require('../utils/jwt');
 
 const columnCache = new Map();
+
+function getOtpService() {
+  return require('./otp.service');
+}
 
 async function hasColumn(tableName, columnName) {
   const cacheKey = `${tableName}.${columnName}`;
@@ -199,7 +202,7 @@ async function createTeacher({ name, email, temporaryPassword, status = 'ACTIVE'
 
       const teacher = await getUserById(existingUser.id);
       teacher.temporary_password_reset = true;
-      teacher.email_delivery = await otpService.sendTeacherTemporaryPassword(teacher, temporaryPassword);
+      teacher.email_delivery = await getOtpService().sendTeacherTemporaryPassword(teacher, temporaryPassword);
       return teacher;
     }
 
@@ -233,7 +236,7 @@ async function createTeacher({ name, email, temporaryPassword, status = 'ACTIVE'
     await connection.commit();
 
     const teacher = await getUserById(userId);
-    teacher.email_delivery = await otpService.sendTeacherTemporaryPassword(teacher, temporaryPassword);
+    teacher.email_delivery = await getOtpService().sendTeacherTemporaryPassword(teacher, temporaryPassword);
     return teacher;
   } catch (error) {
     await connection.rollback();
@@ -251,7 +254,7 @@ async function requestPasswordChangeOtp(userId) {
     throw error;
   }
 
-  return otpService.sendPasswordChangeOtp(user);
+  return getOtpService().sendPasswordChangeOtp(user);
 }
 
 async function verifyPasswordChangeOtp(userId, otp) {
@@ -268,7 +271,7 @@ async function verifyPasswordChangeOtp(userId, otp) {
     throw error;
   }
 
-  await otpService.verifyPasswordChangeOtp(userId, otp);
+  await getOtpService().verifyPasswordChangeOtp(userId, otp);
 
   return {
     verificationToken: signPasswordChangeToken(user),
@@ -307,7 +310,7 @@ async function changePassword(userId, currentPassword, newPassword, credential =
   if (credential.verificationToken) {
     verifyPasswordChangeToken(user, credential.verificationToken);
   } else {
-    await otpService.verifyPasswordChangeOtp(userId, credential.otp);
+    await getOtpService().verifyPasswordChangeOtp(userId, credential.otp);
   }
 
   const passwordHash = await bcrypt.hash(newPassword, 10);

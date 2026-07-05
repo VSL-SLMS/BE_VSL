@@ -530,6 +530,19 @@ router.get('/student/assignments/:id', requireAuth, requireRole('STUDENT'), asyn
   }
 });
 
+router.post('/student/assignments/:id/upload-signature', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.requestSubmissionUploadSignature(req.user.id, req.params.id, req.body || {});
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'ASSIGNMENT_UPLOAD_SIGNATURE_ERROR',
+      message: error.message
+    });
+  }
+});
+
 router.post('/student/assignments/:id/submit', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
   try {
     const data = await assignmentService.submitAssignment(req.user.id, req.params.id, req.body || {});
@@ -538,6 +551,19 @@ router.post('/student/assignments/:id/submit', requireAuth, requireRole('STUDENT
     res.status(error.status || 500).json({
       error: true,
       code: error.code || 'ASSIGNMENT_SUBMIT_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.get('/student/submissions/:id/media', requireAuth, requireRole('STUDENT'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.getSubmissionMedia(req.user, req.params.id);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'SUBMISSION_MEDIA_ERROR',
       message: error.message
     });
   }
@@ -592,6 +618,32 @@ router.get('/teacher/submissions', requireAuth, requireRole('TEACHER'), async (r
     res.json({ data });
   } catch (error) {
     next(error);
+  }
+});
+
+router.get('/teacher/submissions/:id', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.getTeacherSubmissionDetail(req.user.id, req.params.id);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'SUBMISSION_DETAIL_ERROR',
+      message: error.message
+    });
+  }
+});
+
+router.get('/teacher/submissions/:id/media', requireAuth, requireRole('TEACHER'), async (req, res, next) => {
+  try {
+    const data = await assignmentService.getSubmissionMedia(req.user, req.params.id);
+    res.json({ data });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      error: true,
+      code: error.code || 'SUBMISSION_MEDIA_ERROR',
+      message: error.message
+    });
   }
 });
 
