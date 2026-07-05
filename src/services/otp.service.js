@@ -209,7 +209,7 @@ async function sendMailWithResend(mailOptions) {
 
   const from = process.env.RESEND_FROM;
   if (!from) {
-    const error = new Error('RESEND_FROM is not configured. Use a verified sender such as SLMS <no-reply@mail.vsl.lat>.');
+    const error = new Error('RESEND_FROM is not configured. Use a verified sender such as SLMS <no-reply@vsl.lat>.');
     error.status = 500;
     error.code = 'RESEND_FROM_NOT_CONFIGURED';
     throw error;
