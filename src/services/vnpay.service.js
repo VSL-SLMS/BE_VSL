@@ -24,23 +24,9 @@ function getBackendReturnUrl() {
   return backendUrl ? joinUrl(backendUrl, '/api/payments/vnpay/return') : '';
 }
 
-function isFrontendPaymentResultUrl(value) {
-  try {
-    return new URL(value).pathname === '/payment/result';
-  } catch {
-    return false;
-  }
-}
-
 function getReturnUrl() {
   const configuredReturnUrl = process.env.VNPAY_RETURN_URL || process.env.VNP_RETURN_URL;
-  const backendReturnUrl = getBackendReturnUrl();
-
-  if (backendReturnUrl && isFrontendPaymentResultUrl(configuredReturnUrl)) {
-    return backendReturnUrl;
-  }
-
-  return configuredReturnUrl || backendReturnUrl;
+  return configuredReturnUrl || getBackendReturnUrl();
 }
 
 function sortObject(obj) {
@@ -103,6 +89,7 @@ function createPaymentUrl(payment, ipAddr) {
 
   const date = new Date();
   const createDate = formatDate(date);
+  const expireDate = formatDate(new Date(date.getTime() + 15 * 60 * 1000));
 
   // VNPay amount is in VND and multiplied by 100
   const amount = payment.amount_vnd * 100;
@@ -120,6 +107,7 @@ function createPaymentUrl(payment, ipAddr) {
     vnp_ReturnUrl: returnUrl,
     vnp_IpAddr: normalizeIpAddr(ipAddr),
     vnp_CreateDate: createDate,
+    vnp_ExpireDate: expireDate,
   };
 
   const sortedParams = sortAndEncodeObject(params);
