@@ -1,6 +1,18 @@
 const { pool } = require('../config/database');
+const {
+  createAvatarUploadSignature,
+  getAvatarUploadLimits
+} = require('../config/cloudinary');
 
 let studentProfileColumnsReady = false;
+const AVATAR_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+function appError(message, status = 400, code = 'USER_PROFILE_ERROR') {
+  const error = new Error(message);
+  error.status = status;
+  error.code = code;
+  return error;
+}
 
 async function hasColumn(tableName, columnName) {
   const [rows] = await pool.query(`
@@ -32,6 +44,47 @@ function normalizeEmail(value) {
     throw error;
   }
   return email;
+}
+
+function detectAvatarFormat(payload = {}) {
+  const explicit = payload.format || payload.extension;
+  if (explicit) return String(explicit).trim().replace(/^\./, '').toLowerCase();
+
+  const fileName = String(payload.fileName || payload.filename || '').trim();
+  const match = fileName.match(/\.([a-z0-9]+)$/i);
+  return match ? match[1].toLowerCase() : '';
+}
+
+function validateAvatarUploadRequest(payload = {}) {
+  const limits = getAvatarUploadLimits();
+  const format = detectAvatarFormat(payload);
+  if (!format || !limits.allowedFormats.includes(format)) {
+    throw appError('Use JPG, PNG, or WEBP avatar images.', 400, 'UNSUPPORTED_AVATAR_FORMAT');
+  }
+
+  const contentType = String(payload.contentType || payload.mimeType || '').toLowerCase();
+  if (contentType && !AVATAR_IMAGE_TYPES.includes(contentType)) {
+    throw appError('Use JPG, PNG, or WEBP avatar images.', 400, 'UNSUPPORTED_AVATAR_TYPE');
+  }
+
+  const bytes = Number(payload.bytes ?? payload.fileSize ?? payload.size);
+  if (!Number.isFinite(bytes) || bytes <= 0) {
+    throw appError('Avatar image size is required.', 400, 'AVATAR_SIZE_REQUIRED');
+  }
+  if (bytes > limits.maxBytes) {
+    throw appError('Avatar image is too large.', 400, 'AVATAR_TOO_LARGE');
+  }
+
+  return { format, bytes };
+}
+
+function requestAvatarUploadSignature(user, payload = {}) {
+  if (!['STUDENT', 'TEACHER'].includes(user?.role)) {
+    throw appError('Avatar upload is only available for Students and Teachers.', 403, 'AVATAR_UPLOAD_FORBIDDEN');
+  }
+
+  validateAvatarUploadRequest(payload);
+  return createAvatarUploadSignature({ user });
 }
 
 function normalizeDateOfBirth(value) {
@@ -295,4 +348,15 @@ async function reviewTeacherChangeRequest(requestId, status) {
   }
 }
 
-module.exports = { listUsers, updateUserProfile, deleteUserAvatar, listTeacherChangeRequests, reviewTeacherChangeRequest };
+module.exports = {
+  listUsers,
+  updateUserProfile,
+  deleteUserAvatar,
+  requestAvatarUploadSignature,
+  listTeacherChangeRequests,
+  reviewTeacherChangeRequest,
+  __testing: {
+    detectAvatarFormat,
+    validateAvatarUploadRequest
+  }
+};
