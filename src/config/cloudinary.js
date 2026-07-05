@@ -1,16 +1,19 @@
 const crypto = require('crypto');
 
 const DEFAULT_FOLDER_ROOT = 'slms/submissions';
+const DEFAULT_AVATAR_FOLDER_ROOT = 'slms/avatars';
 const DEFAULT_MAX_UPLOAD_BYTES = 100 * 1024 * 1024;
+const DEFAULT_MAX_AVATAR_UPLOAD_BYTES = 5 * 1024 * 1024;
 const DEFAULT_MAX_VIDEO_DURATION_SECONDS = 10 * 60;
 const DEFAULT_ALLOWED_FORMATS = ['mp4', 'mov', 'webm'];
+const DEFAULT_ALLOWED_AVATAR_FORMATS = ['jpg', 'jpeg', 'png', 'webp'];
 
-function splitFormats(value) {
+function splitFormats(value, fallback = DEFAULT_ALLOWED_FORMATS) {
   const formats = String(value || '')
     .split(',')
     .map((item) => item.trim().replace(/^\./, '').toLowerCase())
     .filter(Boolean);
-  return formats.length ? formats : DEFAULT_ALLOWED_FORMATS;
+  return formats.length ? formats : fallback;
 }
 
 function positiveNumber(value, fallback) {
@@ -26,6 +29,13 @@ function getUploadLimits(env = process.env) {
       env.CLOUDINARY_MAX_VIDEO_DURATION_SECONDS,
       DEFAULT_MAX_VIDEO_DURATION_SECONDS
     )
+  };
+}
+
+function getAvatarUploadLimits(env = process.env) {
+  return {
+    allowedFormats: splitFormats(env.CLOUDINARY_AVATAR_ALLOWED_FORMATS, DEFAULT_ALLOWED_AVATAR_FORMATS),
+    maxBytes: positiveNumber(env.CLOUDINARY_AVATAR_MAX_UPLOAD_BYTES, DEFAULT_MAX_AVATAR_UPLOAD_BYTES)
   };
 }
 
@@ -49,6 +59,35 @@ function getCloudinaryConfig(env = process.env) {
     uploadType: String(env.CLOUDINARY_UPLOAD_TYPE || 'authenticated').trim() || 'authenticated',
     ...getUploadLimits(env)
   };
+}
+
+function cleanPathPart(value, label) {
+  const cleaned = String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/@/g, '-at-')
+    .replace(/[^a-z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  if (!cleaned) {
+    const error = new Error(`${label} is required.`);
+    error.status = 400;
+    error.code = 'INVALID_CLOUDINARY_UPLOAD_SCOPE';
+    throw error;
+  }
+
+  return cleaned;
+}
+
+function getAvatarFolder(user, folderRoot = process.env.CLOUDINARY_AVATAR_FOLDER || DEFAULT_AVATAR_FOLDER_ROOT) {
+  const role = cleanPathPart(user?.role, 'Role');
+  if (!['student', 'teacher'].includes(role)) {
+    const error = new Error('Avatar upload is only available for Students and Teachers.');
+    error.status = 403;
+    error.code = 'AVATAR_UPLOAD_FORBIDDEN';
+    throw error;
+  }
+  return `${String(folderRoot).replace(/\/+$/, '')}/${role}/${cleanPathPart(user?.email, 'Email')}`;
 }
 
 function signParams(params, apiSecret) {
@@ -113,8 +152,41 @@ function createUploadSignature({
   };
 }
 
+function createAvatarUploadSignature({
+  user,
+  env = process.env,
+  now = Date.now
+}) {
+  const config = getCloudinaryConfig(env);
+  const timestamp = Math.floor((typeof now === 'function' ? now() : now) / 1000);
+  const folder = getAvatarFolder(user, env.CLOUDINARY_AVATAR_FOLDER || DEFAULT_AVATAR_FOLDER_ROOT);
+  const params = {
+    folder,
+    invalidate: true,
+    overwrite: true,
+    public_id: 'avatar',
+    timestamp,
+    type: String(env.CLOUDINARY_AVATAR_UPLOAD_TYPE || 'upload').trim() || 'upload'
+  };
+
+  return {
+    cloudName: config.cloudName,
+    apiKey: config.apiKey,
+    signature: signParams(params, config.apiSecret),
+    uploadUrl: `https://api.cloudinary.com/v1_1/${config.cloudName}/image/upload`,
+    resourceType: 'image',
+    deliveryType: params.type,
+    publicIdPrefix: `${folder}/`,
+    params,
+    ...getAvatarUploadLimits(env)
+  };
+}
+
 module.exports = {
+  createAvatarUploadSignature,
   createUploadSignature,
+  getAvatarFolder,
+  getAvatarUploadLimits,
   getCloudinaryConfig,
   getSubmissionFolder,
   getUploadLimits,

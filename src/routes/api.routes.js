@@ -245,6 +245,15 @@ router.patch('/users/me/profile', requireAuth, async (req, res, next) => {
   }
 });
 
+router.post('/users/me/avatar/upload-signature', requireAuth, async (req, res, next) => {
+  try {
+    const data = userService.requestAvatarUploadSignature(req.user, req.body || {});
+    res.json({ data });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.delete('/users/me/avatar', requireAuth, async (req, res, next) => {
   try {
     const user = await userService.deleteUserAvatar(req.user, req.user.id);
